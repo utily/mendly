@@ -21,9 +21,11 @@
 // SOFTWARE.
 
 /// <reference path="../../typings/node/node" />
-/// <reference path="Position" />
-/// <reference path="Location" />
-/// <reference path="Region" />
+/// <reference path="../Error/Position" />
+/// <reference path="../Error/Location" />
+/// <reference path="../Error/Region" />
+/// <reference path="../Error/Level" />
+/// <reference path="../Error/Type" />
 /// <reference path="Reader" />
 
 var fs = require("fs");
@@ -33,7 +35,7 @@ module U10sil.IO {
 		private count: number
 		private line: number
 		private column: number
-		private lastMark: Position
+		private lastMark: Error.Position
 		constructor(private content: string, private path: string = "") {
 		}
 		isEmpty(): boolean {
@@ -52,10 +54,10 @@ module U10sil.IO {
 			return result
 		}
 		getResource(): string { return this.path }
-		getLocation(): Location { return new Location(this.path, this.line, this.column) }
-		mark(): Region {
-			var result = new Region(this.path, this.lastMark, new Position(this.line, this.column))
-			this.lastMark = new Position(this.line, this.column)
+		getLocation(): Error.Location { return new Error.Location(this.path, this.line, this.column) }
+		mark(): Error.Region {
+			var result = new Error.Region(this.path, this.lastMark, new Error.Position(this.line, this.column))
+			this.lastMark = new Error.Position(this.line, this.column)
 			return result
 		}
 	}

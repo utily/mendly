@@ -20,16 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Position" />
-
-module U10sil.IO {
-	export class Location extends Position {
-		getResource(): string { return this.resource }
-		constructor(private resource: string, line: number, column: number) {
-			super(line, column)
-		}
-		toString() {
-			return this.resource + " @ " + super.toString()
-		}
+module U10sil.Error {
+	export enum Type {
+		Lexical,
+		Gramatical,
+		Symbol,
+		Type,
+		Formatting,
+		BestPractice,
 	}
 }

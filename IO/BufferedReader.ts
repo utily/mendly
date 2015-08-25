@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Location" />
-/// <reference path="Region" />
+/// <reference path="../Error/Location" />
+/// <reference path="../Error/Region" />
 /// <reference path="Reader" />
 
 module U10sil.IO {
@@ -29,7 +29,7 @@ module U10sil.IO {
 		buffer: string = ""
 		private line: number
 		private column: number
-		private lastMark: Position
+		private lastMark: Error.Position
 		constructor(private backend: Reader) {
 		}
 		isEmpty(): boolean {
@@ -65,10 +65,10 @@ module U10sil.IO {
 			return result
 		}
 		getResource(): string { return this.backend.getResource() }
-		getLocation(): Location { return new Location(this.getResource(), this.line, this.column) }
-		mark(): Region {
-			var result = new Region(this.getResource(), this.lastMark, new Position(this.line, this.column))
-			this.lastMark = new Position(this.line, this.column)
+		getLocation(): Error.Location { return new Error.Location(this.getResource(), this.line, this.column) }
+		mark(): Error.Region {
+			var result = new Error.Region(this.getResource(), this.lastMark, new Error.Position(this.line, this.column))
+			this.lastMark = new Error.Position(this.line, this.column)
 			return result
 		}
 	}

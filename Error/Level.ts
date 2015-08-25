@@ -20,15 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="../../typings/node/node" />
-/// <reference path="StringReader" />
-
-var fs = require("fs");
-
-module U10sil.IO {
-	export class FileReader extends StringReader {
-		constructor(path: string) {
-			super(fs.readFileSync(path, "utf-8"), path)
-		}
+module U10sil.Error {
+	export enum Level {
+		Logging,
+		Debug,
+		Warning,
+		Recoverable,
+		Critical,
 	}
 }

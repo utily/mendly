@@ -51,8 +51,8 @@ module U10sil.IO {
 			return result
 		}
 		getResource(): string { return this.current ? this.current.getResource() : null }
-		getLocation(): Location { return this.current.getLocation() }
-		mark(): Region { return this.current.mark() }
+		getLocation(): Error.Location { return this.current.getLocation() }
+		mark(): Error.Region { return this.current.mark() }
 
 		private static getFiles(folder: string, filetype: string, ignoreFiles: string[] = []): string[] {
 			var result: string[] = []

@@ -20,17 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Position" />
-/// <reference path="Location" />
+/// <reference path="Type" />
+/// <reference path="Level" />
 
-module U10sil.IO {
-	export class Region {
-		constructor(private resource: string, private start: Position, private end: Position) { }
-		getResource() { return this.resource }
-		getStart() { return this.start }
-		getEnd() { return this.end }
-		toString() {
-			return this.resource + " @ " + this.start.toString() + " - " + this.end.toString()
+module U10sil.Error {
+	export class Message {
+		constructor(private type: Type, private level: Level, private message: Message, private location: Location) {
+
 		}
 	}
 }

@@ -20,16 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Position" />
-/// <reference path="Location" />
-/// <reference path="Region" />
+/// <reference path="../Error/Location" />
+/// <reference path="../Error/Region" />
 
 module U10sil.IO {
 	export interface Reader {
 		isEmpty(): boolean
 		read(): string;
 		getResource(): string
-		getLocation(): Location
-		mark(): Region
+		getLocation(): Error.Location
+		mark(): Error.Region
 	}
 }
