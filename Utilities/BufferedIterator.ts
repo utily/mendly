@@ -24,20 +24,20 @@
 
 module U10sil.Utilities {
 	export class BufferedIterator<T> implements Iterator<T> {
-		_buffer: T[]
-		constructor(private _backend: Iterator<T>) {
+		private buffer: T[]
+		constructor(private backend: Iterator<T>) {
 		}
 		peek(position: number = 0): T {
 			var next: T = null
-			while (position > this._buffer.length - 1 && (next = this._backend.next())) {
-				this._buffer.push(next)
+			while (position > this.buffer.length - 1 && (next = this.backend.next())) {
+				this.buffer.push(next)
 			}
-			return position > this._buffer.length - 1 ? null : this._buffer[position]
+			return position > this.buffer.length - 1 ? null : this.buffer[position]
 		}
 		next(): T {
 			var result = this.peek(0)
-			if (this._buffer.length > 1) {
-				this._buffer.slice()
+			if (this.buffer.length > 1) {
+				this.buffer.slice()
 			}
 			return result
 		}
