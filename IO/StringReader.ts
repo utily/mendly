@@ -35,7 +35,8 @@ module U10sil.IO {
 		private count: number
 		private line: number
 		private column: number
-		private lastMark: Error.Position
+		private lastPosition: Error.Position
+		private lastContent: string
 		constructor(private content: string, private path: string = "") {
 		}
 		isEmpty(): boolean {
@@ -43,6 +44,7 @@ module U10sil.IO {
 		}
 		read(): string {
 			var result: string = this.count < this.content.length ? this.content.charAt(this.count++) : null
+			this.lastContent += result
 			if (result) {
 				if (result == "\n") {
 					this.line++
@@ -55,9 +57,11 @@ module U10sil.IO {
 		}
 		getResource(): string { return this.path }
 		getLocation(): Error.Location { return new Error.Location(this.path, this.line, this.column) }
+		getRegion(): Error.Region { return new Error.Region(this.path, this.lastPosition, new Error.Position(this.line, this.column), this.lastContent) }
 		mark(): Error.Region {
-			var result = new Error.Region(this.path, this.lastMark, new Error.Position(this.line, this.column))
-			this.lastMark = new Error.Position(this.line, this.column)
+			var result = this.getRegion()
+			this.lastPosition = new Error.Position(this.line, this.column)
+			this.lastContent = ""
 			return result
 		}
 	}

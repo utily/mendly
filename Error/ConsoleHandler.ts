@@ -20,18 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Position" />
-/// <reference path="Location" />
+/// <reference path="Level" />
+/// <reference path="Type" />
+/// <reference path="Region" />
+/// <reference path="Message" />
+/// <reference path="Handler" />
 
 module U10sil.Error {
-	export class Region {
-		constructor(private resource: string, private start: Position, private end: Position, private content: string) { }
-		getResource() { return this.resource }
-		getStart() { return this.start }
-		getEnd() { return this.end }
-		getContent() { return this.content; }
-		toString() {
-			return this.resource + " (" + this.start.toString() + " - " + this.end.toString() + ") " + this.content
+	export class ConsoleHandler implements Handler {
+		raise(message: string | Message, level?: Level, type?: Type, region?: Region): void {
+			if (message instanceof String) {
+				message = new Message(<string>message, level, type, region)
+			}
+			console.log(message.toString())
 		}
 	}
 }

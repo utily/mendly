@@ -27,7 +27,9 @@
 
 module U10sil.Error {
 	export interface Handler {
-		raise(message: Message): void
-		raise(message: string, level?: Level, type?: Type, region?: Region): void
+		raise: {
+			(message: Message): void
+			(message: string, level?: Level, type?: Type, region?: Region): void
+		}
 	}
 }

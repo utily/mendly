@@ -30,6 +30,7 @@ module U10sil.IO {
 		private line: number
 		private column: number
 		private lastMark: Error.Position
+		private lastContent: string
 		constructor(private backend: Reader) {
 		}
 		isEmpty(): boolean {
@@ -62,12 +63,14 @@ module U10sil.IO {
 						break
 				}
 			}
+			this.lastContent += result
 			return result
 		}
 		getResource(): string { return this.backend.getResource() }
 		getLocation(): Error.Location { return new Error.Location(this.getResource(), this.line, this.column) }
+		getRegion(): Error.Region { return new Error.Region(this.getResource(), this.lastMark, new Error.Position(this.line, this.column), this.lastContent) }
 		mark(): Error.Region {
-			var result = new Error.Region(this.getResource(), this.lastMark, new Error.Position(this.line, this.column))
+			var result = this.getRegion()
 			this.lastMark = new Error.Position(this.line, this.column)
 			return result
 		}
