@@ -20,42 +20,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Test" />
-/// <reference path="TestFailedError" />
-/// <reference path="./Constraints/Constraint" />
+/// <reference path="../Fixture" />
+/// <reference path="../Constraints/Is" />
 
-module U10sil.Unit {
-	export class Fixture {
-		private tests: Test[] = []
-		constructor(private name: string) {
-		}
-		getName(): string { return this.name }
-		add(name: string, action: () => void): void {
-			this.tests.push(new Test(name, action))
-		}
-		run(): void {
-			var failures: TestFailedError[] = []
-			var success = true
-			this.tests.forEach(test => {
-				try {
-					test.run()
-				} catch (TestFailedError) {
-					success = false
-					TestFailedError.setTest(test)
-					failures.push(TestFailedError)
-				}
+module U10sil.Unit.Tests {
+	import Is = Constraints.Is
+	export class EqualTest extends Fixture {
+		constructor() {
+			super("EqualTest")
+			this.add("true is true", () => {
+				this.expect(true, Is.Equal().To(true))
 			})
-			console.log(this.name + ":", success ? "passed" : "failed")
-			if(!success) {
-				failures.forEach(failure => {
-					console.log("  ->", failure.getTest().toString())
-				})
-				//process.exit(1)
-			}
-		}
-		expect(value: any, constraint: Constraints.Constraint): void {
-			if (!constraint.verify(value))
-				throw new TestFailedError(value, constraint)
+			this.add("false is false", () => {
+				this.expect(false, Is.Equal().To(false))
+			})
+			this.add("true is not false", () => {
+				this.expect(true === false, Is.Equal().To(false))
+			})
+			this.add("false is not true", () => {
+				this.expect(false === true, Is.Equal().To(false))
+			})
+			this.add("foo equals foo", () => {
+				this.expect("foo" === "foo", Is.Equal().To(true))
+			})
+			this.add("foo does not equal bar", () => {
+				this.expect("foo" === "bar", Is.Equal().To(false))
+			})
+			this.add("null === null", () => {
+				this.expect(null, Is.Equal().To(null))
+			})
+			this.add("undefined === undefined", () => {
+				this.expect(undefined, Is.Equal().To(undefined))
+			})
 		}
 	}
 }

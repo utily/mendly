@@ -20,42 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Test" />
-/// <reference path="TestFailedError" />
-/// <reference path="./Constraints/Constraint" />
+/// <reference path="../Fixture" />
+/// <reference path="../Constraints/Is" />
 
-module U10sil.Unit {
-	export class Fixture {
-		private tests: Test[] = []
-		constructor(private name: string) {
-		}
-		getName(): string { return this.name }
-		add(name: string, action: () => void): void {
-			this.tests.push(new Test(name, action))
-		}
-		run(): void {
-			var failures: TestFailedError[] = []
-			var success = true
-			this.tests.forEach(test => {
-				try {
-					test.run()
-				} catch (TestFailedError) {
-					success = false
-					TestFailedError.setTest(test)
-					failures.push(TestFailedError)
-				}
+module U10sil.Unit.Tests {
+	import Is = Constraints.Is
+	export class NotTest extends Fixture {
+		constructor() {
+			super("NotTest")
+			this.add("foobar is not null", () => {
+				this.expect("foobar", Is.Not().Null())
 			})
-			console.log(this.name + ":", success ? "passed" : "failed")
-			if(!success) {
-				failures.forEach(failure => {
-					console.log("  ->", failure.getTest().toString())
-				})
-				//process.exit(1)
-			}
-		}
-		expect(value: any, constraint: Constraints.Constraint): void {
-			if (!constraint.verify(value))
-				throw new TestFailedError(value, constraint)
+			this.add("foobar is not equal to moobar", () => {
+				this.expect("foobar", Is.Not().Equal().To("moobar"))
+			})
+			this.add("foo === bar is not true", () => {
+				this.expect("foo" === "bar", Is.Not().True())
+			})
+			this.add("foo !== bar is not false", () => {
+				this.expect("foo" !== "bar", Is.Not().False())
+			})
 		}
 	}
 }

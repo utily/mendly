@@ -20,42 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Test" />
-/// <reference path="TestFailedError" />
-/// <reference path="./Constraints/Constraint" />
+/// <reference path="../Fixture" />
+/// <reference path="../Constraints/Is" />
 
-module U10sil.Unit {
-	export class Fixture {
-		private tests: Test[] = []
-		constructor(private name: string) {
-		}
-		getName(): string { return this.name }
-		add(name: string, action: () => void): void {
-			this.tests.push(new Test(name, action))
-		}
-		run(): void {
-			var failures: TestFailedError[] = []
-			var success = true
-			this.tests.forEach(test => {
-				try {
-					test.run()
-				} catch (TestFailedError) {
-					success = false
-					TestFailedError.setTest(test)
-					failures.push(TestFailedError)
-				}
+module U10sil.Unit.Tests {
+	import Is = Constraints.Is
+	export class BooleanTest extends Fixture {
+		constructor() {
+			super("BooleanTest")
+			this.add("true is true", () => {
+				this.expect(true, Is.True())
 			})
-			console.log(this.name + ":", success ? "passed" : "failed")
-			if(!success) {
-				failures.forEach(failure => {
-					console.log("  ->", failure.getTest().toString())
-				})
-				//process.exit(1)
-			}
-		}
-		expect(value: any, constraint: Constraints.Constraint): void {
-			if (!constraint.verify(value))
-				throw new TestFailedError(value, constraint)
+			this.add("false is false", () => {
+				this.expect(false, Is.False())
+			})
+			this.add("foo === foo (true)", () => {
+				this.expect("foo" === "foo", Is.True())
+			})
+			this.add("foo === bar (false)", () => {
+				this.expect("foo" === "bar", Is.False())
+			})
 		}
 	}
 }

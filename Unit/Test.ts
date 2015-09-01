@@ -22,14 +22,14 @@
 
 module U10sil.Unit {
 	export class Test {
-		constructor(private name: string, private action: () => boolean) {
+		constructor(private name: string, private action: () => void) {
 		}
-		getName() { return this.name }
-		getAction() { return this.action }
-		run() {
-			return this.action()
+		getName(): string { return this.name }
+		getAction(): () => void { return this.action }
+		run(): void {
+			this.action()
 		}
-		toString() {
+		toString(): string {
 			return this.name
 		}
 	}

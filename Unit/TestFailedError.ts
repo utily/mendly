@@ -20,42 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Test" />
-/// <reference path="TestFailedError" />
 /// <reference path="./Constraints/Constraint" />
 
 module U10sil.Unit {
-	export class Fixture {
-		private tests: Test[] = []
-		constructor(private name: string) {
+	export class TestFailedError implements Error {
+		public name = "TestFailedError"
+		private test: Test
+		constructor(private value: any, private constraint: Constraints.Constraint, public message: string = null) {
 		}
+		getValue(): any { return this.value }
+		getConstraint(): Constraints.Constraint { return this.constraint }
 		getName(): string { return this.name }
-		add(name: string, action: () => void): void {
-			this.tests.push(new Test(name, action))
+		getTest() { return this.test }
+		setTest(test: Test) {
+			this.message = test.getName()
+			this.test = test
 		}
-		run(): void {
-			var failures: TestFailedError[] = []
-			var success = true
-			this.tests.forEach(test => {
-				try {
-					test.run()
-				} catch (TestFailedError) {
-					success = false
-					TestFailedError.setTest(test)
-					failures.push(TestFailedError)
-				}
-			})
-			console.log(this.name + ":", success ? "passed" : "failed")
-			if(!success) {
-				failures.forEach(failure => {
-					console.log("  ->", failure.getTest().toString())
-				})
-				//process.exit(1)
-			}
-		}
-		expect(value: any, constraint: Constraints.Constraint): void {
-			if (!constraint.verify(value))
-				throw new TestFailedError(value, constraint)
+		toString(): string {
+			return this.name + ": " + this.test.getName()
 		}
 	}
 }

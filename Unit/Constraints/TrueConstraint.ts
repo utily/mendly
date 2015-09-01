@@ -27,7 +27,7 @@ module U10sil.Unit.Constraints {
 		constructor(parent: Modifier = null) {
 			super(parent)
 		}
-		test(value: any) {
+		test(value: any): boolean {
 			return value === true
 		}
 	}

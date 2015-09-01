@@ -25,7 +25,8 @@ module U10sil.Unit.Constraints {
 		private child: Modifier
 		constructor(private parent: Modifier = null) {
 		}
-		verify(value: any, child: Modifier): boolean {
+		verify(value: any, child: Modifier = null): boolean {
+			this.child = child
 			return this.parent != null ? this.parent.verify(value, this) : this.test(value)
 		}
 		test(value: any): boolean {

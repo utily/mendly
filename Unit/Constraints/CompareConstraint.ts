@@ -20,42 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Test" />
-/// <reference path="TestFailedError" />
-/// <reference path="./Constraints/Constraint" />
+/// <reference path="Constraint" />
 
-module U10sil.Unit {
-	export class Fixture {
-		private tests: Test[] = []
-		constructor(private name: string) {
+module U10sil.Unit.Constraints {
+	export class CompareConstraint extends Constraint {
+		constructor(private correct: any, private comparer: (objectA: any, objectB: any) => boolean, parent: Modifier = null) {
+			super(parent)
 		}
-		getName(): string { return this.name }
-		add(name: string, action: () => void): void {
-			this.tests.push(new Test(name, action))
-		}
-		run(): void {
-			var failures: TestFailedError[] = []
-			var success = true
-			this.tests.forEach(test => {
-				try {
-					test.run()
-				} catch (TestFailedError) {
-					success = false
-					TestFailedError.setTest(test)
-					failures.push(TestFailedError)
-				}
-			})
-			console.log(this.name + ":", success ? "passed" : "failed")
-			if(!success) {
-				failures.forEach(failure => {
-					console.log("  ->", failure.getTest().toString())
-				})
-				//process.exit(1)
-			}
-		}
-		expect(value: any, constraint: Constraints.Constraint): void {
-			if (!constraint.verify(value))
-				throw new TestFailedError(value, constraint)
+		test(value: any): boolean {
+			return this.comparer(value, this.correct)
 		}
 	}
 }
