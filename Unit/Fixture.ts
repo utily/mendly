@@ -24,12 +24,13 @@
 /// <reference path="TestFailedError" />
 /// <reference path="./Constraints/Constraint" />
 /// <reference path="./Constraints/TrueConstraint" />
+/// <reference path="../Utilities/String" />
 
 module U10sil.Unit {
 	export class Fixture {
 		private tests: Test[] = []
 		private expectId = 0
-		constructor(private name: string) {
+		constructor(private name: string, private reportOnPass = true) {
 		}
 		getName(): string { return this.name }
 		add(name: string, action: () => void): void {
@@ -52,8 +53,11 @@ module U10sil.Unit {
 				}
 				this.expectId = 0
 			})
-			console.log(this.name + ":", success ? "passed" : "failed")
-			if(!success) {
+
+			if ((success && this.reportOnPass) || !success)
+				this.prettyPrintTestResult(success)
+
+			if (!success) {
 				failures.forEach(failure => {
 					console.log("  -> expect #" + failure.getExpectId() + " in '" + failure.getTest().toString() + "'")
 				})
@@ -66,6 +70,17 @@ module U10sil.Unit {
 				constraint = new Constraints.TrueConstraint()
 			if (!constraint.verify(value))
 				throw new TestFailedError(value, constraint)
+		}
+		//
+		// This is a temporary thing to make it easier on the eyes when reading
+		// test results in the terminal.
+		//
+		private prettyPrintTestResult(success: boolean) {
+			var coloredString = "\x1b[" + (success ? "32mpassed" : "31mfailed")
+			var colorReset = "\x1b[0m"
+			var message = coloredString + colorReset
+			var result = Utilities.String.padRight(this.name, ".", 25) + ": " + message
+			console.log(result)
 		}
 	}
 }
