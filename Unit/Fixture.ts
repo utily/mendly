@@ -50,11 +50,12 @@ module U10sil.Unit {
 						success = false
 					}
 				}
+				this.expectId = 0
 			})
 			console.log(this.name + ":", success ? "passed" : "failed")
 			if(!success) {
 				failures.forEach(failure => {
-					console.log("  -> expect #" + failure.getExpectId() + ", '" + failure.getTest().toString() + "'")
+					console.log("  -> expect #" + failure.getExpectId() + " in '" + failure.getTest().toString() + "'")
 				})
 				//process.exit(1)
 			}
