@@ -20,27 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Modifier" />
-/// <reference path="CompareConstraint" />
-/// <reference path="FalseConstraint" />
-/// <reference path="TrueConstraint" />
-/// <reference path="EqualModifier" />
-/// <reference path="NullConstraint" />
-/// <reference path="UndefinedConstraint" />
+/// <reference path="Constraint" />
 
 module U10sil.Unit.Constraints {
-	export class NotModifier extends Modifier {
+	export class UndefinedConstraint extends Constraint {
 		constructor(parent: Modifier = null) {
 			super(parent)
 		}
 		test(value: any): boolean {
-			return !(this.testChild(value))
+			return value === undefined
 		}
-		Null() { return new NullConstraint(this) }
-		Undefined() { return new UndefinedConstraint(this) }
-		False() { return new FalseConstraint(this) }
-		True() { return new TrueConstraint(this) }
-		Equal() { return new EqualModifier(this) }
-		Not() { return new NotModifier(this) }
 	}
 }

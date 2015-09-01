@@ -20,27 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Modifier" />
-/// <reference path="CompareConstraint" />
-/// <reference path="FalseConstraint" />
-/// <reference path="TrueConstraint" />
-/// <reference path="EqualModifier" />
-/// <reference path="NullConstraint" />
-/// <reference path="UndefinedConstraint" />
+/// <reference path="../Fixture" />
+/// <reference path="../Constraints/Is" />
 
-module U10sil.Unit.Constraints {
-	export class NotModifier extends Modifier {
-		constructor(parent: Modifier = null) {
-			super(parent)
+module U10sil.Unit.Tests {
+	import Is = Constraints.Is
+	export class UndefinedTest extends Fixture {
+		constructor() {
+			super("UndefinedTest")
+			this.add("undefined test 1", () => {
+				this.expect(undefined, Is.Undefined())
+			})
+			this.add("undefined test 2", () => {
+				var s: string
+				this.expect(s, Is.Undefined())
+			})
+			this.add("undefined test 3", () => {
+				var s: string = ""
+				this.expect(s, Is.Not().Undefined())
+			})
 		}
-		test(value: any): boolean {
-			return !(this.testChild(value))
-		}
-		Null() { return new NullConstraint(this) }
-		Undefined() { return new UndefinedConstraint(this) }
-		False() { return new FalseConstraint(this) }
-		True() { return new TrueConstraint(this) }
-		Equal() { return new EqualModifier(this) }
-		Not() { return new NotModifier(this) }
 	}
 }
