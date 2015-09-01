@@ -27,7 +27,7 @@ module U10sil.Unit.Tests {
 	import Is = Constraints.Is
 	export class NotTest extends Fixture {
 		constructor() {
-			super("NotTest")
+			super("Not")
 			this.add("foobar is not null", () => {
 				this.expect("foobar", Is.Not().Null())
 			})
