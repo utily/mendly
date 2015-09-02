@@ -53,7 +53,6 @@ module U10sil.Unit {
 				}
 				this.expectId = 0
 			})
-
 			if ((success && this.reportOnPass) || !success)
 				this.prettyPrintTestResult(success)
 
@@ -61,7 +60,7 @@ module U10sil.Unit {
 				failures.forEach(failure => {
 					console.log("  -> expect #" + failure.getExpectId() + " in '" + failure.getTest().toString() + "'")
 				})
-				//process.exit(1)
+				process.exit(1)
 			}
 		}
 		expect(value: any, constraint: Constraints.Constraint = null): void {
