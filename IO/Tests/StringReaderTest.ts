@@ -37,7 +37,12 @@ module U10sil.IO.Tests {
 			this.add("empty", () => {
 				var sr = new IO.StringReader("")
 				this.expect(sr.isEmpty())
-				this.expect(sr.getResource() === "")
+			})
+			this.add("state check", () => {
+				var sr = new IO.StringReader("")
+				this.expect(sr.getLocation(), Is.Not().NullOrUndefined())
+				this.expect(sr.getRegion(), Is.Not().NullOrUndefined())
+				this.expect(sr.getResource(), Is.Not().NullOrUndefined())
 			})
 			this.add("simple string", () => {
 				var sr = new IO.StringReader("abcdef")
@@ -86,7 +91,7 @@ module U10sil.IO.Tests {
 			})
 			this.add("mark", () => {
 				var sr = new IO.StringReader("abc\0")
-				sr.mark()
+				this.expect(sr.mark(), Is.Not().NullOrUndefined())
 				sr.read(); sr.read(); sr.read()
 				var region = sr.getRegion()
 				this.expect(region.getStart().getLine() === 1 && region.getStart().getColumn() === 1)

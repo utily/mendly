@@ -38,7 +38,21 @@ module U10sil.IO.Tests {
 			this.add("empty", () => {
 				var br = new IO.BufferedReader(new IO.StringReader(""))
 				this.expect(br.isEmpty())
-				this.expect(br.getResource() === "")
+			})
+			this.add("state check", () => {
+				var br = new IO.BufferedReader(new IO.StringReader(""))
+				this.expect(br.getLocation(), Is.Not().NullOrUndefined())
+				this.expect(br.getRegion(), Is.Not().NullOrUndefined())
+				this.expect(br.getResource(), Is.Not().NullOrUndefined())
+			})
+			this.add("peek", () => {
+				var br = new IO.BufferedReader(new IO.StringReader("foobar"))
+				this.expect(br.peek(1) === "f")
+				this.expect(br.peek(2) === "fo")
+				this.expect(br.peek(3) === "foo")
+				this.expect(br.peek(4) === "foob")
+				this.expect(br.peek(5) === "fooba")
+				this.expect(br.peek(6) === "foobar")
 			})
 			this.add("read one at a time", () => {
 				var sr = new IO.BufferedReader(new IO.StringReader("abcdef"))
@@ -98,7 +112,7 @@ module U10sil.IO.Tests {
 			})
 			this.add("mark", () => {
 				var br = new BufferedReader(new IO.StringReader("abc\0"))
-				br.mark()
+				this.expect(br.mark(), Is.Not().NullOrUndefined())
 				br.read(); br.read(); br.read()
 				var region = br.getRegion()
 				this.expect(region.getStart().getLine() === 1 && region.getStart().getColumn() === 1)
