@@ -24,7 +24,7 @@
 
 module U10sil.Utilities {
 	export class BufferedIterator<T> implements Iterator<T> {
-		private buffer: T[]
+		private buffer: T[] = []
 		constructor(private backend: Iterator<T>) {
 		}
 		peek(position: number = 0): T {
@@ -36,9 +36,8 @@ module U10sil.Utilities {
 		}
 		next(): T {
 			var result = this.peek(0)
-			if (this.buffer.length > 1) {
-				this.buffer.slice()
-			}
+			if (this.buffer.length > 0)
+				this.buffer.shift()
 			return result
 		}
 	}
