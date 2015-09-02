@@ -38,13 +38,13 @@ module U10sil.IO {
 		private lastPosition: Error.Position
 		private lastContent: string = ""
 		constructor(private content: string, private path: string = "") {
+			this.lastPosition = new Error.Position(1, 1)
 		}
 		isEmpty(): boolean {
 			return this.count >= this.content.length
 		}
 		read(): string {
 			var result: string = this.count < this.content.length ? this.content.charAt(this.count++) : "\0"
-			this.lastContent += result
 			if (result) {
 				if (result == "\n") {
 					this.line++
@@ -53,6 +53,7 @@ module U10sil.IO {
 					this.column++
 				}
 			}
+			this.lastContent += result
 			return result
 		}
 		getResource(): string { return this.path }
