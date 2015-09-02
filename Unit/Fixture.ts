@@ -36,9 +36,9 @@ module U10sil.Unit {
 		add(name: string, action: () => void): void {
 			this.tests.push(new Test(name, action))
 		}
-		run(): void {
+		run(): boolean {
 			var failures: TestFailedError[] = []
-			var success = true
+			var result = true
 			this.tests.forEach(test => {
 				try {
 					test.run()
@@ -48,20 +48,20 @@ module U10sil.Unit {
 						e.setTest(test)
 						e.setExpectId(this.expectId)
 						failures.push(e)
-						success = false
+						result = false
 					}
 				}
 				this.expectId = 0
 			})
-			if ((success && this.reportOnPass) || !success)
-				this.prettyPrintTestResult(success)
+			if ((result && this.reportOnPass) || !result)
+				this.prettyPrintTestResult(result)
 
-			if (!success) {
+			if (!result) {
 				failures.forEach(failure => {
 					console.log("  -> expect #" + failure.getExpectId() + " in '" + failure.getTest().toString() + "'")
 				})
-				process.exit(1)
 			}
+			return result;
 		}
 		expect(value: any, constraint: Constraints.Constraint = null): void {
 			this.expectId++
