@@ -28,6 +28,7 @@
 /// <reference path="NullConstraint" />
 /// <reference path="NullOrUndefinedConstraint" />
 /// <reference path="UndefinedConstraint" />
+/// <reference path="EmptyConstraint" />
 
 module U10sil.Unit.Constraints {
 	export class NotModifier extends Modifier {
@@ -44,5 +45,6 @@ module U10sil.Unit.Constraints {
 		True() { return new TrueConstraint(this) }
 		Equal() { return new EqualModifier(this) }
 		Not() { return new NotModifier(this) }
+		Empty() { return new EmptyConstraint(this) }
 	}
 }

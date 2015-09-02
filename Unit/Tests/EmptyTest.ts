@@ -20,24 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="FalseConstraint" />
-/// <reference path="TrueConstraint" />
-/// <reference path="NullConstraint" />
-/// <reference path="NullOrUndefinedConstraint" />
-/// <reference path="UndefinedConstraint" />
-/// <reference path="EqualModifier" />
-/// <reference path="NotModifier" />
-/// <reference path="EmptyConstraint" />
+/// <reference path="../Fixture" />
+/// <reference path="../Constraints/Is" />
+/// <reference path="../Constraints/NotModifier" />
 
-module U10sil.Unit.Constraints {
-	export class Is {
-		static True() { return new TrueConstraint() }
-		static False() { return new FalseConstraint() }
-		static Null() { return new NullConstraint() }
-		static NullOrUndefined() { return new NullOrUndefinedConstraint() }
-		static Undefined() { return new UndefinedConstraint() }
-		static Equal() { return new EqualModifier() }
-		static Not() { return new NotModifier() }
-		static Empty() { return new EmptyConstraint() }
+module U10sil.Unit.Tests {
+	import Is = Constraints.Is
+	export class EmptyTest extends Fixture {
+		constructor() {
+			super("Empty")
+			this.add("empty string", () => {
+				this.expect("", Is.Empty())
+			})
+			this.add("empty array", () => {
+				this.expect([], Is.Empty())
+			})
+			this.add("string is not empty", () => {
+				this.expect("foobar", Is.Not().Empty())
+			})
+			this.add("array is not empty", () => {
+				this.expect([1, 2, 3], Is.Not().Empty())
+			})
+		}
 	}
 }
