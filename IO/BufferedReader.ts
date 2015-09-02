@@ -32,6 +32,7 @@ module U10sil.IO {
 		private lastMark: Error.Position
 		private lastContent: string = ""
 		constructor(private backend: Reader) {
+			this.lastMark = new Error.Position(1, 1)
 		}
 		isEmpty(): boolean {
 			return this.buffer.length == 0 && this.backend.isEmpty()
@@ -71,6 +72,7 @@ module U10sil.IO {
 		mark(): Error.Region {
 			var result = this.getRegion()
 			this.lastMark = new Error.Position(this.line, this.column)
+			this.lastContent = ""
 			return result
 		}
 	}
