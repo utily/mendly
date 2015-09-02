@@ -41,21 +41,20 @@ module U10sil.IO {
 			while (length > this.buffer.length && (next = this.backend.read())) {
 				this.buffer += next
 			}
-			return length > this.buffer.length ? null : this.buffer.slice(0, length - 1)
+			return length > this.buffer.length ? null : this.buffer.substring(0, length)
 		}
 		read(length: number = 1): string {
 			var result = this.peek(length)
-			if (this.buffer.length > 1) {
-				this.buffer = this.buffer.slice(1)
-			}
+			if (this.buffer.length > 0)
+				this.buffer = this.buffer.substring(length)
 			for (var i = 0; i < result.length; i++) {
 				switch (result.charAt(i)) {
 					case "\0":
-						this.column = 0
-						this.line = 0
+						this.column = 1
+						this.line = 1
 						break
 					case "\n":
-						this.column = 0
+						this.column = 1
 						this.line++
 						break
 					default:
