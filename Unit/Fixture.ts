@@ -50,7 +50,8 @@ module U10sil.Unit {
 						failures.push(e)
 						result = false
 					} else {
-						console.dir(Error)
+						console.dir("[Fixture] " + Error)
+						process.exit(1)
 					}
 				}
 				this.expectId = 0
