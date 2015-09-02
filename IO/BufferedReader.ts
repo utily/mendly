@@ -30,7 +30,7 @@ module U10sil.IO {
 		private line: number = 1
 		private column: number = 1
 		private lastMark: Error.Position
-		private lastContent: string
+		private lastContent: string = ""
 		constructor(private backend: Reader) {
 		}
 		isEmpty(): boolean {
@@ -41,7 +41,7 @@ module U10sil.IO {
 			while (length > this.buffer.length && (next = this.backend.read())) {
 				this.buffer += next
 			}
-			return length > this.buffer.length ? null : this.buffer.substring(0, length)
+			return length > this.buffer.length ? "\0" : this.buffer.substring(0, length)
 		}
 		read(length: number = 1): string {
 			var result = this.peek(length)
