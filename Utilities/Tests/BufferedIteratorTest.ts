@@ -77,4 +77,5 @@ module U10sil.Utilities.Tests {
 			})
 		}
 	}
+	Unit.Fixture.add(new BufferedIteratorTest())
 }

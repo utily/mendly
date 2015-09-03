@@ -48,4 +48,5 @@ module U10sil.Unit.Tests {
 			})
 		}
 	}
+	Fixture.add(new NotTest())
 }

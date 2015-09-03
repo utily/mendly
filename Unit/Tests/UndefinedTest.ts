@@ -41,4 +41,5 @@ module U10sil.Unit.Tests {
 			})
 		}
 	}
+	Fixture.add(new UndefinedTest())
 }

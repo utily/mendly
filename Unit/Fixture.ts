@@ -84,5 +84,13 @@ module U10sil.Unit {
 			var result = Utilities.String.padRight(this.name, ".", 25) + ": " + message
 			console.log(result)
 		}
+
+		private static fixtures: Fixture[] = []
+		static add(fixture: Fixture) {
+			Fixture.fixtures.push(fixture)
+		}
+		static run() {
+			Fixture.fixtures.forEach((fixture) => { fixture.run() })
+		}
 	}
 }
