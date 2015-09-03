@@ -48,7 +48,7 @@ module U10sil.Utilities.Tests {
 				var testString = "let's iterate this string using peek()"
 				var bi = new BufferedIterator(new StringIterator(testString))
 				var result: string = ""
-				while(bi.peek()) {
+				while (bi.peek()) {
 					result += bi.next()
 				}
 				this.expect(result === testString)
@@ -58,7 +58,7 @@ module U10sil.Utilities.Tests {
 				var bi = new BufferedIterator(new StringIterator(testString))
 				var character: string
 				var result: string = ""
-				while((character = bi.next())) {
+				while ((character = bi.next())) {
 					result += character
 				}
 				this.expect(result === testString)
