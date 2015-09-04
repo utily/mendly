@@ -28,6 +28,9 @@ module U10sil.Unit.Tests {
 	export class BooleanTest extends Fixture {
 		constructor() {
 			super("Unit.Constraints.Boolean")
+			this.add("empty string evaluates to false", () => {
+				this.expect("", Is.False())
+			})
 			this.add("true is true", () => {
 				this.expect(true, Is.True())
 			})
@@ -40,7 +43,7 @@ module U10sil.Unit.Tests {
 			this.add("foo === bar (false)", () => {
 				this.expect("foo" === "bar", Is.False())
 			})
-			this.add("null === null", () => {
+			this.add("expect true overload", () => {
 				this.expect(null === null)
 			})
 		}

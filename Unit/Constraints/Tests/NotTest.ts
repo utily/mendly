@@ -46,6 +46,9 @@ module U10sil.Unit.Tests {
 			this.add("undefined is not null", () => {
 				this.expect(undefined, Is.Not().Null())
 			})
+			this.add("empty string is not null nor undefined", () => {
+				this.expect("", Is.Not().NullOrUndefined())
+			})
 		}
 	}
 	Fixture.add(new NotTest())
