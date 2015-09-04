@@ -50,7 +50,7 @@ module U10sil.Unit {
 						failures.push(e)
 						result = false
 					} else {
-						console.dir("[Fixture] " + Error)
+						console.dir("[Fixture]", Error)
 						process.exit(1)
 					}
 				}
