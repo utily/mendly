@@ -20,26 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="../Fixture" />
-/// <reference path="../Constraints/Is" />
+/// <reference path="../../Fixture" />
+/// <reference path="../../Constraints/Is" />
 
 module U10sil.Unit.Tests {
 	import Is = Constraints.Is
-	export class NullTest extends Fixture {
+	export class NotTest extends Fixture {
 		constructor() {
-			super("Null")
-			this.add("null 1", () => {
-				this.expect(null, Is.Null())
+			super("Unit.Constraints.Not")
+			this.add("foobar is not null", () => {
+				this.expect("foobar", Is.Not().Null())
 			})
-			this.add("null 2", () => {
-				var s: string = null
-				this.expect(s, Is.Null())
+			this.add("foobar is not equal to moobar", () => {
+				this.expect("foobar", Is.Not().Equal().To("moobar"))
 			})
-			this.add("undefined 3", () => {
-				var s: string = ""
-				this.expect(s, Is.Not().Null())
+			this.add("foo === bar is not true", () => {
+				this.expect("foo" === "bar", Is.Not().True())
+			})
+			this.add("foo !== bar is not false", () => {
+				this.expect("foo" !== "bar", Is.Not().False())
+			})
+			this.add("null is not undefined", () => {
+				this.expect(null, Is.Not().Undefined())
+			})
+			this.add("undefined is not null", () => {
+				this.expect(undefined, Is.Not().Null())
 			})
 		}
 	}
-	Fixture.add(new NullTest())
+	Fixture.add(new NotTest())
 }

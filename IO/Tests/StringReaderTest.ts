@@ -32,7 +32,7 @@ module U10sil.IO.Tests {
 	import Is = Unit.Constraints.Is
 	export class StringReaderTest extends Unit.Fixture {
 		constructor() {
-			super("StringReader")
+			super("IO.StringReader")
 			var errorHandler = new Error.ConsoleHandler()
 			this.add("empty", () => {
 				var sr = new IO.StringReader("")

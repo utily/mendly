@@ -20,26 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="../Fixture" />
-/// <reference path="../Constraints/Is" />
+/// <reference path="../../Fixture" />
+/// <reference path="../../Constraints/Is" />
 
 module U10sil.Unit.Tests {
 	import Is = Constraints.Is
-	export class UndefinedTest extends Fixture {
+	export class BooleanTest extends Fixture {
 		constructor() {
-			super("Undefined")
-			this.add("undefined 1", () => {
-				this.expect(undefined, Is.Undefined())
+			super("Unit.Constraints.Boolean")
+			this.add("true is true", () => {
+				this.expect(true, Is.True())
 			})
-			this.add("undefined 2", () => {
-				var s: string
-				this.expect(s, Is.Undefined())
+			this.add("false is false", () => {
+				this.expect(false, Is.False())
 			})
-			this.add("undefined 3", () => {
-				var s: string = ""
-				this.expect(s, Is.Not().Undefined())
+			this.add("foo === foo (true)", () => {
+				this.expect("foo" === "foo", Is.True())
+			})
+			this.add("foo === bar (false)", () => {
+				this.expect("foo" === "bar", Is.False())
+			})
+			this.add("null === null", () => {
+				this.expect(null === null)
 			})
 		}
 	}
-	Fixture.add(new UndefinedTest())
+	Fixture.add(new BooleanTest())
 }

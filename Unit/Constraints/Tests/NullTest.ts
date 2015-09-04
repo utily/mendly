@@ -20,45 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="../Fixture" />
-/// <reference path="../Constraints/Is" />
+/// <reference path="../../Fixture" />
+/// <reference path="../../Constraints/Is" />
 
 module U10sil.Unit.Tests {
 	import Is = Constraints.Is
-	export class EqualTest extends Fixture {
+	export class NullTest extends Fixture {
 		constructor() {
-			super("Equal")
-			this.add("true is true", () => {
-				this.expect(true, Is.Equal().To(true))
+			super("Unit.Constraints.Null")
+			this.add("null 1", () => {
+				this.expect(null, Is.Null())
 			})
-			this.add("false is false", () => {
-				this.expect(false, Is.Equal().To(false))
+			this.add("null 2", () => {
+				var s: string = null
+				this.expect(s, Is.Null())
 			})
-			this.add("true is not false", () => {
-				this.expect(true === false, Is.Equal().To(false))
-			})
-			this.add("false is not true", () => {
-				this.expect(false === true, Is.Equal().To(false))
-			})
-			this.add("foo equals foo", () => {
-				this.expect("foo" === "foo", Is.Equal().To(true))
-			})
-			this.add("foo does not equal bar", () => {
-				this.expect("foo" === "bar", Is.Equal().To(false))
-			})
-			this.add("null === null", () => {
-				this.expect(null, Is.Equal().To(null))
-			})
-			this.add("undefined === undefined", () => {
-				this.expect(undefined, Is.Equal().To(undefined))
-			})
-			this.add("\"5\" == 5", () => {
-				this.expect("5" == <any>5, Is.Equal().To(true))
-			})
-			this.add("\"5\" === 5 == false", () => {
-				this.expect("5" === <any>5, Is.Equal().To(false))
+			this.add("undefined 3", () => {
+				var s: string = ""
+				this.expect(s, Is.Not().Null())
 			})
 		}
 	}
-	Fixture.add(new EqualTest())
+	Fixture.add(new NullTest())
 }
