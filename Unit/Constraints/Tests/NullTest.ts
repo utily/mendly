@@ -35,7 +35,7 @@ module U10sil.Unit.Tests {
 				var s: string = null
 				this.expect(s, Is.Null())
 			})
-			this.add("undefined 3", () => {
+			this.add("null 3", () => {
 				var s: string = ""
 				this.expect(s, Is.Not().Null())
 			})
