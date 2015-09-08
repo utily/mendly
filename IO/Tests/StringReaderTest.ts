@@ -115,4 +115,5 @@ module U10sil.IO.Tests {
 			})
 		}
 	}
+	Unit.Fixture.add(new StringReaderTest())
 }
