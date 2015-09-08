@@ -27,6 +27,7 @@ module U10sil.Unit.Constraints {
 		constructor(parent: Modifier = null) {
 			super(parent)
 		}
+		getExpectedValue(): any { return undefined }
 		test(value: any): boolean {
 			return value === undefined
 		}

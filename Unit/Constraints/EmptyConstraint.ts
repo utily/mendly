@@ -27,6 +27,7 @@ module U10sil.Unit.Constraints {
 		constructor(parent: Modifier = null) {
 			super(parent)
 		}
+		getExpectedValue(): any { return 0 }
 		test(value: string | any[]): boolean {
 			return value.length == 0
 		}
