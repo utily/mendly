@@ -44,16 +44,20 @@ module U10sil.IO {
 			return this.count >= this.content.length
 		}
 		read(): string {
-			var result: string = this.count < this.content.length ? this.content.charAt(this.count++) : "\0"
+			var result: string
+			if (this.count < this.content.length)
+				result = this.content.charAt(this.count)
+			else if (this.count == this.content.length)
+				result = "\0"
+			this.count++
 			if (result) {
 				if (result == "\n") {
 					this.line++
 					this.column = 1
-				} else {
+				} else
 					this.column++
-				}
+				this.lastContent += result
 			}
-			this.lastContent += result
 			return result
 		}
 		getResource(): string { return this.path }
