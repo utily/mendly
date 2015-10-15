@@ -66,7 +66,7 @@ module U10sil.Unit {
 				failures.forEach(failure => {
 					var expectedMessage = "expected '" + failure.getConstraint().getExpectedValue().toString() + "', found '" + failure.getValue() + "'"
 					var whereMessage = "[expect #" + failure.getExpectId() + " in '" + failure.getTest().toString() + "']"
-					this.consoleHandler.raise("  -> " + expectedMessage + " " + whereMessage)
+					console.log("  -> " + expectedMessage + " " + whereMessage)
 				})
 			}
 			return result;
