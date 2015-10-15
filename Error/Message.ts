@@ -28,7 +28,7 @@ module U10sil.Error {
 		constructor(private description: string, private level: Level, private type: Type, private region: Region) {
 		}
 		toString(): string {
-			return this.level + ": " + this.type + " Error. " + this.description + " @ " + this.region.toString();
+			return Level[this.level] + ": " + Type[this.type] + " error. " + this.description + " @ " + this.region.toString();
 		}
 	}
 }
