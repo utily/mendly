@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 module U10sil.Unit.Constraints {
-	export class Modifier {
+	export abstract class Modifier {
 		private child: Modifier
 		constructor(private parent: Modifier = null) {
 		}
