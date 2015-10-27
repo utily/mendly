@@ -86,7 +86,7 @@ module U10sil.Unit {
 			var coloredString = "\x1b[" + (success ? "32mpassed" : "31mfailed")
 			var colorReset = "\x1b[0m"
 			var message = coloredString + colorReset
-			var result = Utilities.String.padRight(this.name, ".", 35) + ": " + message
+			var result = Utilities.String.padRight(this.name, ".", 50) + ": " + message
 			console.log(result)
 		}
 
