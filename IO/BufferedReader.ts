@@ -40,16 +40,15 @@ module U10sil.IO {
 		}
 		peek(length: number = 1): string {
 			var next: string = null
-			while (length > this.buffer.length && (next = this.backend.read())) {
+			while (length > this.buffer.length && (next = this.backend.read()))
 				this.buffer += next
-			}
 			return length > this.buffer.length ? "\0" : this.buffer.substring(0, length)
 		}
 		read(length: number = 1): string {
 			var result = this.peek(length)
 			if (this.buffer.length > 0)
 				this.buffer = this.buffer.substring(length)
-			for (var i = 0; i < result.length; i++) {
+			for (var i = 0; i < result.length; i++)
 				switch (result.charAt(i)) {
 					case "\0":
 						this.column = 1
@@ -63,7 +62,6 @@ module U10sil.IO {
 						this.column++
 						break
 				}
-			}
 			this.lastContent += result
 			return result
 		}
