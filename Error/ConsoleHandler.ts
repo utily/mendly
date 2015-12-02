@@ -29,10 +29,9 @@
 module U10sil.Error {
 	export class ConsoleHandler implements Handler {
 		raise(message: string | Message, level?: Level, type?: Type, region?: Region): void {
-			if (typeof message == "string") {
+			if (!(message instanceof Error.Message))
 				message = new Message(<string>message, level, type, region)
-			}
-			console.log(message.toString())
+			console.log((<string>message).toString())
 		}
 	}
 }
