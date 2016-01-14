@@ -20,14 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-module U10sil.Error {
-	export enum Type {
-		Lexical,
-		Gramatical,
-		Symbol,
-		Type,
-		Formatting,
-		BestPractice,
-		SelfTest,
+/// <reference path="../../Unit/Fixture" />
+/// <reference path="../../Unit/Constraints/Is" />
+/// <reference path="../Locator" />
+
+module U10sil.Uri.Tests {
+	import Is = Unit.Constraints.Is
+	export class LocatorParseTest extends Unit.Fixture {
+		constructor() {
+			super("Uri.Locator.parse")
+			this.add("undefined", () => {
+				this.expect(Locator.parse(undefined), Is.Undefined())
+			})
+			this.add("null", () => {
+				this.expect(Locator.parse(null), Is.Null())
+			})
+			this.add("empty", () => {
+				this.expect(Locator.parse(""), Is.Undefined())
+			})
+		}
 	}
+	Unit.Fixture.add(new LocatorParseTest())
 }
