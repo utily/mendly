@@ -31,7 +31,7 @@ module U10sil.Uri {
 			return this.password
 		}
 		toString(): string {
-			var result
+			var result: string
 			if (this.name)
 				result = this.name
 			if (this.password)

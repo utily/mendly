@@ -34,7 +34,7 @@ module U10sil.Uri {
 			return this.endpoint
 		}
 		toString(): string {
-			var result
+			var result: string
 			if (this.user)
 				result = this.user.toString() + "@"
 			if (this.endpoint)

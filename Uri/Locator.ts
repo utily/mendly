@@ -42,7 +42,7 @@ module U10sil.Uri {
 			return this.fragment
 		}
 		toString(): string {
-			var result
+			var result: string
 			if (this.scheme)
 				result = this.scheme.join("+") + "://"
 			if (this.authority)
@@ -58,6 +58,7 @@ module U10sil.Uri {
 		static parse(data: string): Locator {
 			var result: Locator
 			switch (data) {
+				case "":
 				case undefined:
 					break
 				case null:
@@ -73,9 +74,9 @@ module U10sil.Uri {
 						fragment = data.slice(index + 1)
 						data = data.slice(0, index)
 					}
-					var query: Object
+					var query: { [key: string]: string }
 					if (data && (index = data.lastIndexOf("?")) > -1) {
-						query = new Object()
+						query = <{ [key: string]: string }> new Object()
 						data.slice(index + 1).split(";").forEach(element => {
 							splitted = element.split("=")
 							query[splitted.pop()] = splitted.pop()
