@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="../../typings/node/node" />
+/// <reference path="../../../typings/node/node" />
 /// <reference path="StringReader" />
 
 var fs = require("fs");
