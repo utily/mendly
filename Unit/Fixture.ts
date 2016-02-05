@@ -32,7 +32,7 @@
 module U10sil.Unit {
 	export abstract class Fixture {
 		private tests: Test[] = []
-		private expectId = 0
+		private expectCounter = 0
 		private errorHandler: Error.Handler
 		constructor(private name: string, private reportOnPass = true) {
 			this.errorHandler = new ErrorHandler(new Error.ConsoleHandler(), new Error.Region(name))
@@ -41,29 +41,32 @@ module U10sil.Unit {
 		add(name: string, action: () => void): void {
 			this.tests.push(new Test(name, action))
 		}
-		run(): boolean {
+		run(debug = false): boolean {
 			var failures: TestFailedError[] = []
 			var result = true
 			this.tests.forEach(test => {
-				try {
+				if (debug)
 					test.run()
-				} catch (Error) {
-					if (Error instanceof TestFailedError) {
-						var e = <TestFailedError>Error
-						e.setTest(test)
-						e.setExpectId(this.expectId)
-						failures.push(e)
-						result = false
-					} else {
-						console.dir("[Fixture]", Error)
-						throw Error
+				else {
+					try {
+						test.run()
+					} catch (error) {
+						if (error instanceof TestFailedError) {
+							var e = <TestFailedError>error
+							e.setTest(test)
+							e.setExpectId(this.expectCounter)
+							failures.push(e)
+							result = false
+						} else {
+							console.dir("[Fixture]", error)
+							throw error
+						}
 					}
 				}
-				this.expectId = 0
+				this.expectCounter = 0
 			})
 			if ((result && this.reportOnPass) || !result)
 				this.prettyPrintTestResult(result)
-
 			if (!result) {
 				failures.forEach(failure => {
 					var expectedMessage = "expected '" + failure.getConstraint().getExpectedValue() + "', found '" + failure.getValue() + "'"
@@ -74,7 +77,7 @@ module U10sil.Unit {
 			return result;
 		}
 		expect(value: any, constraint: Constraints.Constraint = null): void {
-			this.expectId++
+			this.expectCounter++
 			if (constraint == null)
 				constraint = new Constraints.TrueConstraint()
 			if (!constraint.verify(value))
@@ -96,8 +99,8 @@ module U10sil.Unit {
 		static add(fixture: Fixture) {
 			Fixture.fixtures.push(fixture)
 		}
-		static run() {
-			Fixture.fixtures.forEach((fixture) => { fixture.run() })
+		static run(debug = false) {
+			Fixture.fixtures.forEach((fixture) => { fixture.run(debug) })
 		}
 	}
 }
