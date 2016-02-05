@@ -24,7 +24,13 @@
 
 module U10sil.Uri {
 	export class Locator {
-		constructor(private scheme: string[], private authority: Authority, private path: string[], private query: Object, private fragment: string) {
+		constructor(private scheme: string[], private authority: Authority, private path: string[], private query: { [key: string]: string }, private fragment: string) {
+		}
+		isRelative(): boolean {
+			return this.path[0] == "." || this.path[0] == ".."
+		}
+		isFolder(): boolean {
+			return this.path[this.path.length - 1] == ""
 		}
 		getScheme(): string[] {
 			return this.scheme
@@ -35,11 +41,39 @@ module U10sil.Uri {
 		getPath(): string[] {
 			return this.path
 		}
-		getQuery(): Object {
+		getQuery(): { [key: string]: string } {
 			return this.query
 		}
 		getFragment(): string {
 			return this.fragment
+		}
+		getFolder(): Locator {
+			return this.isFolder() ? this : new Locator(this.scheme, this.authority, this.path.filter((value, index) => index < this.path.length - 2), this.query, this.fragment)
+		}
+		private createArray<T>(value: T, count: number): T[] {
+			var result: T[] = []
+			while (count-- > 0)
+				result.push(value)
+			return result
+		}
+		normalize(): Locator {
+			var skip = 0
+			var path = this.path.reverse().filter(item => {
+						var r = false
+						if (item == "." || item == "")
+							;
+						else if (item == "..")
+							skip++
+						else if (skip > 0)
+							skip--
+						else
+							r = true
+						return r
+					}).concat(this.createArray("..", skip)).reverse()
+			return new Locator(this.scheme, this.authority, path, this.query, this.fragment)
+		}
+		resolve(absolute: Locator): Locator {
+			return (this.isRelative() ? new Locator(absolute.getScheme(), absolute.getAuthority(), absolute.getFolder().getPath().concat(this.path), this.query, this.fragment) : this).normalize()
 		}
 		toString(): string {
 			var result: string
@@ -66,8 +100,8 @@ module U10sil.Uri {
 					break
 				default:
 					var splitted = data.split("://", 2)
-					var scheme = splitted.length > 1 ? splitted.pop().split("+") : undefined
-					data = splitted.pop()
+					var scheme = splitted.length > 1 ? splitted.shift().split("+") : undefined
+					data = splitted.shift()
 					var index: number
 					var fragment: string
 					if (data && (index = data.lastIndexOf("#")) > -1) {
@@ -79,19 +113,29 @@ module U10sil.Uri {
 						query = <{ [key: string]: string }> new Object()
 						data.slice(index + 1).split(";").forEach(element => {
 							splitted = element.split("=")
-							query[splitted.pop()] = splitted.pop()
+							query[splitted.shift()] = splitted.shift()
 						});
 						data = data.slice(0, index)
 					}
 					var authority: Authority
-					if (data && !data.match(/^(.\/|..\/|\//)) {
-						splitted = data.split("/")
-						authority = Authority.parse(splitted.pop())
-						data = data.length > 0 ? "/" + splitted.pop() : undefined
-					}
 					var path: string[]
-					if (data)
-						path = splitted.pop().split("/")
+					if (data) {
+						splitted = data.split("/")
+						if (splitted.length > 0) {
+							switch (splitted[0]) {
+								case ".":
+								case "..":
+									break
+								case "":
+									splitted.shift()
+									break
+								default:
+									authority = Authority.parse(splitted.shift())
+									break
+							}
+							path = splitted
+						}
+					}
 					result = new Locator(scheme, authority, path, query, fragment)
 					break
 			}
