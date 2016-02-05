@@ -6,3 +6,4 @@
 /// <reference path="NullOrUndefinedTest" />
 /// <reference path="NullTest" />
 /// <reference path="UndefinedTest" />
+/// <reference path="ArrayTest" />
