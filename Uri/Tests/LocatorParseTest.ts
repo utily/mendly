@@ -41,21 +41,62 @@ module U10sil.Uri.Tests {
 			this.add("absolute file", () => {
 				var locator = Locator.parse("file:///folder/file.extension")
 				this.expect(locator.getScheme(), Is.Equal().To(["file"]))
+				this.expect(locator.getAuthority(), Is.Undefined())
 				this.expect(locator.getPath(), Is.Equal().To(["folder", "file.extension"]))
-			})
-			this.add("relative", () => {
-				var locator = Locator.parse("./folder/file.extension")
-				this.expect(locator.getScheme(), Is.Undefined())
-				this.expect(locator.getPath(), Is.Equal().To([".", "folder", "file.extension"]))
 			})
 			this.add("relative file", () => {
 				var locator = Locator.parse("file://./folder/file.extension")
 				this.expect(locator.getScheme(), Is.Equal().To(["file"]))
+				this.expect(locator.getAuthority(), Is.Undefined())
 				this.expect(locator.getPath(), Is.Equal().To([".", "folder", "file.extension"]))
 			})
-			this.add("https", () => {
+			this.add("explicitly relative path", () => {
+				var locator = Locator.parse("./folder/file.extension")
+				this.expect(locator.getScheme(), Is.Undefined())
+				this.expect(locator.getAuthority(), Is.Undefined())
+				this.expect(locator.getPath(), Is.Equal().To([".", "folder", "file.extension"]))
+			})
+			this.add("implicitly relative path", () => {
+				var locator = Locator.parse("folder/file.extension")
+				this.expect(locator.getScheme(), Is.Undefined())
+				this.expect(locator.getAuthority(), Is.Undefined())
+				this.expect(locator.getPath(), Is.Equal().To([".", "folder", "file.extension"]))
+			})
+			this.add("absolute path", () => {
+				var locator = Locator.parse("/folder/file.extension")
+				this.expect(locator.getScheme(), Is.Undefined())
+				this.expect(locator.getAuthority(), Is.Undefined())
+				this.expect(locator.getPath(), Is.Equal().To(["folder", "file.extension"]))
+			})
+			this.add("explicitly relative folder path", () => {
+				var locator = Locator.parse("./folder/folder.next/")
+				this.expect(locator.getScheme(), Is.Undefined())
+				this.expect(locator.getAuthority(), Is.Undefined())
+				this.expect(locator.getPath(), Is.Equal().To([".", "folder", "folder.next", ""]))
+			})
+			this.add("implicitly relative folder path", () => {
+				var locator = Locator.parse("folder/folder.next/")
+				this.expect(locator.getScheme(), Is.Undefined())
+				this.expect(locator.getAuthority(), Is.Undefined())
+				this.expect(locator.getPath(), Is.Equal().To([".", "folder", "folder.next", ""]))
+			})
+			this.add("absolute folder path", () => {
+				var locator = Locator.parse("/folder/folder.next/")
+				this.expect(locator.getScheme(), Is.Undefined())
+				this.expect(locator.getAuthority(), Is.Undefined())
+				this.expect(locator.getPath(), Is.Equal().To(["folder", "folder.next", ""]))
+			})
+			this.add("full https url", () => {
 				var locator = Locator.parse("https://server.example.com/folder/file.extension")
 				this.expect(locator.getScheme(), Is.Equal().To(["https"]))
+				this.expect(locator.getAuthority().getUser(), Is.Undefined())
+				this.expect(locator.getAuthority().getEndpoint().getHost(), Is.Equal().To(["server", "example", "com"]))
+				this.expect(locator.getAuthority().getEndpoint().getPort(), Is.Undefined())
+				this.expect(locator.getPath(), Is.Equal().To(["folder", "file.extension"]))
+			})
+			this.add("schemeless url", () => {
+				var locator = Locator.parse("//server.example.com/folder/file.extension")
+				this.expect(locator.getScheme(), Is.Undefined())
 				this.expect(locator.getAuthority().getUser(), Is.Undefined())
 				this.expect(locator.getAuthority().getEndpoint().getHost(), Is.Equal().To(["server", "example", "com"]))
 				this.expect(locator.getAuthority().getEndpoint().getPort(), Is.Undefined())
