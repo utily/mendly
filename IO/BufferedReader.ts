@@ -65,6 +65,12 @@ module U10sil.IO {
 			this.lastContent += result
 			return result
 		}
+		peekIs(value: string|string[]): boolean {
+			return value && typeof(value) == "string" ? this.peek(value.length) == <string>value  : (<string[]>value).some(v => this.peek(v.length) == v)
+		}
+		readIf(value: string|string[]): boolean {
+			return value && typeof(value) == "string" ? this.peek(value.length) == <string>value && this.read(value.length) == value : (<string[]>value).some(v => this.peek(v.length) == v && this.read(v.length) == v)
+		}
 		getResource(): string { return this.backend.getResource() }
 		getLocation(): Error.Location { return new Error.Location(this.getResource(), this.line, this.column) }
 		getRegion(): Error.Region { return new Error.Region(this.getResource(), this.lastMark, new Error.Position(this.line, this.column), this.lastContent) }
