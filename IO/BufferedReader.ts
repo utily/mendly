@@ -65,11 +65,23 @@ module U10sil.IO {
 			this.lastContent += result
 			return result
 		}
-		peekIs(value: string|string[]): boolean {
-			return value && typeof(value) == "string" ? this.peek(value.length) == <string>value  : (<string[]>value).some(v => this.peek(v.length) == v)
+		peekIs(value: string|string[]): string {
+			var result: string
+			if (value)
+				if (typeof(value) == "string")
+					result = (this.peek(value.length) == <string>value ? <string>value : undefined)
+				else if (!(result = this.peekIs((<string[]>value).shift())))
+					result = this.peekIs(<string[]>value)
+			return result
 		}
-		readIf(value: string|string[]): boolean {
-			return value && typeof(value) == "string" ? this.peek(value.length) == <string>value && this.read(value.length) == value : (<string[]>value).some(v => this.peek(v.length) == v && this.read(v.length) == v)
+		readIf(value: string|string[]): string {
+			var result: string
+			if (value)
+				if (typeof(value) == "string")
+					result = (this.peek(value.length) == <string>value ? this.read(value.length) : undefined)
+				else if (!(result = this.readIf((<string[]>value).shift())))
+					result = this.readIf(<string[]>value)
+			return result
 		}
 		getResource(): string { return this.backend.getResource() }
 		getLocation(): Error.Location { return new Error.Location(this.getResource(), this.line, this.column) }
