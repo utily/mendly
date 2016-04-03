@@ -58,7 +58,7 @@ export class StringReader extends Reader {
 	}
 	getResource(): string { return this.path }
 	getLocation(): Error.Location { return new Error.Location(this.path, this.line, this.column) }
-	getRegion(): Error.Region { return new Error.Region(this.path, this.lastPosition, this.getPosition(), this.lastContent) }
+	getRegion(): Error.Region { return new Error.Region(this.path, this.lastPosition, this.getLocation(), this.lastContent) }
 	mark(): Error.Region {
 		var result = this.getRegion()
 		this.lastPosition = this.getLocation()
