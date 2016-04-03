@@ -21,27 +21,28 @@
 // SOFTWARE.
 
 import * as Error from "../Error/Region"
+import { Reader } from "./Reader"
+import { BufferedReader } from "./BufferedReader"
 
-export abstract class Reader {
-	abstract isEmpty(): boolean
-	abstract read(): string
-	abstract getResource(): string
-	abstract getLocation(): Error.Location
-	abstract getRegion(): Error.Region
-	abstract mark(): Error.Region
-	private static openers: { open: ((path: string, extension: string) => Reader), priority: number }[] = []
-	static addOpener(open: (path: string, extension: string) => Reader, priority?: number) {
-		if (!priority)
-			priority = 0
-		Reader.openers.push({ open: open, priority: priority})
-		Reader.openers = Reader.openers.sort((left, right) => right.priority - left.priority)
+export class PrefixReader {
+	private done = false
+	private backend: BufferedReader
+	constructor(private prefix: string, backend: Reader) {
+		this.backend = backend instanceof(BufferedReader) ? backend : new BufferedReader(backend)
 	}
-	static open(path: string, extension: string): Reader {
-		var result: Reader
-		var i = 0
-		do
-			result = Reader.openers[i++].open(path, extension)
-		while (!result && i < Reader.openers.length)
+	isEmpty(): boolean {
+		return this.done || this.backend.isEmpty()
+	}
+	read(): string {
+		var result: string
+		if (!this.isEmpty()) {
+			result = this.backend.read()
+			this.done = result == "\n" && !this.backend.readIf(this.prefix) && !this.backend.peekIs("\n")
+		}
 		return result
 	}
+	getResource(): string { return this.backend.getResource() }
+	getLocation(): Error.Location { return this.backend.getLocation() }
+	getRegion(): Error.Region { return this.backend.getRegion() }
+	mark(): Error.Region { return this.backend.mark() }
 }
