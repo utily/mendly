@@ -32,7 +32,7 @@ export class StringReader extends Reader {
 	private lastContent: string = ""
 	constructor(private content: string, private path?: string) {
 		super()
-		this.lastPosition = new Error.Position(1, 1)
+		this.lastPosition = this.getLocation()
 		if (!this.path)
 			this.path = ""
 	}
@@ -58,10 +58,10 @@ export class StringReader extends Reader {
 	}
 	getResource(): string { return this.path }
 	getLocation(): Error.Location { return new Error.Location(this.path, this.line, this.column) }
-	getRegion(): Error.Region { return new Error.Region(this.path, this.lastPosition, new Error.Position(this.line, this.column), this.lastContent) }
+	getRegion(): Error.Region { return new Error.Region(this.path, this.lastPosition, this.getPosition(), this.lastContent) }
 	mark(): Error.Region {
 		var result = this.getRegion()
-		this.lastPosition = new Error.Position(this.line, this.column)
+		this.lastPosition = this.getLocation()
 		this.lastContent = ""
 		return result
 	}

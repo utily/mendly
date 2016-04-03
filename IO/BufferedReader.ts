@@ -25,14 +25,13 @@ import { Reader } from "./Reader"
 
 export { Reader } from "./Reader"
 export class BufferedReader extends Reader {
-	buffer: string = ""
-	private line: number = 1
-	private column: number = 1
-	private lastMark: Error.Position
+	buffer: { data: string, location: Error.Location }[] = []
+	private lastMark: Error.Location
+	private lastLocation: Error.Location
 	private lastContent: string = ""
 	constructor(private backend: Reader) {
 		super()
-		this.lastMark = new Error.Position(1, 1)
+		this.lastMark = this.lastLocation = this.getLocation()
 	}
 	isEmpty(): boolean {
 		return this.buffer.length == 0 && this.backend.isEmpty()
@@ -42,38 +41,28 @@ export class BufferedReader extends Reader {
 			length = 1
 		var next: string = null
 		while (length > this.buffer.length && (next = this.backend.read()))
-			this.buffer += next
-		return length > this.buffer.length ? "\0" : this.buffer.substring(0, length)
+			this.buffer.push({ data: next, location: this.backend.getLocation() })
+		return this.buffer.slice(0, length > this.buffer.length ? this.buffer.length : length).map(value => value.data).join("") + (length > this.buffer.length ? "\0" : "")
 	}
 	read(length?: number): string {
 		if (!length)
 			length = 1
 		var result = this.peek(length)
-		if (this.buffer.length > 0)
-			this.buffer = this.buffer.substring(length)
-		for (var i = 0; i < result.length; i++)
-			switch (result.charAt(i)) {
-				case "\0":
-					this.column = 1
-					this.line = 1
-					break
-				case "\n":
-					this.column = 1
-					this.line++
-					break
-				default:
-					this.column++
-					break
-			}
+		if (this.buffer.length >= result.length && result.length > 0){
+			this.lastLocation = this.buffer[result.length - 1].location
+			this.buffer.splice(0, result.length)
+		}
 		this.lastContent += result
 		return result
 	}
-	peekIs(value: string|string[]): string {
+	peekIs(value: string|string[], count?: number): string {
 		var result: string
 		if (value)
-			if (typeof(value) == "string")
+			if (typeof(value) == "string") {
+				while (count && count-- > 0)
+					value += <string>value
 				result = (this.peek(value.length) == <string>value ? <string>value : undefined)
-			else if (!(result = this.peekIs((<string[]>value).shift())))
+			} else if (!(result = this.peekIs((<string[]>value).shift())))
 				result = this.peekIs(<string[]>value)
 		return result
 	}
@@ -86,12 +75,20 @@ export class BufferedReader extends Reader {
 				result = this.readIf(<string[]>value)
 		return result
 	}
-	getResource(): string { return this.backend.getResource() }
-	getLocation(): Error.Location { return new Error.Location(this.getResource(), this.line, this.column) }
-	getRegion(): Error.Region { return new Error.Region(this.getResource(), this.lastMark, new Error.Position(this.line, this.column), this.lastContent) }
+	getResource(): string {
+		var location = this.getLocation()
+		return location ? location.getResource() : undefined
+	}
+	getLocation(): Error.Location {
+		this.peek()
+		return this.buffer && this.buffer.length > 0 ? this.buffer[0].location : this.lastLocation
+	}
+	getRegion(): Error.Region {
+		return new Error.Region(this.getResource(), this.lastMark, this.getLocation(), this.lastContent)
+	}
 	mark(): Error.Region {
 		var result = this.getRegion()
-		this.lastMark = new Error.Position(this.line, this.column)
+		this.lastMark = this.getLocation()
 		this.lastContent = ""
 		return result
 	}
