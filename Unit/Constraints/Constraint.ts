@@ -20,13 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Modifier" />
+import { Modifier } from "./Modifier"
 
-module U10sil.Unit.Constraints {
-	export abstract class Constraint extends Modifier {
-		constructor(parent: Modifier = null) {
-			super(parent)
-		}
-		abstract getExpectedValue(): any
+export { Modifier } from "./Modifier"
+export abstract class Constraint extends Modifier {
+	constructor(parent?: Modifier) {
+		super(parent)
 	}
+	abstract getExpectedValue(): any
 }

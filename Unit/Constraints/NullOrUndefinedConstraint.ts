@@ -20,16 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Constraint" />
+import { Constraint, Modifier } from "./Constraint"
 
-module U10sil.Unit.Constraints {
-	export class NullOrUndefinedConstraint extends Constraint {
-		constructor(parent: Modifier = null) {
-			super(parent)
-		}
-		getExpectedValue(): any { return "null or undefined" }
-		test(value: any): boolean {
-			return value === null || value === undefined
-		}
+export class NullOrUndefinedConstraint extends Constraint {
+	constructor(parent?: Modifier) {
+		super(parent)
+	}
+	getExpectedValue(): any { return "null or undefined" }
+	test(value: any): boolean {
+		return value === null || value === undefined
 	}
 }

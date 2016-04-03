@@ -20,19 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="../../Fixture" />
-/// <reference path="../../Constraints/Is" />
-/// <reference path="../../Constraints/NotModifier" />
+import { Fixture } from "../../Fixture"
+import { Is } from "../Is"
 
-module U10sil.Unit.Tests {
-	import Is = Constraints.Is
-	export class ArrayTest extends Fixture {
-		constructor() {
-			super("Unit.Constraints.Array")
-			this.add("empty", () => {
-				this.expect(<boolean[]>[], Is.Equal().To(<boolean[]>[]))
-			})
-		}
+export class ArrayTest extends Fixture {
+	constructor() {
+		super("Unit.Constraints.Array")
+		this.add("empty", () => {
+			this.expect(<boolean[]>[], Is.Equal().To(<boolean[]>[]))
+		})
 	}
-	Fixture.add(new ArrayTest())
 }
+Fixture.add(new ArrayTest())

@@ -20,14 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-module U10sil.Error {
-	export enum Type {
-		Lexical,
-		Gramatical,
-		Symbol,
-		Type,
-		Formatting,
-		BestPractice,
-		SelfTest,
-	}
+export enum Type {
+	Lexical,
+	Gramatical,
+	Symbol,
+	Type,
+	Formatting,
+	BestPractice,
+	SelfTest,
 }

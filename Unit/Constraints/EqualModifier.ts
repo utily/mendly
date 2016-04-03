@@ -20,16 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Modifier" />
-/// <reference path="CompareConstraint" />
+import { Constraint, Modifier } from "./Constraint"
+import { CompareConstraint } from "./CompareConstraint"
 
-module U10sil.Unit.Constraints {
-	export class EqualModifier extends Modifier {
-		constructor(parent: Modifier = null) {
-			super(parent)
-		}
-		To(correct: any): CompareConstraint {
-			return new CompareConstraint(correct, this)
-		}
+export class EqualModifier extends Modifier {
+	constructor(parent?: Modifier) {
+		super(parent)
+	}
+	To(correct: any): CompareConstraint {
+		return new CompareConstraint(correct, this)
 	}
 }

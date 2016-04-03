@@ -20,28 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="../../Unit/Fixture" />
-/// <reference path="../../Unit/Constraints/Is" />
-/// <reference path="../Iterator" />
-/// <reference path="../ArrayIterator" />
+import { Fixture, Is } from "../../Unit/Fixture"
+import { Iterator, ArrayIterator } from "../ArrayIterator"
 
-module U10sil.Utilities.Tests {
-	import Is = Unit.Constraints.Is
-	export class ArrayIteratorTest extends Unit.Fixture {
-		constructor() {
-			super("Utilitites.ArrayIterator")
-			this.add("empty", () => {
-				this.expect(new ArrayIterator([]).next(), Is.Undefined())
-			})
-			this.add("integers", () => {
-				var integers = [1, 2, 4, 8, 16]
-				var iterator = new ArrayIterator(integers)
-				integers.forEach(value => {
-					this.expect(iterator.next(), Is.Equal().To(value))
-				});
-				this.expect(iterator.next(), Is.Undefined())
-			})
-		}
+export class ArrayIteratorTest extends Fixture {
+	constructor() {
+		super("Utilities.ArrayIterator")
+		this.add("empty", () => {
+			this.expect(new ArrayIterator([]).next(), Is.Undefined())
+		})
+		this.add("integers", () => {
+			var integers = [1, 2, 4, 8, 16]
+			var iterator = new ArrayIterator(integers)
+			integers.forEach(value => {
+				this.expect(iterator.next(), Is.Equal().To(value))
+			});
+			this.expect(iterator.next(), Is.Undefined())
+		})
 	}
-	Unit.Fixture.add(new ArrayIteratorTest())
 }
+Fixture.add(new ArrayIteratorTest())

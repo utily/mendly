@@ -20,46 +20,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Constraint" />
+import { Constraint, Modifier } from "./Constraint"
 
-module U10sil.Unit.Constraints {
-	export class CompareConstraint extends Constraint {
-		constructor(private correct: any, parent: Modifier = null) {
-			super(parent)
-		}
-		getExpectedValue(): any { return this.correct }
-		test(value: any): boolean {
-			return this.compare(value, this.correct)
-		}
-		compare(left: any, right: any): boolean {
-			var result = false
-			var type = typeof(left)
-			if (type == typeof(right)) {
-				switch(type) {
-					case "number":
-					case "string":
-					case "boolean":
-						result = left == right
-						break
-					case "object":
-						if (!(result = left == right)) {
-							if (left instanceof(Array) && right instanceof(Array)) {
-								if (result = (<Array<any>>left).length == (<Array<any>>right).length)
-									for (var i = 0; result && i < (<Array<any>>left).length; i++)
-										result = this.compare((<Array<any>>left)[i], (<Array<any>>right)[i])
-							} else
-								console.log(type)
-						}
-						break
-					case "undefined":
-						result = true
-						break
-					default:
-						console.log(type)
-						break
-				}
+export class CompareConstraint extends Constraint {
+	constructor(private correct: any, parent?: Modifier) {
+		super(parent)
+	}
+	getExpectedValue(): any { return this.correct }
+	test(value: any): boolean {
+		return this.compare(value, this.correct)
+	}
+	compare(left: any, right: any): boolean {
+		var result = false
+		var type = typeof(left)
+		if (type == typeof(right)) {
+			switch(type) {
+				case "number":
+				case "string":
+				case "boolean":
+					result = left == right
+					break
+				case "object":
+					if (!(result = left == right)) {
+						if (left instanceof(Array) && right instanceof(Array)) {
+							if (result = (<Array<any>>left).length == (<Array<any>>right).length)
+								for (var i = 0; result && i < (<Array<any>>left).length; i++)
+									result = this.compare((<Array<any>>left)[i], (<Array<any>>right)[i])
+						} else
+							console.log(type)
+					}
+					break
+				case "undefined":
+					result = true
+					break
+				default:
+					console.log(type)
+					break
 			}
-			return result
 		}
+		return result
 	}
 }

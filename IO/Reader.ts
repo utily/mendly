@@ -20,19 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="../Error/Location" />
-/// <reference path="../Error/Region" />
+import * as Error from "../Error/Region"
 
-module U10sil.IO {
-	export abstract class Reader {
-		abstract isEmpty(): boolean
-		abstract read(): string;
-		abstract getResource(): string
-		abstract getLocation(): Error.Location
-		abstract getRegion(): Error.Region
-		abstract mark(): Error.Region
-		static open(path: string, extension: string): Reader {
-			return path.slice(-4) == "." + extension ? new IO.FileReader(path) : new IO.FolderReader(path, "." + extension)
-		}
+export abstract class Reader {
+	abstract isEmpty(): boolean
+	abstract read(): string;
+	abstract getResource(): string
+	abstract getLocation(): Error.Location
+	abstract getRegion(): Error.Region
+	abstract mark(): Error.Region
+	private static openers: { open: ((path: string, extension: string) => Reader), priority: number }[] = []
+	static addOpener(open: (path: string, extension: string) => Reader, priority?: number) {
+		if (!priority)
+			priority = 0
+		Reader.openers.push({ open: open, priority: priority})
+		Reader.openers = Reader.openers.sort((left, right) => right.priority - left.priority)
+	}
+	static open(path: string, extension: string): Reader {
+		var result: Reader
+		var i = 0
+		do
+			result = Reader.openers[i++].open(path, extension)
+		while (!result && i < Reader.openers.length)
+		return result
 	}
 }

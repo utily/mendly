@@ -20,24 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="FalseConstraint" />
-/// <reference path="TrueConstraint" />
-/// <reference path="NullConstraint" />
-/// <reference path="NullOrUndefinedConstraint" />
-/// <reference path="UndefinedConstraint" />
-/// <reference path="EqualModifier" />
-/// <reference path="NotModifier" />
-/// <reference path="EmptyConstraint" />
+import { Constraint, Modifier } from "./Constraint"
+import { CompareConstraint } from "./CompareConstraint"
+import { FalseConstraint } from "./FalseConstraint"
+import { TrueConstraint } from "./TrueConstraint"
+import { EqualModifier } from "./EqualModifier"
+import { NullConstraint } from "./NullConstraint"
+import { NullOrUndefinedConstraint } from "./NullOrUndefinedConstraint"
+import { UndefinedConstraint } from "./UndefinedConstraint"
+import { NotModifier } from "./NotModifier"
+import { EmptyConstraint } from "./EmptyConstraint"
 
-module U10sil.Unit.Constraints {
-	export class Is {
-		static True() { return new TrueConstraint() }
-		static False() { return new FalseConstraint() }
-		static Null() { return new NullConstraint() }
-		static NullOrUndefined() { return new NullOrUndefinedConstraint() }
-		static Undefined() { return new UndefinedConstraint() }
-		static Equal() { return new EqualModifier() }
-		static Not() { return new NotModifier() }
-		static Empty() { return new EmptyConstraint() }
-	}
+export { Constraint, Modifier } from "./Constraint"
+export { CompareConstraint } from "./CompareConstraint"
+export { FalseConstraint } from "./FalseConstraint"
+export { TrueConstraint } from "./TrueConstraint"
+export { EqualModifier } from "./EqualModifier"
+export { NullConstraint } from "./NullConstraint"
+export { NullOrUndefinedConstraint } from "./NullOrUndefinedConstraint"
+export { UndefinedConstraint } from "./UndefinedConstraint"
+export { NotModifier } from "./NotModifier"
+export { EmptyConstraint } from "./EmptyConstraint"
+
+export class Is {
+	static True() { return new TrueConstraint() }
+	static False() { return new FalseConstraint() }
+	static Null() { return new NullConstraint() }
+	static NullOrUndefined() { return new NullOrUndefinedConstraint() }
+	static Undefined() { return new UndefinedConstraint() }
+	static Equal() { return new EqualModifier() }
+	static Not() { return new NotModifier() }
+	static Empty() { return new EmptyConstraint() }
 }

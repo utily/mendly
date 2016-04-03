@@ -20,15 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="../../../typings/node/node" />
-/// <reference path="StringReader" />
+/// <reference path="../../tsd.d.ts" />
+import * as fs from "fs"
+import * as Error from "../Error/Region"
+import { Reader } from "./Reader"
+import { StringReader } from "./StringReader"
 
-var fs = require("fs");
-
-module U10sil.IO {
-	export class FileReader extends StringReader {
-		constructor(path: string) {
-			super(fs.readFileSync(path, "utf-8"), path)
-		}
+export { Reader, StringReader } from "./StringReader"
+export class FileReader extends Reader {
+	private backend: Reader
+	constructor(path: string) {
+		super()
+		this.backend = new StringReader(fs.readFileSync(path, "utf-8"), path)
 	}
+	isEmpty(): boolean { return this.backend.isEmpty() }
+	read(): string { return this.backend.read() }
+	getResource(): string { return this.backend ? this.backend.getResource() : null }
+	getLocation(): Error.Location { return this.backend.getLocation() }
+	getRegion(): Error.Region { return this.backend.getRegion() }
+	mark(): Error.Region { return this.backend.mark() }
 }
+Reader.addOpener((path, extension) => path.slice(-extension - 1) == "." + extension ? new FileReader(path) : null, 10)

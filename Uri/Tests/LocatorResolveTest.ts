@@ -20,26 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="../../Unit/Fixture" />
-/// <reference path="../../Unit/Constraints/Is" />
-/// <reference path="../Locator" />
+import { Fixture, Is } from "../../Unit/Fixture"
+import { Locator } from "../Locator"
 
-module U10sil.Uri.Tests {
-	import Is = Unit.Constraints.Is
-	export class LocatorResolveTest extends Unit.Fixture {
-		constructor() {
-			super("Uri.Locator.resolve")
-			this.add("resolve relative", () => {
-				var absolute = Locator.parse("https://server.example.com/folder0/folder1/")
-				var relative = Locator.parse("./folder2/file.extension")
-				var locator = relative.resolve(absolute)
-				this.expect(locator.getScheme(), Is.Equal().To(["https"]))
-				this.expect(locator.getAuthority().getUser(), Is.Undefined())
-				this.expect(locator.getAuthority().getEndpoint().getHost(), Is.Equal().To(["server", "example", "com"]))
-				this.expect(locator.getAuthority().getEndpoint().getPort(), Is.Undefined())
-				this.expect(locator.getPath(), Is.Equal().To(["folder0", "folder1", "folder2", "file.extension"]))
-			})
-		}
+export class LocatorResolveTest extends Fixture {
+	constructor() {
+		super("Uri.Locator.resolve")
+		this.add("resolve relative", () => {
+			var absolute = Locator.parse("https://server.example.com/folder0/folder1/")
+			var relative = Locator.parse("./folder2/file.extension")
+			var locator = relative.resolve(absolute)
+			this.expect(locator.getScheme(), Is.Equal().To(["https"]))
+			this.expect(locator.getAuthority().getUser(), Is.Undefined())
+			this.expect(locator.getAuthority().getEndpoint().getHost(), Is.Equal().To(["server", "example", "com"]))
+			this.expect(locator.getAuthority().getEndpoint().getPort(), Is.Undefined())
+			this.expect(locator.getPath(), Is.Equal().To(["folder0", "folder1", "folder2", "file.extension"]))
+		})
 	}
-	Unit.Fixture.add(new LocatorResolveTest())
 }
+Fixture.add(new LocatorResolveTest())

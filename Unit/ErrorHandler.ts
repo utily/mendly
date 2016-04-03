@@ -20,21 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="../Error/Region" />
-/// <reference path="../IO/BufferedReader" />
-/// <reference path="../Error/Handler" />
+import * as Error from "../Error/Handler"
+import * as IO from "../IO/BufferedReader"
 
-module U10sil.Unit {
-	export class ErrorHandler implements Error.Handler {
-		constructor(private errorHandler: Error.Handler, private region: Error.Region) {
+export class ErrorHandler implements Error.Handler {
+	constructor(private errorHandler: Error.Handler, private region: Error.Region) {
+	}
+	raise(message: string | Error.Message, level?: Error.Level, type?: Error.Type, region?: Error.Region): void {
+		if (!level)
+			level = Error.Level.Recoverable
+		if (!type)
+			type = Error.Type.SelfTest
+		if (!(message instanceof Error.Message)) {
+			if (!region)
+				region = this.region
+			message = new Error.Message(<string>message, level, type, region)
 		}
-		raise(message: string | Error.Message, level = Error.Level.Recoverable, type = Error.Type.SelfTest, region?: Error.Region): void {
-			if (!(message instanceof Error.Message)) {
-				if (!region)
-					region = this.region
-				message = new Error.Message(<string>message, level, type, region)
-			}
-			this.errorHandler.raise(<Error.Message>message)
-		}
+		this.errorHandler.raise(<Error.Message>message)
 	}
 }

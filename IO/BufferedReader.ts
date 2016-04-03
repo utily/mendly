@@ -20,77 +20,79 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="../Error/Location" />
-/// <reference path="../Error/Region" />
-/// <reference path="Reader" />
+import * as Error from "../Error/Region"
+import { Reader } from "./Reader"
 
-module U10sil.IO {
-	export class BufferedReader extends Reader {
-		buffer: string = ""
-		private line: number = 1
-		private column: number = 1
-		private lastMark: Error.Position
-		private lastContent: string = ""
-		constructor(private backend: Reader) {
-			super()
-			this.lastMark = new Error.Position(1, 1)
-		}
-		isEmpty(): boolean {
-			return this.buffer.length == 0 && this.backend.isEmpty()
-		}
-		peek(length: number = 1): string {
-			var next: string = null
-			while (length > this.buffer.length && (next = this.backend.read()))
-				this.buffer += next
-			return length > this.buffer.length ? "\0" : this.buffer.substring(0, length)
-		}
-		read(length: number = 1): string {
-			var result = this.peek(length)
-			if (this.buffer.length > 0)
-				this.buffer = this.buffer.substring(length)
-			for (var i = 0; i < result.length; i++)
-				switch (result.charAt(i)) {
-					case "\0":
-						this.column = 1
-						this.line = 1
-						break
-					case "\n":
-						this.column = 1
-						this.line++
-						break
-					default:
-						this.column++
-						break
-				}
-			this.lastContent += result
-			return result
-		}
-		peekIs(value: string|string[]): string {
-			var result: string
-			if (value)
-				if (typeof(value) == "string")
-					result = (this.peek(value.length) == <string>value ? <string>value : undefined)
-				else if (!(result = this.peekIs((<string[]>value).shift())))
-					result = this.peekIs(<string[]>value)
-			return result
-		}
-		readIf(value: string|string[]): string {
-			var result: string
-			if (value)
-				if (typeof(value) == "string")
-					result = (this.peek(value.length) == <string>value ? this.read(value.length) : undefined)
-				else if (!(result = this.readIf((<string[]>value).shift())))
-					result = this.readIf(<string[]>value)
-			return result
-		}
-		getResource(): string { return this.backend.getResource() }
-		getLocation(): Error.Location { return new Error.Location(this.getResource(), this.line, this.column) }
-		getRegion(): Error.Region { return new Error.Region(this.getResource(), this.lastMark, new Error.Position(this.line, this.column), this.lastContent) }
-		mark(): Error.Region {
-			var result = this.getRegion()
-			this.lastMark = new Error.Position(this.line, this.column)
-			this.lastContent = ""
-			return result
-		}
+export { Reader } from "./Reader"
+export class BufferedReader extends Reader {
+	buffer: string = ""
+	private line: number = 1
+	private column: number = 1
+	private lastMark: Error.Position
+	private lastContent: string = ""
+	constructor(private backend: Reader) {
+		super()
+		this.lastMark = new Error.Position(1, 1)
+	}
+	isEmpty(): boolean {
+		return this.buffer.length == 0 && this.backend.isEmpty()
+	}
+	peek(length?: number): string {
+		if (!length)
+			length = 1
+		var next: string = null
+		while (length > this.buffer.length && (next = this.backend.read()))
+			this.buffer += next
+		return length > this.buffer.length ? "\0" : this.buffer.substring(0, length)
+	}
+	read(length?: number): string {
+		if (!length)
+			length = 1
+		var result = this.peek(length)
+		if (this.buffer.length > 0)
+			this.buffer = this.buffer.substring(length)
+		for (var i = 0; i < result.length; i++)
+			switch (result.charAt(i)) {
+				case "\0":
+					this.column = 1
+					this.line = 1
+					break
+				case "\n":
+					this.column = 1
+					this.line++
+					break
+				default:
+					this.column++
+					break
+			}
+		this.lastContent += result
+		return result
+	}
+	peekIs(value: string|string[]): string {
+		var result: string
+		if (value)
+			if (typeof(value) == "string")
+				result = (this.peek(value.length) == <string>value ? <string>value : undefined)
+			else if (!(result = this.peekIs((<string[]>value).shift())))
+				result = this.peekIs(<string[]>value)
+		return result
+	}
+	readIf(value: string|string[]): string {
+		var result: string
+		if (value)
+			if (typeof(value) == "string")
+				result = (this.peek(value.length) == <string>value ? this.read(value.length) : undefined)
+			else if (!(result = this.readIf((<string[]>value).shift())))
+				result = this.readIf(<string[]>value)
+		return result
+	}
+	getResource(): string { return this.backend.getResource() }
+	getLocation(): Error.Location { return new Error.Location(this.getResource(), this.line, this.column) }
+	getRegion(): Error.Region { return new Error.Region(this.getResource(), this.lastMark, new Error.Position(this.line, this.column), this.lastContent) }
+	mark(): Error.Region {
+		var result = this.getRegion()
+		this.lastMark = new Error.Position(this.line, this.column)
+		this.lastContent = ""
+		return result
 	}
 }

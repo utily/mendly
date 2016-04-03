@@ -20,15 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Iterator" />
+import { Iterator } from "./Iterator"
 
-module U10sil.Utilities {
-	export class ArrayIterator<T> implements Iterator<T> {
-		private position = 0
-		constructor(private backend: T[]) {
-		}
-		next(): T {
-			return this.position < this.backend.length ? this.backend[this.position++] : undefined
-		}
+export { Iterator } from "./Iterator"
+export class ArrayIterator<T> implements Iterator<T> {
+	private position = 0
+	constructor(private backend: T[]) {
+	}
+	next(): T {
+		return this.position < this.backend.length ? this.backend[this.position++] : undefined
 	}
 }

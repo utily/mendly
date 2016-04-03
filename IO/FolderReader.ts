@@ -20,54 +20,56 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="../../../typings/node/node" />
-/// <reference path="../Utilities/Iterator" />
-/// <reference path="Reader" />
+/// <reference path="../../tsd.d.ts" />
+import * as Error from "../Error/Region"
+import { Reader, FileReader } from "./FileReader"
+import { Iterator } from "../Utilities/Iterator"
 
-var fs = require("fs");
+import * as fs from "fs"
 
-module U10sil.IO {
-	export class FolderReader extends Reader {
-		private files: string[]
-		private current: Reader
-		constructor(private path: string, pattern: string) {
-			super()
-			this.files = FolderReader.getFiles(this.path, pattern)
-		}
-		isEmpty(): boolean {
-			return this.files.length == 0 && (!this.current || this.current.isEmpty())
-		}
-		read(): string {
-			var result: string = null
-			if (!this.current && this.files.length > 0)
-				this.current = new FileReader(this.files.shift())
-			if (this.current) {
-				result = this.current.read()
-				if (result && this.files.length > 0) {
-					this.current = null
-					result = "\0"
-				}
+export class FolderReader extends Reader {
+	private files: string[]
+	private current: Reader
+	constructor(private path: string, extension: string) {
+		super()
+		this.files = FolderReader.getFiles(this.path, extension)
+	}
+	isEmpty(): boolean {
+		return this.files.length == 0 && (!this.current || this.current.isEmpty())
+	}
+	read(): string {
+		var result: string = null
+		if (!this.current && this.files.length > 0)
+			this.current = new FileReader(this.files.shift())
+		if (this.current) {
+			result = this.current.read()
+			if (result && this.files.length > 0) {
+				this.current = null
+				result = "\0"
 			}
-			return result
 		}
-		getResource(): string { return this.current ? this.current.getResource() : null }
-		getLocation(): Error.Location { return this.current.getLocation() }
-		getRegion(): Error.Region { return this.current.getRegion() }
-		mark(): Error.Region { return this.current.mark() }
+		return result
+	}
+	getResource(): string { return this.current ? this.current.getResource() : null }
+	getLocation(): Error.Location { return this.current.getLocation() }
+	getRegion(): Error.Region { return this.current.getRegion() }
+	mark(): Error.Region { return this.current.mark() }
 
-		private static getFiles(folder: string, filetype: string, ignoreFiles: string[] = []): string[] {
-			var result: string[] = []
-			var files: string[] = fs.readdirSync(folder)
-			files.forEach(file => {
-				var filename = folder + "/" + file
-				if (ignoreFiles.indexOf(filename) == -1) {
-					if (fs.lstatSync(filename).isDirectory())
-						result = result.concat(FolderReader.getFiles(filename, filetype, ignoreFiles))
-					else if (file.length > filetype.length && file.lastIndexOf(filetype, file.length - filetype.length) === file.length - filetype.length)
-						result.push(filename)
-				}
-			})
-			return result
-		}
+	private static getFiles(folder: string, filetype: string, ignoreFiles?: string[]): string[] {
+		if (!ignoreFiles)
+			ignoreFiles = []
+		var result: string[] = []
+		var files: string[] = fs.readdirSync(folder)
+		files.forEach(file => {
+			var filename = folder + "/" + file
+			if (ignoreFiles.indexOf(filename) == -1) {
+				if (fs.lstatSync(filename).isDirectory())
+					result = result.concat(FolderReader.getFiles(filename, filetype, ignoreFiles))
+				else if (file.length > filetype.length && file.lastIndexOf(filetype, file.length - filetype.length) === file.length - filetype.length)
+					result.push(filename)
+			}
+		})
+		return result
 	}
 }
+Reader.addOpener((path, extension) => new FolderReader(path, extension), 0)

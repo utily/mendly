@@ -20,89 +20,85 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="../../Unit/Fixture" />
-/// <reference path="../../Unit/Constraints/Is" />
-/// <reference path="../Locator" />
+import { Fixture, Is } from "../../Unit/Fixture"
+import { Locator } from "../Locator"
 
-module U10sil.Uri.Tests {
-	import Is = Unit.Constraints.Is
-	export class LocatorParseTest extends Unit.Fixture {
-		constructor() {
-			super("Uri.Locator.parse")
-			this.add("undefined", () => {
-				this.expect(Locator.parse(undefined), Is.Undefined())
-			})
-			this.add("null", () => {
-				this.expect(Locator.parse(null), Is.Null())
-			})
-			this.add("empty", () => {
-				this.expect(Locator.parse(""), Is.Undefined())
-			})
-			this.add("absolute file", () => {
-				var locator = Locator.parse("file:///folder/file.extension")
-				this.expect(locator.getScheme(), Is.Equal().To(["file"]))
-				this.expect(locator.getAuthority(), Is.Undefined())
-				this.expect(locator.getPath(), Is.Equal().To(["folder", "file.extension"]))
-			})
-			this.add("relative file", () => {
-				var locator = Locator.parse("file://./folder/file.extension")
-				this.expect(locator.getScheme(), Is.Equal().To(["file"]))
-				this.expect(locator.getAuthority(), Is.Undefined())
-				this.expect(locator.getPath(), Is.Equal().To([".", "folder", "file.extension"]))
-			})
-			this.add("explicitly relative path", () => {
-				var locator = Locator.parse("./folder/file.extension")
-				this.expect(locator.getScheme(), Is.Undefined())
-				this.expect(locator.getAuthority(), Is.Undefined())
-				this.expect(locator.getPath(), Is.Equal().To([".", "folder", "file.extension"]))
-			})
-			this.add("implicitly relative path", () => {
-				var locator = Locator.parse("folder/file.extension")
-				this.expect(locator.getScheme(), Is.Undefined())
-				this.expect(locator.getAuthority(), Is.Undefined())
-				this.expect(locator.getPath(), Is.Equal().To([".", "folder", "file.extension"]))
-			})
-			this.add("absolute path", () => {
-				var locator = Locator.parse("/folder/file.extension")
-				this.expect(locator.getScheme(), Is.Undefined())
-				this.expect(locator.getAuthority(), Is.Undefined())
-				this.expect(locator.getPath(), Is.Equal().To(["folder", "file.extension"]))
-			})
-			this.add("explicitly relative folder path", () => {
-				var locator = Locator.parse("./folder/folder.next/")
-				this.expect(locator.getScheme(), Is.Undefined())
-				this.expect(locator.getAuthority(), Is.Undefined())
-				this.expect(locator.getPath(), Is.Equal().To([".", "folder", "folder.next", ""]))
-			})
-			this.add("implicitly relative folder path", () => {
-				var locator = Locator.parse("folder/folder.next/")
-				this.expect(locator.getScheme(), Is.Undefined())
-				this.expect(locator.getAuthority(), Is.Undefined())
-				this.expect(locator.getPath(), Is.Equal().To([".", "folder", "folder.next", ""]))
-			})
-			this.add("absolute folder path", () => {
-				var locator = Locator.parse("/folder/folder.next/")
-				this.expect(locator.getScheme(), Is.Undefined())
-				this.expect(locator.getAuthority(), Is.Undefined())
-				this.expect(locator.getPath(), Is.Equal().To(["folder", "folder.next", ""]))
-			})
-			this.add("full https url", () => {
-				var locator = Locator.parse("https://server.example.com/folder/file.extension")
-				this.expect(locator.getScheme(), Is.Equal().To(["https"]))
-				this.expect(locator.getAuthority().getUser(), Is.Undefined())
-				this.expect(locator.getAuthority().getEndpoint().getHost(), Is.Equal().To(["server", "example", "com"]))
-				this.expect(locator.getAuthority().getEndpoint().getPort(), Is.Undefined())
-				this.expect(locator.getPath(), Is.Equal().To(["folder", "file.extension"]))
-			})
-			this.add("schemeless url", () => {
-				var locator = Locator.parse("//server.example.com/folder/file.extension")
-				this.expect(locator.getScheme(), Is.Undefined())
-				this.expect(locator.getAuthority().getUser(), Is.Undefined())
-				this.expect(locator.getAuthority().getEndpoint().getHost(), Is.Equal().To(["server", "example", "com"]))
-				this.expect(locator.getAuthority().getEndpoint().getPort(), Is.Undefined())
-				this.expect(locator.getPath(), Is.Equal().To(["folder", "file.extension"]))
-			})
-		}
+export class LocatorParseTest extends Fixture {
+	constructor() {
+		super("Uri.Locator.parse")
+		this.add("undefined", () => {
+			this.expect(Locator.parse(undefined), Is.Undefined())
+		})
+		this.add("null", () => {
+			this.expect(Locator.parse(null), Is.Null())
+		})
+		this.add("empty", () => {
+			this.expect(Locator.parse(""), Is.Undefined())
+		})
+		this.add("absolute file", () => {
+			var locator = Locator.parse("file:///folder/file.extension")
+			this.expect(locator.getScheme(), Is.Equal().To(["file"]))
+			this.expect(locator.getAuthority(), Is.Undefined())
+			this.expect(locator.getPath(), Is.Equal().To(["folder", "file.extension"]))
+		})
+		this.add("relative file", () => {
+			var locator = Locator.parse("file://./folder/file.extension")
+			this.expect(locator.getScheme(), Is.Equal().To(["file"]))
+			this.expect(locator.getAuthority(), Is.Undefined())
+			this.expect(locator.getPath(), Is.Equal().To([".", "folder", "file.extension"]))
+		})
+		this.add("explicitly relative path", () => {
+			var locator = Locator.parse("./folder/file.extension")
+			this.expect(locator.getScheme(), Is.Undefined())
+			this.expect(locator.getAuthority(), Is.Undefined())
+			this.expect(locator.getPath(), Is.Equal().To([".", "folder", "file.extension"]))
+		})
+		this.add("implicitly relative path", () => {
+			var locator = Locator.parse("folder/file.extension")
+			this.expect(locator.getScheme(), Is.Undefined())
+			this.expect(locator.getAuthority(), Is.Undefined())
+			this.expect(locator.getPath(), Is.Equal().To([".", "folder", "file.extension"]))
+		})
+		this.add("absolute path", () => {
+			var locator = Locator.parse("/folder/file.extension")
+			this.expect(locator.getScheme(), Is.Undefined())
+			this.expect(locator.getAuthority(), Is.Undefined())
+			this.expect(locator.getPath(), Is.Equal().To(["folder", "file.extension"]))
+		})
+		this.add("explicitly relative folder path", () => {
+			var locator = Locator.parse("./folder/folder.next/")
+			this.expect(locator.getScheme(), Is.Undefined())
+			this.expect(locator.getAuthority(), Is.Undefined())
+			this.expect(locator.getPath(), Is.Equal().To([".", "folder", "folder.next", ""]))
+		})
+		this.add("implicitly relative folder path", () => {
+			var locator = Locator.parse("folder/folder.next/")
+			this.expect(locator.getScheme(), Is.Undefined())
+			this.expect(locator.getAuthority(), Is.Undefined())
+			this.expect(locator.getPath(), Is.Equal().To([".", "folder", "folder.next", ""]))
+		})
+		this.add("absolute folder path", () => {
+			var locator = Locator.parse("/folder/folder.next/")
+			this.expect(locator.getScheme(), Is.Undefined())
+			this.expect(locator.getAuthority(), Is.Undefined())
+			this.expect(locator.getPath(), Is.Equal().To(["folder", "folder.next", ""]))
+		})
+		this.add("full https url", () => {
+			var locator = Locator.parse("https://server.example.com/folder/file.extension")
+			this.expect(locator.getScheme(), Is.Equal().To(["https"]))
+			this.expect(locator.getAuthority().getUser(), Is.Undefined())
+			this.expect(locator.getAuthority().getEndpoint().getHost(), Is.Equal().To(["server", "example", "com"]))
+			this.expect(locator.getAuthority().getEndpoint().getPort(), Is.Undefined())
+			this.expect(locator.getPath(), Is.Equal().To(["folder", "file.extension"]))
+		})
+		this.add("schemeless url", () => {
+			var locator = Locator.parse("//server.example.com/folder/file.extension")
+			this.expect(locator.getScheme(), Is.Undefined())
+			this.expect(locator.getAuthority().getUser(), Is.Undefined())
+			this.expect(locator.getAuthority().getEndpoint().getHost(), Is.Equal().To(["server", "example", "com"]))
+			this.expect(locator.getAuthority().getEndpoint().getPort(), Is.Undefined())
+			this.expect(locator.getPath(), Is.Equal().To(["folder", "file.extension"]))
+		})
 	}
-	Unit.Fixture.add(new LocatorParseTest())
 }
+Fixture.add(new LocatorParseTest())

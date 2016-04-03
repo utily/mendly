@@ -20,12 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-module U10sil.Error {
-	export enum Level {
-		Logging,
-		Debug,
-		Warning,
-		Recoverable,
-		Critical,
-	}
+export enum Level {
+	Logging,
+	Debug,
+	Warning,
+	Recoverable,
+	Critical,
 }

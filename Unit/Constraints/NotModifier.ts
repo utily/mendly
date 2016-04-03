@@ -20,31 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Modifier" />
-/// <reference path="CompareConstraint" />
-/// <reference path="FalseConstraint" />
-/// <reference path="TrueConstraint" />
-/// <reference path="EqualModifier" />
-/// <reference path="NullConstraint" />
-/// <reference path="NullOrUndefinedConstraint" />
-/// <reference path="UndefinedConstraint" />
-/// <reference path="EmptyConstraint" />
+import { Constraint, Modifier } from "./Constraint"
+import { CompareConstraint } from "./CompareConstraint"
+import { FalseConstraint } from "./FalseConstraint"
+import { TrueConstraint } from "./TrueConstraint"
+import { EqualModifier } from "./EqualModifier"
+import { NullConstraint } from "./NullConstraint"
+import { NullOrUndefinedConstraint } from "./NullOrUndefinedConstraint"
+import { UndefinedConstraint } from "./UndefinedConstraint"
+import { EmptyConstraint } from "./EmptyConstraint"
 
-module U10sil.Unit.Constraints {
-	export class NotModifier extends Modifier {
-		constructor(parent: Modifier = null) {
-			super(parent)
-		}
-		test(value: any): boolean {
-			return !(this.testChild(value))
-		}
-		Null() { return new NullConstraint(this) }
-		NullOrUndefined() { return new NullOrUndefinedConstraint(this) }
-		Undefined() { return new UndefinedConstraint(this) }
-		False() { return new FalseConstraint(this) }
-		True() { return new TrueConstraint(this) }
-		Equal() { return new EqualModifier(this) }
-		Not() { return new NotModifier(this) }
-		Empty() { return new EmptyConstraint(this) }
+export class NotModifier extends Modifier {
+	constructor(parent?: Modifier) {
+		super(parent)
 	}
+	test(value: any): boolean {
+		return !(this.testChild(value))
+	}
+	Null() { return new NullConstraint(this) }
+	NullOrUndefined() { return new NullOrUndefinedConstraint(this) }
+	Undefined() { return new UndefinedConstraint(this) }
+	False() { return new FalseConstraint(this) }
+	True() { return new TrueConstraint(this) }
+	Equal() { return new EqualModifier(this) }
+	Not() { return new NotModifier(this) }
+	Empty() { return new EmptyConstraint(this) }
 }

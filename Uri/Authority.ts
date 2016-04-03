@@ -20,39 +20,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="User" />
-/// <reference path="Endpoint" />
+import { User } from "./User"
+import { Endpoint } from "./Endpoint"
 
-module U10sil.Uri {
-	export class Authority {
-		constructor(private user: User, private endpoint: Endpoint) {
+export { User } from "./User"
+export { Endpoint } from "./Endpoint"
+export class Authority {
+	constructor(private user: User, private endpoint: Endpoint) {
+	}
+	getUser(): User {
+		return this.user
+	}
+	getEndpoint(): Endpoint {
+		return this.endpoint
+	}
+	toString(): string {
+		var result: string
+		if (this.user)
+			result = this.user.toString() + "@"
+		if (this.endpoint)
+			result = (result ? result : "") + this.endpoint.toString()
+		return result
+	}
+	static parse(data: string): Authority {
+		var result: Authority
+		if (data) {
+			var splitted = data.split("@", 2)
+			var user: User
+			var endpoint: Endpoint
+			if (splitted.length == 2)
+				user = User.parse(splitted.pop())
+			endpoint = Endpoint.parse(splitted.pop())
+			result = new Authority(user, endpoint)
 		}
-		getUser(): User {
-			return this.user
-		}
-		getEndpoint(): Endpoint {
-			return this.endpoint
-		}
-		toString(): string {
-			var result: string
-			if (this.user)
-				result = this.user.toString() + "@"
-			if (this.endpoint)
-				result = (result ? result : "") + this.endpoint.toString()
-			return result
-		}
-		static parse(data: string): Authority {
-			var result: Authority
-			if (data) {
-				var splitted = data.split("@", 2)
-				var user: User
-				var endpoint: Endpoint
-				if (splitted.length == 2)
-					user = User.parse(splitted.pop())
-				endpoint = Endpoint.parse(splitted.pop())
-				result = new Authority(user, endpoint)
-			}
-			return result
-		}
+		return result
 	}
 }

@@ -20,24 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Iterator" />
+import { Iterator } from "./Iterator"
 
-module U10sil.Utilities {
-	export class BufferedIterator<T> implements Iterator<T> {
-		private buffer: T[] = []
-		constructor(private backend: Iterator<T>) {
-		}
-		peek(position: number = 0): T {
-			var next: T = null
-			while (position > this.buffer.length - 1 && (next = this.backend.next()))
-				this.buffer.push(next)
-			return position > this.buffer.length - 1 ? null : this.buffer[position]
-		}
-		next(): T {
-			var result = this.peek(0)
-			if (this.buffer.length > 0)
-				this.buffer.shift()
-			return result
-		}
+export { Iterator } from "./Iterator"
+export class BufferedIterator<T> implements Iterator<T> {
+	private buffer: T[] = []
+	constructor(private backend: Iterator<T>) {
+	}
+	peek(position?: number): T {
+		if (!position)
+			position = 0
+		var next: T = null
+		while (position > this.buffer.length - 1 && (next = this.backend.next()))
+			this.buffer.push(next)
+		return position > this.buffer.length - 1 ? null : this.buffer[position]
+	}
+	next(): T {
+		var result = this.peek(0)
+		if (this.buffer.length > 0)
+			this.buffer.shift()
+		return result
 	}
 }

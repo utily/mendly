@@ -20,15 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Type" />
-/// <reference path="Level" />
+import { Type } from "./Type"
+import { Level } from "./Level"
+import { Position, Location, Region } from "./Region"
 
-module U10sil.Error {
-	export class Message {
-		constructor(private description: string, private level: Level, private type: Type, private region: Region) {
-		}
-		toString(): string {
-			return Level[this.level] + ": " + Type[this.type] + " error. " + this.description + " @ " + this.region.toString();
-		}
+export { Type } from "./Type"
+export { Level } from "./Level"
+export { Position, Location, Region } from "./Region"
+export class Message {
+	constructor(private description: string, private level: Level, private type: Type, private region: Region) {
+	}
+	toString(): string {
+		return Level[this.level] + ": " + Type[this.type] + " error. " + this.description + " @ " + this.region.toString();
 	}
 }

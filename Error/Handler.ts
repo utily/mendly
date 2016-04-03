@@ -20,16 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Level" />
-/// <reference path="Type" />
-/// <reference path="Region" />
-/// <reference path="Message" />
+import { Position, Location, Region, Type, Level, Message } from "./Message"
 
-module U10sil.Error {
-	export interface Handler {
-		raise: {
-			(message: Message): void
-			(message: string, level?: Level, type?: Type, region?: Region): void
-		}
+export { Position, Location, Region, Type, Level, Message } from "./Message"
+export interface Handler {
+	raise: {
+		(message: Message): void
+		(message: string, level?: Level, type?: Type, region?: Region): void
 	}
 }

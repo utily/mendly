@@ -20,28 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="../../Unit/Fixture" />
-/// <reference path="../../Unit/Constraints/Is" />
-/// <reference path="../Locator" />
+import { Fixture, Is } from "../../Unit/Fixture"
+import { Locator } from "../Locator"
 
-module U10sil.Uri.Tests {
-	import Is = Unit.Constraints.Is
-	export class LocatorToStringTest extends Unit.Fixture {
-		constructor() {
-			super("Uri.Locator.toString")
-			this.add("full https", () => {
-				var absolute = Locator.parse("https://server.example.com/folder0/folder1/")
-				this.expect(absolute.toString(), Is.Equal().To("https://server.example.com/folder0/folder1/"))
-			})
-			this.add("absolute file", () => {
-				var relative = Locator.parse("/folder2/file.extension")
-				this.expect(relative.toString(), Is.Equal().To("/folder2/file.extension"))
-			})
-			this.add("relative", () => {
-				var relative = Locator.parse("./folder2/file.extension")
-				this.expect(relative.toString(), Is.Equal().To("./folder2/file.extension"))
-			})
-		}
+export class LocatorToStringTest extends Fixture {
+	constructor() {
+		super("Uri.Locator.toString")
+		this.add("full https", () => {
+			var absolute = Locator.parse("https://server.example.com/folder0/folder1/")
+			this.expect(absolute.toString(), Is.Equal().To("https://server.example.com/folder0/folder1/"))
+		})
+		this.add("absolute file", () => {
+			var relative = Locator.parse("/folder2/file.extension")
+			this.expect(relative.toString(), Is.Equal().To("/folder2/file.extension"))
+		})
+		this.add("relative", () => {
+			var relative = Locator.parse("./folder2/file.extension")
+			this.expect(relative.toString(), Is.Equal().To("./folder2/file.extension"))
+		})
 	}
-	Unit.Fixture.add(new LocatorToStringTest())
 }
+Fixture.add(new LocatorToStringTest())

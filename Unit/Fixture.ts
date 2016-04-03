@@ -20,87 +20,86 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="Test" />
-/// <reference path="TestFailedError" />
-/// <reference path="../Error/ConsoleHandler" />
-/// <reference path="./Constraints/Constraint" />
-/// <reference path="./Constraints/TrueConstraint" />
-/// <reference path="../Utilities/String" />
-/// <reference path="ErrorHandler" />
+import { Test } from "./Test"
+import { TestFailedError } from "./TestFailedError"
+import * as Error from "../Error/ConsoleHandler"
+import * as Constraints from "./Constraints/Is"
+import * as Utilities from "../Utilities/String"
+import { ErrorHandler } from "./ErrorHandler"
 
-
-module U10sil.Unit {
-	export abstract class Fixture {
-		private tests: Test[] = []
-		private expectCounter = 0
-		private errorHandler: Error.Handler
-		constructor(private name: string, private reportOnPass = true) {
-			this.errorHandler = new ErrorHandler(new Error.ConsoleHandler(), new Error.Region(name))
-		}
-		getName(): string { return this.name }
-		add(name: string, action: () => void): void {
-			this.tests.push(new Test(name, action))
-		}
-		run(debug = false): boolean {
-			var failures: TestFailedError[] = []
-			var result = true
-			this.tests.forEach(test => {
-				if (debug)
+export { Is } from "./Constraints/Is"
+export abstract class Fixture {
+	private tests: Test[] = []
+	private expectCounter = 0
+	private errorHandler: Error.Handler
+	constructor(private name: string, private reportOnPass?: boolean) {
+		if (reportOnPass == undefined)
+			this.reportOnPass = true
+		this.errorHandler = new ErrorHandler(new Error.ConsoleHandler(), new Error.Region(name))
+	}
+	getName(): string { return this.name }
+	add(name: string, action: () => void): void {
+		this.tests.push(new Test(name, action))
+	}
+	run(debug?: boolean): boolean {
+		var failures: TestFailedError[] = []
+		var result = true
+		this.tests.forEach(test => {
+			if (debug)
+				test.run()
+			else {
+				try {
 					test.run()
-				else {
-					try {
-						test.run()
-					} catch (error) {
-						if (error instanceof TestFailedError) {
-							var e = <TestFailedError>error
-							e.setTest(test)
-							e.setExpectId(this.expectCounter)
-							failures.push(e)
-							result = false
-						} else {
-							console.dir("[Fixture]", error)
-							throw error
-						}
+				} catch (error) {
+					if (error instanceof TestFailedError) {
+						var e = <TestFailedError>error
+						e.setTest(test)
+						e.setExpectId(this.expectCounter)
+						failures.push(e)
+						result = false
+					} else {
+						console.dir("[Fixture]", error)
+						throw error
 					}
 				}
-				this.expectCounter = 0
-			})
-			if ((result && this.reportOnPass) || !result)
-				this.prettyPrintTestResult(result)
-			if (!result) {
-				failures.forEach(failure => {
-					var expectedMessage = "expected '" + failure.getConstraint().getExpectedValue() + "', found '" + failure.getValue() + "'"
-					var whereMessage = "[expect #" + failure.getExpectId() + " in '" + failure.getTest().toString() + "']"
-					this.errorHandler.raise("  -> " + expectedMessage + " " + whereMessage)
-				})
 			}
-			return result;
+			this.expectCounter = 0
+		})
+		if ((result && this.reportOnPass) || !result)
+			this.prettyPrintTestResult(result)
+		if (!result) {
+			failures.forEach(failure => {
+				var expectedMessage = "expected '" + failure.getConstraint().getExpectedValue() + "', found '" + failure.getValue() + "'"
+				var whereMessage = "[expect #" + failure.getExpectId() + " in '" + failure.getTest().toString() + "']"
+				this.errorHandler.raise("  -> " + expectedMessage + " " + whereMessage)
+			})
 		}
-		expect(value: any, constraint: Constraints.Constraint = null): void {
-			this.expectCounter++
-			if (constraint == null)
-				constraint = new Constraints.TrueConstraint()
-			if (!constraint.verify(value))
-				throw new TestFailedError(value, constraint)
-		}
-		//
-		// This is a temporary thing to make it easier on the eyes when reading
-		// test results in the terminal.
-		//
-		private prettyPrintTestResult(success: boolean) {
-			var coloredString = "\x1b[" + (success ? "32mpassed" : "31mfailed")
-			var colorReset = "\x1b[0m"
-			var message = coloredString + colorReset
-			var result = Utilities.String.padRight(this.name, ".", 50) + ": " + message
-			console.log(result)
-		}
+		return result;
+	}
+	expect(value: any, constraint?: Constraints.Constraint): void {
+		this.expectCounter++
+		if (constraint == null)
+			constraint = new Constraints.TrueConstraint()
+		if (!constraint.verify(value))
+			throw new TestFailedError(value, constraint)
+	}
+	//
+	// This is a temporary thing to make it easier on the eyes when reading
+	// test results in the terminal.
+	//
+	private prettyPrintTestResult(success: boolean) {
+		var coloredString = "\x1b[" + (success ? "32mpassed" : "31mfailed")
+		var colorReset = "\x1b[0m"
+		var message = coloredString + colorReset
+		var result = Utilities.String.padRight(this.name, ".", 50) + ": " + message
+		console.log(result)
+	}
 
-		private static fixtures: Fixture[] = []
-		static add(fixture: Fixture) {
-			Fixture.fixtures.push(fixture)
-		}
-		static run(debug = false) {
-			Fixture.fixtures.forEach((fixture) => { fixture.run(debug) })
-		}
+	private static fixtures: Fixture[] = []
+	static add(fixture: Fixture) {
+		Fixture.fixtures.push(fixture)
+	}
+	static run(debug?: boolean) {
+		Fixture.fixtures.forEach((fixture) => { fixture.run(debug) })
 	}
 }
