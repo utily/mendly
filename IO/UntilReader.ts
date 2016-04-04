@@ -20,10 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-export { Reader } from "./IO/Reader"
-export { BufferedReader } from "./IO/BufferedReader"
-export { StringReader } from "./IO/StringReader"
-export { FileReader } from "./IO/FileReader"
-export { FolderReader } from "./IO/FolderReader"
-export { PrefixReader } from "./IO/PrefixReader"
-export { UntilReader } from "./IO/UntilReader"
+import * as Error from "../Error/Region"
+import { Reader } from "./Reader"
+import { BufferedReader } from "./BufferedReader"
+
+export class UntilReader {
+	private done = false
+	private backend: BufferedReader
+	constructor(private endMark: string, backend: Reader) {
+		this.backend = backend instanceof(BufferedReader) ? backend : new BufferedReader(backend)
+	}
+	isEmpty(): boolean {
+		return this.done || this.backend.isEmpty()
+	}
+	read(): string {
+		var result: string
+		if (!this.isEmpty()) {
+			result = this.backend.read()
+			this.done = !!this.backend.peekIs(this.endMark)
+		}
+		return result
+	}
+	getResource(): string { return this.backend.getResource() }
+	getLocation(): Error.Location { return this.backend.getLocation() }
+	getRegion(): Error.Region { return this.backend.getRegion() }
+	mark(): Error.Region { return this.backend.mark() }
+}
