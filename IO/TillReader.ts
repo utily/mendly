@@ -37,7 +37,7 @@ export class TillReader {
 		var result: string
 		if (!this.isEmpty()) {
 			result = this.backend.read()
-			this.done = !!this.backend.peekIs(this.endMark)
+			this.done = this.backend.peekIs(this.endMark) != undefined
 		}
 		return result
 	}

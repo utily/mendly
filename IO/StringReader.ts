@@ -44,7 +44,7 @@ export class StringReader extends Reader {
 		if (this.count < this.content.length)
 			result = this.content.charAt(this.count)
 		else if (this.count == this.content.length)
-			result = "\0"
+			result = undefined
 		this.count++
 		if (result) {
 			if (result == "\n") {

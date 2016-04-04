@@ -30,6 +30,7 @@ import * as fs from "fs"
 export class FolderReader extends Reader {
 	private files: string[]
 	private current: Reader
+	private lastLocation: Error.Location
 	constructor(private path: string, extension: string) {
 		super()
 		this.files = FolderReader.getFiles(this.path, extension)
@@ -48,10 +49,11 @@ export class FolderReader extends Reader {
 				result = "\0"
 			}
 		}
+		this.lastLocation = this.getLocation()
 		return result
 	}
-	getResource(): string { return this.current ? this.current.getResource() : null }
-	getLocation(): Error.Location { return this.current.getLocation() }
+	getResource(): string { return this.current ? this.current.getResource() : this.lastLocation.getResource() }
+	getLocation(): Error.Location { return this.current ? this.current.getLocation() : this.lastLocation }
 	getRegion(): Error.Region { return this.current.getRegion() }
 	mark(): Error.Region { return this.current.mark() }
 
