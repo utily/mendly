@@ -24,10 +24,10 @@ import * as Error from "../Error/Region"
 import { Reader } from "./Reader"
 import { BufferedReader } from "./BufferedReader"
 
-export class PrefixReader {
+export class TillReader {
 	private done = false
 	private backend: BufferedReader
-	constructor(backend: Reader, private prefix: string | string[]) {
+	constructor(backend: Reader, private endMark: string | string[]) {
 		this.backend = backend instanceof(BufferedReader) ? backend : new BufferedReader(backend)
 	}
 	isEmpty(): boolean {
@@ -37,7 +37,7 @@ export class PrefixReader {
 		var result: string
 		if (!this.isEmpty()) {
 			result = this.backend.read()
-			this.done = result == "\n" && !this.backend.readIf(this.prefix) && !this.backend.peekIs("\n")
+			this.done = !!this.backend.peekIs(this.endMark)
 		}
 		return result
 	}

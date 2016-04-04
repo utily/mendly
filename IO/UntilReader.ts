@@ -25,19 +25,23 @@ import { Reader } from "./Reader"
 import { BufferedReader } from "./BufferedReader"
 
 export class UntilReader {
-	private done = false
+	private done = -1
 	private backend: BufferedReader
-	constructor(private endMark: string, backend: Reader) {
+	constructor(backend: Reader, private endMark: string | string[]) {
 		this.backend = backend instanceof(BufferedReader) ? backend : new BufferedReader(backend)
 	}
 	isEmpty(): boolean {
-		return this.done || this.backend.isEmpty()
+		return this.done == 0 || this.backend.isEmpty()
 	}
 	read(): string {
 		var result: string
 		if (!this.isEmpty()) {
 			result = this.backend.read()
-			this.done = !!this.backend.peekIs(this.endMark)
+			var peeked: string
+			if (this.done > 0)
+				this.done--
+			else if (peeked = this.backend.peekIs(this.endMark))
+				this.done = peeked.length
 		}
 		return result
 	}

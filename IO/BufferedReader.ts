@@ -55,7 +55,7 @@ export class BufferedReader extends Reader {
 		this.lastContent += result
 		return result
 	}
-	peekIs(value: string|string[], count?: number): string {
+	peekIs(value: string | string[], count?: number): string {
 		var result: string
 		if (value)
 			if (typeof(value) == "string") {
