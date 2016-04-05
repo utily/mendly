@@ -40,4 +40,6 @@ export class FileReader extends Reader {
 	getRegion(): Error.Region { return this.backend.getRegion() }
 	mark(): Error.Region { return this.backend.mark() }
 }
-Reader.addOpener((path, extension) => path.slice(-extension - 1) == "." + extension ? new FileReader(path) : null, 10)
+Reader.addOpener((path, extension) => {
+	return path.slice(-extension.length - 1) == "." + extension ? new FileReader(path) : null
+}, 10)
