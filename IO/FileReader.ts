@@ -31,7 +31,12 @@ export class FileReader extends Reader {
 	private backend: Reader
 	constructor(path: string) {
 		super()
-		this.backend = new StringReader(fs.readFileSync(path, "utf-8"), path)
+		try {
+			this.backend = new StringReader(fs.readFileSync(path, "utf-8"), path)
+		} catch (error) {
+			console.error(`Failed to open file: ${path}`)
+			this.backend = new StringReader("", path)
+		}
 	}
 	isEmpty(): boolean { return this.backend.isEmpty() }
 	read(): string { return this.backend.read() }

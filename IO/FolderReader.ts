@@ -33,7 +33,12 @@ export class FolderReader extends Reader {
 	private lastLocation: Error.Location
 	constructor(private path: string, extension: string) {
 		super()
-		this.files = FolderReader.getFiles(this.path, extension)
+		try {
+			this.files = FolderReader.getFiles(this.path, extension)
+		} catch (error) {
+			console.error(`Failed to open folder: ${path}`)
+			this.files = []
+		}
 	}
 	isEmpty(): boolean {
 		return this.files.length == 0 && (!this.current || this.current.isEmpty())
