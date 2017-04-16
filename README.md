@@ -1,2 +1,2 @@
-# U10sil
-U10sil is a utility library for typescript.
+# Mend
+Mend is a utility library for typescript and javascript mending the standard library.
