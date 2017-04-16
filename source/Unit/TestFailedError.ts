@@ -24,10 +24,10 @@ import * as Constraints from "./Constraints/Constraint"
 import { Test } from "./Test"
 
 export class TestFailedError implements Error {
-	public name = "TestFailedError"
+	name = "TestFailedError"
 	private test: Test
 	private expectId: number
-	constructor(private value: any, private constraint: Constraints.Constraint, public message?: string) {
+	constructor(private value: any, private constraint: Constraints.Constraint, public message = "") {
 	}
 	getValue(): any { return this.value }
 	getConstraint(): Constraints.Constraint { return this.constraint }

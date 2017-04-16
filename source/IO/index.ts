@@ -20,31 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference types="node" />
-import * as fs from "fs"
-import * as Error from "../Error/Region"
-import { Reader } from "./Reader"
-import { StringReader } from "./StringReader"
-
-export { Reader, StringReader } from "./StringReader"
-export class FileReader extends Reader {
-	private backend: Reader
-	constructor(path: string) {
-		super()
-		try {
-			this.backend = new StringReader(fs.readFileSync(path, "utf-8"), path)
-		} catch (error) {
-			console.error(`Failed to open file: ${path}`)
-			this.backend = new StringReader("", path)
-		}
-	}
-	isEmpty(): boolean { return this.backend.isEmpty() }
-	read(): string { return this.backend.read() }
-	getResource(): string { return this.backend ? this.backend.getResource() : null }
-	getLocation(): Error.Location { return this.backend.getLocation() }
-	getRegion(): Error.Region { return this.backend.getRegion() }
-	mark(): Error.Region { return this.backend.mark() }
-}
-Reader.addOpener((path, extension) => {
-	return path.slice(-extension.length - 1) == "." + extension ? new FileReader(path) : null
-}, 10)
+export { Reader } from "./Reader"
+export { BufferedReader } from "./BufferedReader"
+export { StringReader } from "./StringReader"
+export { FileReader } from "./FileReader"
+export { FolderReader } from "./FolderReader"
+export { PrefixReader } from "./PrefixReader"
+export { TillReader } from "./TillReader"
+export { UntilReader } from "./UntilReader"

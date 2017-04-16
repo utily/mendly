@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference path="../../tsd.d.ts" />
+/// <reference types="node" />
 import * as Error from "../Error/Region"
 import { Reader, FileReader } from "./FileReader"
 import { Iterator } from "../Utilities/Iterator"

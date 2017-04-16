@@ -1,0 +1,19 @@
+{
+	"editor.tabSize": 2,
+	"editor.renderWhitespace": "boundary",
+	"editor.insertSpaces": false,
+	"files.trimTrailingWhitespace": true,
+	"search.exclude": {
+		"node_modules": true,
+		"typings": true,
+		".vscode": true
+	},
+	"files.exclude": {
+		"node_modules": true,
+		"typings": true,
+		".vscode": true,
+		"build": true,
+		"source/tsd.d.ts": true,
+		"**/.git": true
+	}
+}
