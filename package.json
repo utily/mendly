@@ -4,8 +4,13 @@
   "description": "Mend is a utility library for typescript and javascript mending the standard library.",
   "main": "build/index.js",
   "scripts": {
+    "dev": "watch 'npm run build' src",
     "build": "tsc -p source",
-    "test": "node build/Test.js"
+    "pretest": "npm run build",
+    "test": "node build/Test.js",
+    "test:watch": "npm test -- --watch",
+    "prepublish": "npm run build",
+    "release": "np"
   },
   "repository": {
     "type": "git",
@@ -19,6 +24,8 @@
   "homepage": "https://github.com/cogneco/mend#readme",
   "devDependencies": {
     "@types/node": "^7.0.12",
-    "typescript": "^2.2.2"
+    "np": "^2.13.1",
+    "typescript": "^2.2.2",
+    "watch": "^1.0.2"
   }
 }
