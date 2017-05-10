@@ -1,6 +1,6 @@
 {
-  "name": "mend",
-  "version": "1.0.3",
+  "name": "@cogneco/mend",
+  "version": "1.0.0",
   "description": "Mend is a utility library for typescript and javascript mending the standard library.",
   "main": "build/index.js",
   "scripts": {
@@ -10,7 +10,6 @@
     "test": "node build/index.test.js",
     "test:watch": "npm test -- --watch",
     "prepublish": "npm run build",
-    "publish": "npm publish",
     "release": "np"
   },
   "repository": {
