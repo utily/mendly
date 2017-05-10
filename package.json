@@ -1,6 +1,6 @@
 {
   "name": "mend",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Mend is a utility library for typescript and javascript mending the standard library.",
   "main": "build/index.js",
   "scripts": {
