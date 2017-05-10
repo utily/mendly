@@ -7,9 +7,10 @@
     "dev": "watch 'npm run build' src",
     "build": "tsc -p source",
     "pretest": "npm run build",
-    "test": "node build/Test.js",
+    "test": "node build/index.test.js",
     "test:watch": "npm test -- --watch",
     "prepublish": "npm run build",
+    "publish": "npm publish ",
     "release": "np"
   },
   "repository": {

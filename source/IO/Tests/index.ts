@@ -20,5 +20,5 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import "./StringReaderTest"
-import "./BufferedReaderTest"
+import "./StringReader.test"
+import "./BufferedReader.test"

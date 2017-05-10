@@ -20,6 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import "./LocatorParseTest"
-import "./LocatorResolveTest"
-import "./LocatorToStringTest"
+import "./LocatorParse.test"
+import "./LocatorResolve.test"
+import "./LocatorToString.test"

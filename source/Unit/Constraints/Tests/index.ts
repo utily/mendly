@@ -20,12 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import "./BooleanTest"
-import "./EmptyTest"
-import "./EmptyTest"
-import "./EqualTest"
-import "./NotTest"
-import "./NullOrUndefinedTest"
-import "./NullTest"
-import "./UndefinedTest"
-import "./ArrayTest"
+import "./Boolean.test"
+import "./Empty.test"
+import "./Empty.test"
+import "./Equal.test"
+import "./Not.test"
+import "./NullOrUndefined.test"
+import "./Null.test"
+import "./Undefined.test"
+import "./Array.test"
