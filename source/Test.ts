@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import "./Unit/Constraints/Tests/All"
-import "./Utilities/Tests/All"
-import "./IO/Tests/All"
-import "./Uri/Tests/All"
+import "./Unit/Constraints/Tests/"
+import "./Utilities/Tests/"
+import "./IO/Tests/"
+import "./Uri/Tests/"

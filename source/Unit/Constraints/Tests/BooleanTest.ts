@@ -39,7 +39,9 @@ export class BooleanTest extends Fixture {
 			this.expect("foo" === "foo", Is.True())
 		})
 		this.add("foo === bar (false)", () => {
-			this.expect("foo" === "bar", Is.False())
+			var foo: string = "foo"
+			var bar: string = "bar"
+			this.expect(foo === bar, Is.False())
 		})
 		this.add("expect true overload", () => {
 			this.expect(null === null)
