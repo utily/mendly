@@ -20,24 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture, Is } from "../../Unit/Fixture"
-import { Locator } from "../Locator"
+import { Fixture } from "../Fixture"
+import { Is } from "./Is"
 
-export class LocatorToStringTest extends Fixture {
+export class NullTest extends Fixture {
 	constructor() {
-		super("Uri.Locator.toString")
-		this.add("full https", () => {
-			var absolute = Locator.parse("https://server.example.com/folder0/folder1/")
-			this.expect(absolute.toString(), Is.Equal().To("https://server.example.com/folder0/folder1/"))
+		super("Unit.Constraints.Null")
+		this.add("null 1", () => {
+			this.expect(null, Is.Null())
 		})
-		this.add("absolute file", () => {
-			var relative = Locator.parse("/folder2/file.extension")
-			this.expect(relative.toString(), Is.Equal().To("/folder2/file.extension"))
+		this.add("null 2", () => {
+			var s: string = null
+			this.expect(s, Is.Null())
 		})
-		this.add("relative", () => {
-			var relative = Locator.parse("./folder2/file.extension")
-			this.expect(relative.toString(), Is.Equal().To("./folder2/file.extension"))
+		this.add("null 3", () => {
+			var s: string = ""
+			this.expect(s, Is.Not().Null())
 		})
 	}
 }
-Fixture.add(new LocatorToStringTest())
+Fixture.add(new NullTest())

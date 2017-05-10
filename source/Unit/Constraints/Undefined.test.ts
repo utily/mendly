@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture } from "../../Fixture"
-import { Is } from "../Is"
+import { Fixture } from "../Fixture"
+import { Is } from "./Is"
 
 export class UndefinedTest extends Fixture {
 	constructor() {

@@ -20,37 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture } from "../../Fixture"
-import { Is } from "../Is"
+import { Fixture, Is } from "../Unit/Fixture"
+import { Iterator, ArrayIterator } from "./ArrayIterator"
 
-export class NotTest extends Fixture {
+export class ArrayIteratorTest extends Fixture {
 	constructor() {
-		super("Unit.Constraints.Not")
-		this.add("foobar is not null", () => {
-			this.expect("foobar", Is.Not().Null())
+		super("Utilities.ArrayIterator")
+		this.add("empty", () => {
+			this.expect(new ArrayIterator([]).next(), Is.Undefined())
 		})
-		this.add("foobar is not equal to moobar", () => {
-			this.expect("foobar", Is.Not().Equal().To("moobar"))
-		})
-		this.add("foo === bar is not true", () => {
-			var foo: string = "foo"
-			var bar: string = "bar"
-			this.expect(foo === bar, Is.Not().True())
-		})
-		this.add("foo !== bar is not false", () => {
-			var foo: string = "foo"
-			var bar: string = "bar"
-			this.expect(foo !== bar, Is.Not().False())
-		})
-		this.add("null is not undefined", () => {
-			this.expect(null, Is.Not().Undefined())
-		})
-		this.add("undefined is not null", () => {
-			this.expect(undefined, Is.Not().Null())
-		})
-		this.add("empty string is not null nor undefined", () => {
-			this.expect("", Is.Not().NullOrUndefined())
+		this.add("integers", () => {
+			var integers = [1, 2, 4, 8, 16]
+			var iterator = new ArrayIterator(integers)
+			integers.forEach(value => {
+				this.expect(iterator.next(), Is.Equal().To(value))
+			});
+			this.expect(iterator.next(), Is.Undefined())
 		})
 	}
 }
-Fixture.add(new NotTest())
+Fixture.add(new ArrayIteratorTest())

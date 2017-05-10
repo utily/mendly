@@ -20,23 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture } from "../../Fixture"
-import { Is } from "../Is"
+import { Fixture } from "../Fixture"
+import { Is } from "./Is"
 
-export class NullTest extends Fixture {
+export class ArrayTest extends Fixture {
 	constructor() {
-		super("Unit.Constraints.Null")
-		this.add("null 1", () => {
-			this.expect(null, Is.Null())
-		})
-		this.add("null 2", () => {
-			var s: string = null
-			this.expect(s, Is.Null())
-		})
-		this.add("null 3", () => {
-			var s: string = ""
-			this.expect(s, Is.Not().Null())
+		super("Unit.Constraints.Array")
+		this.add("empty", () => {
+			this.expect(<boolean[]>[], Is.Equal().To(<boolean[]>[]))
 		})
 	}
 }
-Fixture.add(new NullTest())
+Fixture.add(new ArrayTest())

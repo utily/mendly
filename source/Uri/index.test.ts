@@ -20,23 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture, Is } from "../../Unit/Fixture"
-import { Iterator, ArrayIterator } from "../ArrayIterator"
-
-export class ArrayIteratorTest extends Fixture {
-	constructor() {
-		super("Utilities.ArrayIterator")
-		this.add("empty", () => {
-			this.expect(new ArrayIterator([]).next(), Is.Undefined())
-		})
-		this.add("integers", () => {
-			var integers = [1, 2, 4, 8, 16]
-			var iterator = new ArrayIterator(integers)
-			integers.forEach(value => {
-				this.expect(iterator.next(), Is.Equal().To(value))
-			});
-			this.expect(iterator.next(), Is.Undefined())
-		})
-	}
-}
-Fixture.add(new ArrayIteratorTest())
+import "./Locator.parse.test"
+import "./Locator.resolve.test"
+import "./Locator.toString.test"

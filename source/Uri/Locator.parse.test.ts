@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture, Is } from "../../Unit/Fixture"
-import { Locator } from "../Locator"
+import { Fixture, Is } from "../Unit/Fixture"
+import { Locator } from "./Locator"
 
 export class LocatorParseTest extends Fixture {
 	constructor() {

@@ -20,22 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture, Is } from "../../Unit/Fixture"
-import { Locator } from "../Locator"
+import { Fixture } from "../Fixture"
+import { Is } from "./Is"
 
-export class LocatorResolveTest extends Fixture {
+export class BooleanTest extends Fixture {
 	constructor() {
-		super("Uri.Locator.resolve")
-		this.add("resolve relative", () => {
-			var absolute = Locator.parse("https://server.example.com/folder0/folder1/")
-			var relative = Locator.parse("./folder2/file.extension")
-			var locator = relative.resolve(absolute)
-			this.expect(locator.getScheme(), Is.Equal().To(["https"]))
-			this.expect(locator.getAuthority().getUser(), Is.Undefined())
-			this.expect(locator.getAuthority().getEndpoint().getHost(), Is.Equal().To(["server", "example", "com"]))
-			this.expect(locator.getAuthority().getEndpoint().getPort(), Is.Undefined())
-			this.expect(locator.getPath(), Is.Equal().To(["folder0", "folder1", "folder2", "file.extension"]))
+		super("Unit.Constraints.Boolean")
+		this.add("empty string evaluates to false", () => {
+			this.expect("", Is.False())
+		})
+		this.add("true is true", () => {
+			this.expect(true, Is.True())
+		})
+		this.add("false is false", () => {
+			this.expect(false, Is.False())
+		})
+		this.add("foo === foo (true)", () => {
+			this.expect("foo" === "foo", Is.True())
+		})
+		this.add("foo === bar (false)", () => {
+			var foo: string = "foo"
+			var bar: string = "bar"
+			this.expect(foo === bar, Is.False())
+		})
+		this.add("expect true overload", () => {
+			this.expect(null === null)
 		})
 	}
 }
-Fixture.add(new LocatorResolveTest())
+Fixture.add(new BooleanTest())

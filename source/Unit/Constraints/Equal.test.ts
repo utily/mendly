@@ -20,32 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture } from "../../Fixture"
-import { Is } from "../Is"
+import { Fixture } from "../Fixture"
+import { Is } from "./Is"
 
-export class BooleanTest extends Fixture {
+export class EqualTest extends Fixture {
 	constructor() {
-		super("Unit.Constraints.Boolean")
-		this.add("empty string evaluates to false", () => {
-			this.expect("", Is.False())
-		})
+		super("Unit.Constraints.Equal")
 		this.add("true is true", () => {
-			this.expect(true, Is.True())
+			this.expect(true, Is.Equal().To(true))
 		})
 		this.add("false is false", () => {
-			this.expect(false, Is.False())
+			this.expect(false, Is.Equal().To(false))
 		})
-		this.add("foo === foo (true)", () => {
-			this.expect("foo" === "foo", Is.True())
+		this.add("null equals null", () => {
+			this.expect(null, Is.Equal().To(null))
 		})
-		this.add("foo === bar (false)", () => {
-			var foo: string = "foo"
-			var bar: string = "bar"
-			this.expect(foo === bar, Is.False())
+		this.add("undefined equals undefined", () => {
+			this.expect(undefined, Is.Equal().To(undefined))
 		})
-		this.add("expect true overload", () => {
-			this.expect(null === null)
+		this.add("\"foo\" equals \"foo\"", () => {
+			this.expect("foo", Is.Equal().To("foo"))
 		})
 	}
 }
-Fixture.add(new BooleanTest())
+Fixture.add(new EqualTest())

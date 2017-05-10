@@ -20,10 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import * as Error from "../../Error/ConsoleHandler"
-import { Fixture, Is } from "../../Unit/Fixture"
-import { StringReader } from "../../IO/StringReader"
-import { BufferedReader } from "../../IO/BufferedReader"
+import * as Error from "../Error/ConsoleHandler"
+import { Fixture, Is } from "../Unit/Fixture"
+import { StringReader } from "../IO/StringReader"
+import { BufferedReader } from "../IO/BufferedReader"
 
 export class BufferedReaderTest extends Fixture {
 	constructor() {

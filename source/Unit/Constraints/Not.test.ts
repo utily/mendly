@@ -20,27 +20,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture } from "../../Fixture"
-import { Is } from "../Is"
+import { Fixture } from "../Fixture"
+import { Is } from "./Is"
 
-export class EqualTest extends Fixture {
+export class NotTest extends Fixture {
 	constructor() {
-		super("Unit.Constraints.Equal")
-		this.add("true is true", () => {
-			this.expect(true, Is.Equal().To(true))
+		super("Unit.Constraints.Not")
+		this.add("foobar is not null", () => {
+			this.expect("foobar", Is.Not().Null())
 		})
-		this.add("false is false", () => {
-			this.expect(false, Is.Equal().To(false))
+		this.add("foobar is not equal to moobar", () => {
+			this.expect("foobar", Is.Not().Equal().To("moobar"))
 		})
-		this.add("null equals null", () => {
-			this.expect(null, Is.Equal().To(null))
+		this.add("foo === bar is not true", () => {
+			var foo: string = "foo"
+			var bar: string = "bar"
+			this.expect(foo === bar, Is.Not().True())
 		})
-		this.add("undefined equals undefined", () => {
-			this.expect(undefined, Is.Equal().To(undefined))
+		this.add("foo !== bar is not false", () => {
+			var foo: string = "foo"
+			var bar: string = "bar"
+			this.expect(foo !== bar, Is.Not().False())
 		})
-		this.add("\"foo\" equals \"foo\"", () => {
-			this.expect("foo", Is.Equal().To("foo"))
+		this.add("null is not undefined", () => {
+			this.expect(null, Is.Not().Undefined())
+		})
+		this.add("undefined is not null", () => {
+			this.expect(undefined, Is.Not().Null())
+		})
+		this.add("empty string is not null nor undefined", () => {
+			this.expect("", Is.Not().NullOrUndefined())
 		})
 	}
 }
-Fixture.add(new EqualTest())
+Fixture.add(new NotTest())

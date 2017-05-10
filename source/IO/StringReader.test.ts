@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import * as Error from "../../Error/ConsoleHandler"
-import { Fixture, Is } from "../../Unit/Fixture"
-import { StringReader } from "../../IO/StringReader"
+import * as Error from "../Error/ConsoleHandler"
+import { Fixture, Is } from "../Unit/Fixture"
+import { StringReader } from "./StringReader"
 
 export class StringReaderTest extends Fixture {
 	constructor() {
@@ -35,7 +35,7 @@ export class StringReaderTest extends Fixture {
 		this.add("state check", () => {
 			var sr = new StringReader("")
 			this.expect(sr.getLocation(), Is.Not().NullOrUndefined())
-			this.expect(sr.getRegion(), Is.Not().NullOrUndefined())
+			this.expect(sr.getRegion(), Is.NullOrUndefined())
 			this.expect(sr.getResource(), Is.Not().NullOrUndefined())
 		})
 		this.add("simple string", () => {

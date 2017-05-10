@@ -20,7 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import "./Unit/index.test"
-import "./Utilities/index.test"
-import "./IO/index.test"
-import "./Uri/index.test"
+import { Fixture, Is } from "../Unit/Fixture"
+import { Locator } from "./Locator"
+
+export class LocatorToStringTest extends Fixture {
+	constructor() {
+		super("Uri.Locator.toString")
+		this.add("full https", () => {
+			var absolute = Locator.parse("https://server.example.com/folder0/folder1/")
+			this.expect(absolute.toString(), Is.Equal().To("https://server.example.com/folder0/folder1/"))
+		})
+		this.add("absolute file", () => {
+			var relative = Locator.parse("/folder2/file.extension")
+			this.expect(relative.toString(), Is.Equal().To("/folder2/file.extension"))
+		})
+		this.add("relative", () => {
+			var relative = Locator.parse("./folder2/file.extension")
+			this.expect(relative.toString(), Is.Equal().To("./folder2/file.extension"))
+		})
+	}
+}
+Fixture.add(new LocatorToStringTest())

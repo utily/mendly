@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Simon Mika
+// Copyright (c) 2017 Simon Mika
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,24 +20,4 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture } from "../../Fixture"
-import { Is } from "../Is"
-
-export class EmptyTest extends Fixture {
-	constructor() {
-		super("Unit.Constraints.Empty")
-		this.add("empty string", () => {
-			this.expect("", Is.Empty())
-		})
-		this.add("empty array", () => {
-			this.expect([], Is.Empty())
-		})
-		this.add("string is not empty", () => {
-			this.expect("foobar", Is.Not().Empty())
-		})
-		this.add("array is not empty", () => {
-			this.expect([1, 2, 3], Is.Not().Empty())
-		})
-	}
-}
-Fixture.add(new EmptyTest())
+import "./Constraints/index.test"
