@@ -10,7 +10,7 @@
     "test": "node build/index.test.js",
     "test:watch": "npm test -- --watch",
     "prepublish": "npm run build",
-    "publish": "npm publish ",
+    "publish": "npm publish",
     "release": "np"
   },
   "repository": {

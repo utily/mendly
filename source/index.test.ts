@@ -24,3 +24,6 @@ import "./Unit/index.test"
 import "./Utilities/index.test"
 import "./IO/index.test"
 import "./Uri/index.test"
+import { Fixture } from "./Unit"
+
+Fixture.run()
