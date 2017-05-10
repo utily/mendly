@@ -99,7 +99,7 @@ export abstract class Fixture {
 	static add(fixture: Fixture) {
 		Fixture.fixtures.push(fixture)
 	}
-	static run(debug?: boolean) {
-		Fixture.fixtures.forEach((fixture) => { fixture.run(debug) })
+	static run(debug?: boolean): boolean {
+		return Fixture.fixtures.reduce((s, fixture) => fixture.run(debug) || s, false)
 	}
 }

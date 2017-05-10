@@ -26,4 +26,4 @@ import "./IO/index.test"
 import "./Uri/index.test"
 import { Fixture } from "./Unit"
 
-Fixture.run()
+process.exit(Fixture.run() ? 0 : 1)
