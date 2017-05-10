@@ -14,6 +14,23 @@
 			"args": ["update"]
 		},
 		{
+			"taskName": "dev",
+			"args": ["dev"],
+			"isBackground": true,
+			"problemMatcher": {
+				"owner": "tsc",
+				"fileLocation": ["relative", "${workspaceRoot}"],
+				"pattern": {
+					"regexp": "^([\\w,\/,\\.]+)\\(\\d+,\\d+\\):\\s+(\\w+)\\s+(\\w+):\\s+(.*)$",
+					"file": 1,
+					"line": 2,
+					"column": 3,
+					"severity": 4,
+					"message": 5
+				}
+			}
+		},
+		{
 			"taskName": "build",
 			"args": ["build"],
 			"isBuildCommand": true,

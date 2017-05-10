@@ -4,7 +4,7 @@
   "description": "Mend is a utility library for typescript and javascript mending the standard library.",
   "main": "build/index.js",
   "scripts": {
-    "dev": "watch 'npm run build' src",
+    "dev": "watch 'npm run build' source",
     "build": "tsc -p source",
     "pretest": "npm run build",
     "test": "node build/index.test.js",
