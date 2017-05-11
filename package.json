@@ -3,12 +3,13 @@
   "version": "1.0.1-0",
   "description": "Mend is a utility library for typescript and javascript mending the standard library.",
   "main": "build/index.js",
+  "typings": "build/index",
   "scripts": {
     "dev": "watch 'npm run build' source",
     "build": "tsc -p source",
     "pretest": "npm run build",
     "test": "node build/index.test.js",
-    "test:watch": "npm test -- --watch",
+    "test:watch": "watch 'npm test' source",
     "prepublish": "npm run build",
     "release": "np"
   },
@@ -25,7 +26,7 @@
   "devDependencies": {
     "@types/node": "^7.0.12",
     "np": "^2.13.1",
-    "typescript": "^2.2.2",
+    "typescript": "^2.3.2",
     "watch": "^1.0.2"
   }
 }
