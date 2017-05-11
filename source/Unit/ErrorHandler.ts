@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import * as Error from "../Error/Handler"
-import * as IO from "../IO/BufferedReader"
+import * as Error from "../Error"
+import * as IO from "../IO"
 
 export class ErrorHandler implements Error.Handler {
 	constructor(private errorHandler: Error.Handler, private region: Error.Region) {

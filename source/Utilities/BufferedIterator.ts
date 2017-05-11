@@ -22,7 +22,6 @@
 
 import { Iterator } from "./Iterator"
 
-export { Iterator } from "./Iterator"
 export class BufferedIterator<T> implements Iterator<T> {
 	private buffer: T[] = []
 	constructor(private backend: Iterator<T>) {

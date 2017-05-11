@@ -20,8 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture, Is } from "../Unit/Fixture"
-import { Iterator, BufferedIterator } from "./BufferedIterator"
+import { Fixture, Is } from "../Unit"
+import { Iterator } from "./Iterator"
+import { BufferedIterator } from "./BufferedIterator"
 
 class StringIterator implements Iterator<string> {
 	private position: number = 0

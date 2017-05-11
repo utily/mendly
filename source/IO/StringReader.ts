@@ -20,10 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import * as Error from "../Error/Region"
+import * as Error from "../Error"
 import { Reader } from "./Reader"
 
-export { Reader } from "./Reader"
 export class StringReader extends Reader {
 	private count: number = 0
 	private line: number = 1

@@ -22,12 +22,11 @@
 
 import { Test } from "./Test"
 import { TestFailedError } from "./TestFailedError"
-import * as Error from "../Error/ConsoleHandler"
-import * as Constraints from "./Constraints/Is"
-import * as Utilities from "../Utilities/String"
+import * as Error from "../Error"
+import * as Constraints from "./Constraints"
+import * as Utilities from "../Utilities"
 import { ErrorHandler } from "./ErrorHandler"
 
-export { Is } from "./Constraints/Is"
 export abstract class Fixture {
 	private tests: Test[] = []
 	private expectCounter = 0

@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference types="node" />
-import * as Error from "../Error/Region"
-import { Reader, FileReader } from "./FileReader"
+import * as Error from "../Error"
+import { Reader } from "./Reader"
+import { FileReader } from "./FileReader"
 import { Iterator } from "../Utilities/Iterator"
 
 import * as fs from "fs"

@@ -20,8 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture, Is } from "../Unit/Fixture"
-import { Iterator, ArrayIterator } from "./ArrayIterator"
+import { Fixture, Is } from "../Unit"
+import { Iterator } from "./Iterator"
+import { ArrayIterator } from "./ArrayIterator"
 
 export class ArrayIteratorTest extends Fixture {
 	constructor() {

@@ -23,8 +23,6 @@
 import { Position } from "./Position"
 import { Location } from "./Location"
 
-export { Position } from "./Position"
-export { Location } from "./Location"
 export class Region {
 	constructor(private resource: string, private start?: Position, private end?: Position, private content?: string) { }
 	getResource() { return this.resource }

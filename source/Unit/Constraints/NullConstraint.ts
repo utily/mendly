@@ -20,7 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Constraint, Modifier } from "./Constraint"
+import { Constraint } from "./Constraint"
+import { Modifier } from "./Modifier"
 
 export class NullConstraint extends Constraint {
 	constructor(parent?: Modifier) {

@@ -22,7 +22,6 @@
 
 import { Authority } from "./Authority"
 
-export { User, Endpoint, Authority } from "./Authority"
 export class Locator {
 	constructor(private scheme: string[], private authority: Authority, private path: string[], private query: { [key: string]: string }, private fragment: string) {
 	}

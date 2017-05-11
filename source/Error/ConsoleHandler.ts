@@ -20,9 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Position, Location, Region, Type, Level, Message, Handler } from "./Handler"
+import { Type } from "./Type"
+import { Level } from "./Level"
+import { Position } from "./Position"
+import { Location } from "./Location"
+import { Region } from "./Region"
+import { Message } from "./Message"
+import { Handler } from "./Handler"
 
-export { Position, Location, Region, Type, Level, Message, Handler } from "./Handler"
 export class ConsoleHandler implements Handler {
 	raise(message: string | Message, level?: Level, type?: Type, region?: Region): void {
 		if (!(message instanceof Message))

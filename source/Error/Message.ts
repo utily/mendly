@@ -22,11 +22,10 @@
 
 import { Type } from "./Type"
 import { Level } from "./Level"
-import { Position, Location, Region } from "./Region"
+import { Position } from "./Position"
+import { Location } from "./Location"
+import { Region } from "./Region"
 
-export { Type } from "./Type"
-export { Level } from "./Level"
-export { Position, Location, Region } from "./Region"
 export class Message {
 	constructor(private description: string, private level: Level, private type: Type, private region: Region) {
 	}

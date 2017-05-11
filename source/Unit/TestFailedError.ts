@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import * as Constraints from "./Constraints/Constraint"
+import * as Constraints from "./Constraints"
 import { Test } from "./Test"
 
 export class TestFailedError implements Error {

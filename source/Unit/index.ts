@@ -20,9 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-//import * as Constraints from "./Constraints"
-export * from "./Constraints"
-export { ErrorHandler } from "./ErrorHandler"
-export { Fixture } from "./Fixture"
-export { Test } from "./Test"
-export { TestFailedError } from "./TestFailedError"
+import * as Constraints from "./Constraints"
+import { ErrorHandler } from "./ErrorHandler"
+import { Fixture } from "./Fixture"
+import { Is } from "./Is"
+import { Test } from "./Test"
+import { TestFailedError } from "./TestFailedError"
+
+export {
+	Constraints,
+	ErrorHandler,
+	Fixture,
+	Is,
+	Test,
+	TestFailedError,
+}

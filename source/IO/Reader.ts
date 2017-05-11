@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import * as Error from "../Error/Region"
+import * as Error from "../Error"
 
 export abstract class Reader {
 	abstract isEmpty(): boolean

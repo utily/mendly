@@ -20,8 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-export * from "./Error"
-export * from "./IO"
-export * from "./Unit"
-export * from "./Uri"
-export * from "./Utilities"
+import * as Error from "./Error"
+import * as IO from "./IO"
+import * as Unit from "./Unit"
+import * as Uri from "./Uri"
+import * as Utilities from "./Utilities"
+
+export {
+	Error,
+	IO,
+	Unit,
+	Uri,
+	Utilities
+}

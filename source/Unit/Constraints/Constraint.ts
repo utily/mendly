@@ -22,7 +22,6 @@
 
 import { Modifier } from "./Modifier"
 
-export { Modifier } from "./Modifier"
 export abstract class Constraint extends Modifier {
 	constructor(parent?: Modifier) {
 		super(parent)

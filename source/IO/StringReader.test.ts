@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import * as Error from "../Error/ConsoleHandler"
-import { Fixture, Is } from "../Unit/Fixture"
+import * as Error from "../Error"
+import { Fixture, Is } from "../Unit"
 import { StringReader } from "./StringReader"
 
 export class StringReaderTest extends Fixture {

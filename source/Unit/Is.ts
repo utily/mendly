@@ -20,37 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { User } from "./User"
-import { Endpoint } from "./Endpoint"
+import * as Constraints from "./Constraints"
 
-export class Authority {
-	constructor(private user: User, private endpoint: Endpoint) {
-	}
-	getUser(): User {
-		return this.user
-	}
-	getEndpoint(): Endpoint {
-		return this.endpoint
-	}
-	toString(): string {
-		var result: string
-		if (this.user)
-			result = this.user.toString() + "@"
-		if (this.endpoint)
-			result = (result ? result : "") + this.endpoint.toString()
-		return result
-	}
-	static parse(data: string): Authority {
-		var result: Authority
-		if (data) {
-			var splitted = data.split("@", 2)
-			var user: User
-			var endpoint: Endpoint
-			if (splitted.length == 2)
-				user = User.parse(splitted.pop())
-			endpoint = Endpoint.parse(splitted.pop())
-			result = new Authority(user, endpoint)
-		}
-		return result
-	}
+export class Is {
+	static True(): Constraints.TrueConstraint	{ return new Constraints.TrueConstraint() }
+	static False(): Constraints.FalseConstraint { return new Constraints.FalseConstraint() }
+	static Null():  Constraints.NullConstraint{ return new Constraints.NullConstraint() }
+	static NullOrUndefined(): Constraints.NullOrUndefinedConstraint { return new Constraints.NullOrUndefinedConstraint() }
+	static Undefined(): Constraints.UndefinedConstraint { return new Constraints.UndefinedConstraint() }
+	static Equal():  Constraints.EqualModifier { return new Constraints.EqualModifier() }
+	static Not(): Constraints.NotModifier { return new Constraints.NotModifier() }
+	static Empty(): Constraints.EmptyConstraint { return new Constraints.EmptyConstraint() }
 }

@@ -20,9 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Position, Location, Region, Type, Level, Message } from "./Message"
+import { Type } from "./Type"
+import { Level } from "./Level"
+import { Position } from "./Position"
+import { Location } from "./Location"
+import { Region } from "./Region"
+import { Message } from "./Message"
 
-export { Position, Location, Region, Type, Level, Message } from "./Message"
 export interface Handler {
 	raise: {
 		(message: Message): void

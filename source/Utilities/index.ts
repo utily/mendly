@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-export { } from "./"
-export { } from "./"
-export { } from "./"
-export { } from "./"
+export { Iterator } from "./Iterator"
+export { ArrayIterator } from "./ArrayIterator"
+export { BufferedIterator } from "./BufferedIterator"
+export { String } from "./String"

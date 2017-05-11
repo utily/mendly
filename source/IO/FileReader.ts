@@ -20,13 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-/// <reference types="node" />
 import * as fs from "fs"
-import * as Error from "../Error/Region"
+import * as Error from "../Error"
 import { Reader } from "./Reader"
 import { StringReader } from "./StringReader"
 
-export { Reader, StringReader } from "./StringReader"
 export class FileReader extends Reader {
 	private backend: Reader
 	constructor(path: string) {
