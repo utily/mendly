@@ -77,7 +77,7 @@ export abstract class Fixture {
 	}
 	expect(value: any, constraint?: Constraints.Constraint): void {
 		this.expectCounter++
-		if (constraint == null)
+		if (!constraint)
 			constraint = new Constraints.TrueConstraint()
 		if (!constraint.verify(value))
 			throw new TestFailedError(value, constraint)

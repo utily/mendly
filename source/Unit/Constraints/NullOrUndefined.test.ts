@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 import { Fixture } from "../Fixture"
-import { Is } from "./Is"
+import { Is } from "../Is"
 
 export class NullOrUndefinedTest extends Fixture {
 	constructor() {

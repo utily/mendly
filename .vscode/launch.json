@@ -5,14 +5,11 @@
 			"type": "node",
 			"request": "launch",
 			"name": "Launch Program",
-			"program": "${workspaceRoot}/build/index.test.js"
-		},
-		{
-			"type": "node",
-			"request": "attach",
-			"name": "Attach to Port",
-			"address": "localhost",
-			"port": 5858
+			"program": "${workspaceRoot}/build/index.test.js",
+			"protocol": "inspector",
+			"preLaunchTask": "build",
+			"sourceMaps": true,
+			"outFiles": [ "${workspaceRoot}/build/**/*.js" ]
 		}
 	]
 }

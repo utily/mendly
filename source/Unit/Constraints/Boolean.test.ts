@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 import { Fixture } from "../Fixture"
-import { Is } from "./Is"
+import { Is } from "../Is"
 
 export class BooleanTest extends Fixture {
 	constructor() {
