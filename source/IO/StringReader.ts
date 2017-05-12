@@ -31,9 +31,10 @@ export class StringReader extends Reader {
 	private lastContent: string = ""
 	constructor(private content: string, private path?: string) {
 		super()
+		this.content += '\0'
 		this.lastPosition = this.getLocation()
 		if (!this.path)
-			this.path = ""
+			this.path = content
 	}
 	isEmpty(): boolean {
 		return this.count >= this.content.length
