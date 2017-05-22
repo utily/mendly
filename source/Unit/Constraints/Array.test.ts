@@ -27,7 +27,7 @@ export class ArrayTest extends Fixture {
 	constructor() {
 		super("Unit.Constraints.Array")
 		this.add("empty", () => {
-			this.expect(<boolean[]>[], Is.equal.to(<boolean[]>[]))
+			this.expect([] as boolean[], Is.equal.to([] as boolean[]))
 		})
 	}
 }

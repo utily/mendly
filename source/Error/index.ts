@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 export { ConsoleHandler } from "./ConsoleHandler"
-export { Handler } from "./Handler"
+export { Handlerr } from "./Handler"
 export { Level } from "./Level"
 export { Location } from "./Location"
 export { Message } from "./Message"

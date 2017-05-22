@@ -23,8 +23,8 @@
 import * as Error from "../Error"
 import * as IO from "../IO"
 
-export class ErrorHandler implements Error.Handler {
-	constructor(private errorHandler: Error.Handler, private region: Error.Region) {
+export class ErrorHandler implements Error.Handlerr {
+	constructor(private errorHandler: ErrorHandlerer, private region: Error.Region) {
 	}
 	raise(message: string | Error.Message, level?: Error.Level, type?: Error.Type, region?: Error.Region): void {
 		if (!level)

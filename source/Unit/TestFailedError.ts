@@ -26,11 +26,11 @@ import { Test } from "./Test"
 export class TestFailedError implements Error {
 	readonly name = "TestFailedError"
 	expectId: number
-	private _test: Test
-	get test() { return this._test }
+	private testField: Test
+	get test() { return this.testField }
 	set test(value: Test) {
 		this.message = value.name
-		this._test = value
+		this.testField = value
 	}
 	constructor(readonly value: any, readonly constraint: Constraints.Constraint, public message = "")
 	{

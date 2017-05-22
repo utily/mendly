@@ -26,7 +26,7 @@ import { Position } from "./Position"
 import { Location } from "./Location"
 import { Region } from "./Region"
 import { Message } from "./Message"
-import { Handler } from "./Handler"
+import { Handlerr } from "./Handler"
 
 export class ConsoleHandler implements Handler {
 	raise(message: string | Message, level?: Level, type?: Type, region?: Region): void {

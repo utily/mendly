@@ -31,5 +31,5 @@ export {
 	IO,
 	Unit,
 	Uri,
-	Utilities
+	Utilities,
 }

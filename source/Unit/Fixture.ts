@@ -30,7 +30,7 @@ import { ErrorHandler } from "./ErrorHandler"
 export abstract class Fixture {
 	private tests: Test[] = []
 	private expectCounter = 0
-	private errorHandler: Error.Handler
+	private errorHandler: Error.Handlerr
 	constructor(readonly name: string, private reportOnPass?: boolean) {
 		if (reportOnPass == undefined)
 			this.reportOnPass = true

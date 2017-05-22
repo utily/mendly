@@ -30,6 +30,6 @@ import { Message } from "./Message"
 export interface Handler {
 	raise: {
 		(message: Message): void
-		(message: string, level?: Level, type?: Type, region?: Region): void
+		(message: string, level?: Level, type?: Type, region?: Region): void,
 	}
 }
