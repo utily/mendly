@@ -29,15 +29,18 @@ export class StringReader extends Reader {
 	private column: number = 1
 	private lastPosition: Error.Position
 	private lastContent: string = ""
+	get isEmpty(): boolean {
+		return this.count >= this.content.length
+	}
+	get resource(): string { return this.path }
+	get location(): Error.Location { return new Error.Location(this.path, this.line, this.column) }
+	get region(): Error.Region { return new Error.Region(this.path, this.lastPosition, this.location, this.lastContent) }
 	constructor(private content: string, private path?: string) {
 		super()
 		this.content += '\0'
-		this.lastPosition = this.getLocation()
+		this.lastPosition = this.location
 		if (!this.path)
 			this.path = content
-	}
-	isEmpty(): boolean {
-		return this.count >= this.content.length
 	}
 	read(): string {
 		var result: string
@@ -56,12 +59,9 @@ export class StringReader extends Reader {
 		}
 		return result
 	}
-	getResource(): string { return this.path }
-	getLocation(): Error.Location { return new Error.Location(this.path, this.line, this.column) }
-	getRegion(): Error.Region { return new Error.Region(this.path, this.lastPosition, this.getLocation(), this.lastContent) }
 	mark(): Error.Region {
-		var result = this.getRegion()
-		this.lastPosition = this.getLocation()
+		var result = this.region
+		this.lastPosition = this.location
 		this.lastContent = ""
 		return result
 	}

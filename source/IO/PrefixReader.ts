@@ -27,22 +27,22 @@ import { BufferedReader } from "./BufferedReader"
 export class PrefixReader {
 	private done = false
 	private backend: BufferedReader
+	get isEmpty(): boolean {
+		return this.done || this.backend.isEmpty
+	}
+	get resource(): string { return this.backend.resource }
+	get location(): Error.Location { return this.backend.location }
+	get region(): Error.Region { return this.backend.region }
 	constructor(backend: Reader, private prefix: string | string[]) {
 		this.backend = backend instanceof(BufferedReader) ? backend : new BufferedReader(backend)
 	}
-	isEmpty(): boolean {
-		return this.done || this.backend.isEmpty()
-	}
 	read(): string {
 		var result: string
-		if (!this.isEmpty()) {
+		if (!this.isEmpty) {
 			result = this.backend.read()
 			this.done = result == "\n" && !this.backend.readIf(this.prefix) && !this.backend.peekIs("\n")
 		}
 		return result
 	}
-	getResource(): string { return this.backend.getResource() }
-	getLocation(): Error.Location { return this.backend.getLocation() }
-	getRegion(): Error.Region { return this.backend.getRegion() }
 	mark(): Error.Region { return this.backend.mark() }
 }

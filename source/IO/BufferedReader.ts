@@ -25,22 +25,30 @@ import { Reader } from "./Reader"
 
 export { Reader } from "./Reader"
 export class BufferedReader extends Reader {
-	buffer: { data: string, location: Error.Location }[] = []
+	private buffer: { data: string, location: Error.Location }[] = []
 	private lastMark: Error.Location
 	private lastContent: string = ""
+	get isEmpty(): boolean { return (this.buffer.length == 0 || this.buffer[0].data == "\0") && this.backend.isEmpty }
+	get resource(): string {
+		var location = this.location
+		return location ? location.resource : undefined
+	}
+	get location(): Error.Location {
+		return this.buffer && this.buffer.length > 0 ? this.buffer[0].location : this.backend.location
+	}
+	get region(): Error.Region {
+		return new Error.Region(this.resource, this.lastMark, this.location, this.lastContent)
+	}
 	constructor(private backend: Reader) {
 		super()
-		this.lastMark = this.getLocation()
-	}
-	isEmpty(): boolean {
-		return (this.buffer.length == 0 || this.buffer[0].data == "\0") && this.backend.isEmpty()
+		this.lastMark = this.location
 	}
 	peek(length?: number): string {
 		if (!length)
 			length = 1
 		var next: string = null
 		while (length > this.buffer.length && (next = this.backend.read()))
-			this.buffer.push({ data: next, location: this.backend.getLocation() })
+			this.buffer.push({ data: next, location: this.backend.location })
 		return this.buffer.length == 0 ? undefined : this.buffer.slice(0, length > this.buffer.length ? this.buffer.length : length).map(value => value.data).join("")
 	}
 	read(length?: number): string {
@@ -81,19 +89,9 @@ export class BufferedReader extends Reader {
 			result += this.read()
 		return result != "" ? result : undefined
 	}
-	getResource(): string {
-		var location = this.getLocation()
-		return location ? location.getResource() : undefined
-	}
-	getLocation(): Error.Location {
-		return this.buffer && this.buffer.length > 0 ? this.buffer[0].location : this.backend.getLocation()
-	}
-	getRegion(): Error.Region {
-		return new Error.Region(this.getResource(), this.lastMark, this.getLocation(), this.lastContent)
-	}
 	mark(): Error.Region {
-		var result = this.getRegion()
-		this.lastMark = this.getLocation()
+		var result = this.region
+		this.lastMark = this.location
 		this.lastContent = ""
 		return result
 	}

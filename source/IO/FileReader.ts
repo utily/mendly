@@ -27,6 +27,10 @@ import { StringReader } from "./StringReader"
 
 export class FileReader extends Reader {
 	private backend: Reader
+	get isEmpty(): boolean { return this.backend.isEmpty }
+	get resource(): string { return this.backend ? this.backend.resource : null }
+	get location(): Error.Location { return this.backend.location }
+	get region(): Error.Region { return this.backend.region }
 	constructor(path: string) {
 		super()
 		try {
@@ -36,11 +40,7 @@ export class FileReader extends Reader {
 			this.backend = new StringReader("", path)
 		}
 	}
-	isEmpty(): boolean { return this.backend.isEmpty() }
 	read(): string { return this.backend.read() }
-	getResource(): string { return this.backend ? this.backend.getResource() : null }
-	getLocation(): Error.Location { return this.backend.getLocation() }
-	getRegion(): Error.Region { return this.backend.getRegion() }
 	mark(): Error.Region { return this.backend.mark() }
 }
 Reader.addOpener((path, extension) => {

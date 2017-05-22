@@ -23,11 +23,11 @@
 import * as Error from "../Error"
 
 export abstract class Reader {
-	abstract isEmpty(): boolean
+	abstract get isEmpty(): boolean
+	abstract get resource(): string
+	abstract get location(): Error.Location
+	abstract get region(): Error.Region
 	abstract read(): string
-	abstract getResource(): string
-	abstract getLocation(): Error.Location
-	abstract getRegion(): Error.Region
 	abstract mark(): Error.Region
 	private static openers: { open: ((path: string, extension: string) => Reader), priority: number }[] = []
 	static addOpener(open: (path: string, extension: string) => Reader, priority?: number) {

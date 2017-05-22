@@ -27,15 +27,18 @@ import { BufferedReader } from "./BufferedReader"
 export class UntilReader {
 	private done = -1
 	private backend: BufferedReader
+	get isEmpty(): boolean {
+		return this.done == 0 || this.backend.isEmpty
+	}
+	get resource(): string { return this.backend.resource }
+	get location(): Error.Location { return this.backend.location }
+	get region(): Error.Region { return this.backend.region }
 	constructor(backend: Reader, private endMark: string | string[]) {
 		this.backend = backend instanceof(BufferedReader) ? backend : new BufferedReader(backend)
 	}
-	isEmpty(): boolean {
-		return this.done == 0 || this.backend.isEmpty()
-	}
 	read(): string {
 		var result: string
-		if (!this.isEmpty()) {
+		if (!this.isEmpty) {
 			result = this.backend.read()
 			var peeked: string
 			if (this.done > 0)
@@ -45,8 +48,5 @@ export class UntilReader {
 		}
 		return result
 	}
-	getResource(): string { return this.backend.getResource() }
-	getLocation(): Error.Location { return this.backend.getLocation() }
-	getRegion(): Error.Region { return this.backend.getRegion() }
 	mark(): Error.Region { return this.backend.mark() }
 }

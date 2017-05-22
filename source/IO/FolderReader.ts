@@ -31,6 +31,10 @@ export class FolderReader extends Reader {
 	private files: string[]
 	private current: Reader
 	private lastLocation: Error.Location
+	get isEmpty(): boolean { return this.files.length == 0 && (!this.current || this.current.isEmpty) }
+	get resource(): string { return this.current ? this.current.resource : this.lastLocation.resource }
+	get location(): Error.Location { return this.current ? this.current.location : this.lastLocation }
+	get region(): Error.Region { return this.current.region }
 	constructor(private path: string, extension: string) {
 		super()
 		try {
@@ -39,9 +43,6 @@ export class FolderReader extends Reader {
 			console.error(`Failed to open folder: ${path}`)
 			this.files = []
 		}
-	}
-	isEmpty(): boolean {
-		return this.files.length == 0 && (!this.current || this.current.isEmpty())
 	}
 	read(): string {
 		var result: string = null
@@ -54,12 +55,9 @@ export class FolderReader extends Reader {
 				result = "\0"
 			}
 		}
-		this.lastLocation = this.getLocation()
+		this.lastLocation = this.location
 		return result
 	}
-	getResource(): string { return this.current ? this.current.getResource() : this.lastLocation.getResource() }
-	getLocation(): Error.Location { return this.current ? this.current.getLocation() : this.lastLocation }
-	getRegion(): Error.Region { return this.current.getRegion() }
 	mark(): Error.Region { return this.current.mark() }
 
 	private static getFiles(folder: string, filetype: string, ignoreFiles?: string[]): string[] {
