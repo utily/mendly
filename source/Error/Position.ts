@@ -21,9 +21,13 @@
 // SOFTWARE.
 
 export class Position {
-	constructor(private line: number, private column: number) { }
-	getLine() { return this.line }
-	getColumn() { return this.column }
+	readonly line: number
+	readonly column: number
+	constructor(line: number, column: number)
+	{
+		this.line = line
+		this.column = column
+	}
 	toString() {
 		return "Ln " + this.line + ", Col " + this.column
 	}

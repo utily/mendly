@@ -23,9 +23,10 @@
 import { Position } from "./Position"
 
 export class Location extends Position {
-	getResource(): string { return this.resource }
-	constructor(private resource: string, line: number, column: number) {
+	readonly resource: string
+	constructor(resource: string, line: number, column: number) {
 		super(line, column)
+		this.resource = resource
 	}
 	toString() {
 		return this.resource + " @ " + super.toString()

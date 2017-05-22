@@ -24,11 +24,17 @@ import { Position } from "./Position"
 import { Location } from "./Location"
 
 export class Region {
-	constructor(private resource: string, private start?: Position, private end?: Position, private content?: string) { }
-	getResource() { return this.resource }
-	getStart() { return this.start }
-	getEnd() { return this.end }
-	getContent() { return this.content; }
+	readonly resource: string
+	readonly start: Position
+	readonly end: Position
+	readonly content: string
+	constructor(resource: string, start?: Position, end?: Position, content?: string)
+	{
+		this.resource = resource
+		this.start = start
+		this.end = end
+		this.content = content
+	}
 	merge(other: Region) { return new Region(this.resource, this.start, other.end, this.content + other.content) }
 	toString() {
 		var result = this.resource
