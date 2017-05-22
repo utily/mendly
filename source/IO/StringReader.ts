@@ -30,7 +30,7 @@ export class StringReader extends Reader {
 	private lastPosition: Error.Position
 	private lastContent: string = ""
 	get isEmpty(): boolean {
-		return this.count >= this.content.length
+		return this.count + 1 >= this.content.length
 	}
 	get resource(): string { return this.path }
 	get location(): Error.Location { return new Error.Location(this.path, this.line, this.column) }
