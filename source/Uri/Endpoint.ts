@@ -21,13 +21,7 @@
 // SOFTWARE.
 
 export class Endpoint {
-	constructor(private host: string[], private port: number) {
-	}
-	getHost(): string[] {
-		return this.host
-	}
-	getPort(): number {
-		return this.port
+	constructor(readonly host: string[], readonly port: number) {
 	}
 	toString(): string {
 		var result = this.host.join(".")

@@ -21,13 +21,7 @@
 // SOFTWARE.
 
 export class User {
-	constructor(private name: string, private password: string) {
-	}
-	getName(): string {
-		return this.name
-	}
-	getPassword(): string {
-		return this.password
+	constructor(readonly name: string, readonly password: string) {
 	}
 	toString(): string {
 		var result: string

@@ -23,31 +23,16 @@
 import { Authority } from "./Authority"
 
 export class Locator {
-	constructor(private scheme: string[], private authority: Authority, private path: string[], private query: { [key: string]: string }, private fragment: string) {
+	constructor(readonly scheme: string[], readonly authority: Authority, readonly path: string[], readonly query: { [key: string]: string }, readonly fragment: string) {
 	}
-	isRelative(): boolean {
+	get isRelative(): boolean {
 		return this.path[0] == "." || this.path[0] == ".."
 	}
-	isFolder(): boolean {
+	get isFolder(): boolean {
 		return this.path[this.path.length - 1] == ""
 	}
-	getScheme(): string[] {
-		return this.scheme
-	}
-	getAuthority(): Authority {
-		return this.authority
-	}
-	getPath(): string[] {
-		return this.path
-	}
-	getQuery(): { [key: string]: string } {
-		return this.query
-	}
-	getFragment(): string {
-		return this.fragment
-	}
-	getFolder(): Locator {
-		return this.isFolder() ? this : new Locator(this.scheme, this.authority, this.path.filter((value, index) => index < this.path.length - 1), this.query, this.fragment)
+	get folder(): Locator {
+		return this.isFolder ? this : new Locator(this.scheme, this.authority, this.path.filter((value, index) => index < this.path.length - 1), this.query, this.fragment)
 	}
 	private createArray<T>(value: T, count: number): T[] {
 		var result: T[] = []
@@ -72,7 +57,7 @@ export class Locator {
 		return new Locator(this.scheme, this.authority, path, this.query, this.fragment)
 	}
 	resolve(absolute: Locator): Locator {
-		return new Locator(this.scheme ? this.scheme : absolute.getScheme(), this.authority ? this.authority : absolute.getAuthority(), this.isRelative() ? absolute.getFolder().getPath().concat(this.path) : this.path, this.query, this.fragment).normalize()
+		return new Locator(this.scheme ? this.scheme : absolute.scheme, this.authority ? this.authority : absolute.authority, this.isRelative ? absolute.folder.path.concat(this.path) : this.path, this.query, this.fragment).normalize()
 	}
 	toString(): string {
 		var result = ""

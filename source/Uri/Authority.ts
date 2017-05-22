@@ -24,13 +24,7 @@ import { User } from "./User"
 import { Endpoint } from "./Endpoint"
 
 export class Authority {
-	constructor(private user: User, private endpoint: Endpoint) {
-	}
-	getUser(): User {
-		return this.user
-	}
-	getEndpoint(): Endpoint {
-		return this.endpoint
+	constructor(readonly user: User, readonly endpoint: Endpoint) {
 	}
 	toString(): string {
 		var result: string
