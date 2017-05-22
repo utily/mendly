@@ -37,13 +37,13 @@ export class StringReader extends Reader {
 	get region(): Error.Region { return new Error.Region(this.path, this.lastPosition, this.location, this.lastContent) }
 	constructor(private content: string, private path?: string) {
 		super()
-		this.content += '\0'
+		this.content += "\0"
 		this.lastPosition = this.location
 		if (!this.path)
 			this.path = content
 	}
 	read(): string {
-		var result: string
+		const result: string
 		if (this.count < this.content.length)
 			result = this.content.charAt(this.count)
 		else if (this.count == this.content.length)
@@ -60,7 +60,7 @@ export class StringReader extends Reader {
 		return result
 	}
 	mark(): Error.Region {
-		var result = this.region
+		const result = this.region
 		this.lastPosition = this.location
 		this.lastContent = ""
 		return result

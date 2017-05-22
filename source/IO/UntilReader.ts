@@ -34,13 +34,13 @@ export class UntilReader {
 	get location(): Error.Location { return this.backend.location }
 	get region(): Error.Region { return this.backend.region }
 	constructor(backend: Reader, private endMark: string | string[]) {
-		this.backend = backend instanceof(BufferedReader) ? backend : new BufferedReader(backend)
+		this.backend = backend instanceof BufferedReader ? backend : new BufferedReader(backend)
 	}
 	read(): string {
-		var result: string
+		const result: string
 		if (!this.isEmpty) {
 			result = this.backend.read()
-			var peeked: string
+			const peeked: string
 			if (this.done > 0)
 				this.done--
 			else if (peeked = this.backend.peekIs(this.endMark))

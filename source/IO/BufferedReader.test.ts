@@ -28,19 +28,19 @@ import { BufferedReader } from "./BufferedReader"
 export class BufferedReaderTest extends Fixture {
 	constructor() {
 		super("IO.BufferedReader")
-		var errorHandler = new Error.ConsoleHandler()
+		const errorHandler = new Error.ConsoleHandler()
 		this.add("empty", () => {
-			var br = new BufferedReader(new StringReader(""))
+			const br = new BufferedReader(new StringReader(""))
 			this.expect(br.isEmpty)
 		})
 		this.add("state check", () => {
-			var br = new BufferedReader(new StringReader(""))
+			const br = new BufferedReader(new StringReader(""))
 			this.expect(br.location, Is.not.nullOrUndefined)
 			this.expect(br.region, Is.not.nullOrUndefined)
 			this.expect(br.resource, Is.not.nullOrUndefined)
 		})
 		this.add("peek", () => {
-			var br = new BufferedReader(new StringReader("foobar"))
+			const br = new BufferedReader(new StringReader("foobar"))
 			this.expect(br.peek(1), Is.equal.to("f"))
 			this.expect(br.peek(2), Is.equal.to("fo"))
 			this.expect(br.peek(3), Is.equal.to("foo"))
@@ -49,7 +49,7 @@ export class BufferedReaderTest extends Fixture {
 			this.expect(br.peek(6), Is.equal.to("foobar"))
 		})
 		this.add("read one at a time", () => {
-			var br = new BufferedReader(new StringReader("abcdef"))
+			const br = new BufferedReader(new StringReader("abcdef"))
 			this.expect(br.read(), Is.equal.to("a"))
 			this.expect(br.read(), Is.equal.to("b"))
 			this.expect(br.read(), Is.equal.to("c"))
@@ -58,18 +58,18 @@ export class BufferedReaderTest extends Fixture {
 			this.expect(br.read(), Is.equal.to("f"))
 		})
 		this.add("read three at a time", () => {
-			var br = new BufferedReader(new StringReader("abcdef"))
+			const br = new BufferedReader(new StringReader("abcdef"))
 			this.expect(br.read(3), Is.equal.to("abc"))
 			this.expect(br.read(3), Is.equal.to("def"))
 		})
 		this.add("read three at a time with a newline", () => {
-			var br = new BufferedReader(new StringReader("abc\ndef"))
+			const br = new BufferedReader(new StringReader("abc\ndef"))
 			this.expect(br.read(3), Is.equal.to("abc"))
 			this.expect(br.read(1), Is.equal.to("\n"))
 			this.expect(br.read(3), Is.equal.to("def"))
 		})
 		this.add("string location", () => {
-			var br = new BufferedReader(new StringReader("abc\ndef"))
+			const br = new BufferedReader(new StringReader("abc\ndef"))
 			this.expect(br.location.column, Is.equal.to(1))
 			this.expect(br.location.line, Is.equal.to(1))
 			br.read()
@@ -94,7 +94,7 @@ export class BufferedReaderTest extends Fixture {
 			this.expect(br.isEmpty)
 		})
 		this.add("tabs and newlines location", () => {
-			var br = new BufferedReader(new StringReader("\t\t\t\n\t\t\t"))
+			const br = new BufferedReader(new StringReader("\t\t\t\n\t\t\t"))
 			this.expect(br.location.column, Is.equal.to(1))
 			this.expect(br.location.line, Is.equal.to(1))
 			br.read()
@@ -119,10 +119,10 @@ export class BufferedReaderTest extends Fixture {
 			this.expect(br.isEmpty)
 		})
 		this.add("mark", () => {
-			var br = new BufferedReader(new StringReader("abc\0"))
+			const br = new BufferedReader(new StringReader("abc\0"))
 			this.expect(br.mark(), Is.not.nullOrUndefined)
 			br.read(); br.read(); br.read()
-			var region = br.region
+			const region = br.region
 			this.expect(region.start.line, Is.equal.to(1))
 			this.expect(region.start.column, Is.equal.to(1))
 			this.expect(region.end.line, Is.equal.to(1))

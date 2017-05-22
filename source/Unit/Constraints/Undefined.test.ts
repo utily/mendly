@@ -30,11 +30,11 @@ export class UndefinedTest extends Fixture {
 			this.expect(undefined, Is.undefined)
 		})
 		this.add("undefined 2", () => {
-			var s: string
+			const s: string
 			this.expect(s, Is.undefined)
 		})
 		this.add("undefined 3", () => {
-			var s: string = ""
+			const s: string = ""
 			this.expect(s, Is.not.undefined)
 		})
 	}

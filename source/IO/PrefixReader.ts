@@ -34,10 +34,10 @@ export class PrefixReader {
 	get location(): Error.Location { return this.backend.location }
 	get region(): Error.Region { return this.backend.region }
 	constructor(backend: Reader, private prefix: string | string[]) {
-		this.backend = backend instanceof(BufferedReader) ? backend : new BufferedReader(backend)
+		this.backend = backend instanceof BufferedReader ? backend : new BufferedReader(backend)
 	}
 	read(): string {
-		var result: string
+		const result: string
 		if (!this.isEmpty) {
 			result = this.backend.read()
 			this.done = result == "\n" && !this.backend.readIf(this.prefix) && !this.backend.peekIs("\n")

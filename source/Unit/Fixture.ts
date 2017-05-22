@@ -40,8 +40,8 @@ export abstract class Fixture {
 		this.tests.push(new Test(name, action))
 	}
 	run(debug?: boolean): boolean {
-		var failures: TestFailedError[] = []
-		var result = true
+		const failures: TestFailedError[] = []
+		const result = true
 		this.tests.forEach(test => {
 			if (debug)
 				test.run()
@@ -50,7 +50,7 @@ export abstract class Fixture {
 					test.run()
 				} catch (error) {
 					if (error instanceof TestFailedError) {
-						var e = <TestFailedError>error
+						const e = error as TestFailedError
 						e.test = test
 						e.expectId = this.expectCounter
 						failures.push(e)
@@ -67,12 +67,12 @@ export abstract class Fixture {
 			this.prettyPrintTestResult(result)
 		if (!result) {
 			failures.forEach(failure => {
-				var expectedMessage = "expected '" + failure.constraint.expectedValue + "', found '" + failure.value + "'"
-				var whereMessage = "[expect #" + failure.expectId + " in '" + failure.test.toString() + "']"
+				const expectedMessage = "expected '" + failure.constraint.expectedValue + "', found '" + failure.value + "'"
+				const whereMessage = "[expect #" + failure.expectId + " in '" + failure.test.toString() + "']"
 				this.errorHandler.raise("  -> " + expectedMessage + " " + whereMessage)
 			})
 		}
-		return result;
+		return result
 	}
 	expect(value: any, constraint?: Constraints.Constraint): void {
 		this.expectCounter++
@@ -86,10 +86,10 @@ export abstract class Fixture {
 	// test results in the terminal.
 	//
 	private prettyPrintTestResult(success: boolean) {
-		var coloredString = "\x1b[" + (success ? "32mpassed" : "31mfailed")
-		var colorReset = "\x1b[0m"
-		var message = coloredString + colorReset
-		var result = Utilities.String.padRight(this.name, ".", 50) + ": " + message
+		const coloredString = "\x1b[" + (success ? "32mpassed" : "31mfailed")
+		const colorReset = "\x1b[0m"
+		const message = coloredString + colorReset
+		const result = Utilities.String.padRight(this.name, ".", 50) + ": " + message
 		console.log(result)
 	}
 

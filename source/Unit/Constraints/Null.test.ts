@@ -30,11 +30,11 @@ export class NullTest extends Fixture {
 			this.expect(null, Is.null)
 		})
 		this.add("null 2", () => {
-			var s: string = null
+			const s: string = null
 			this.expect(s, Is.null)
 		})
 		this.add("null 3", () => {
-			var s: string = ""
+			const s: string = ""
 			this.expect(s, Is.not.null)
 		})
 	}

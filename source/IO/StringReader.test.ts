@@ -27,19 +27,19 @@ import { StringReader } from "./StringReader"
 export class StringReaderTest extends Fixture {
 	constructor() {
 		super("IO.StringReader")
-		var errorHandler = new Error.ConsoleHandler()
+		const errorHandler = new Error.ConsoleHandler()
 		this.add("empty", () => {
-			var sr = new StringReader("")
+			const sr = new StringReader("")
 			this.expect(sr.isEmpty)
 		})
 		this.add("state check", () => {
-			var sr = new StringReader("")
+			const sr = new StringReader("")
 			this.expect(sr.location, Is.not.nullOrUndefined)
-			//this.expect(sr.region, Is.NullOrUndefined())
+			// this.expect(sr.region, Is.NullOrUndefined())
 			this.expect(sr.resource, Is.not.nullOrUndefined)
 		})
 		this.add("simple string", () => {
-			var sr = new StringReader("abcdef")
+			const sr = new StringReader("abcdef")
 			this.expect(sr.read(), Is.equal.to("a"))
 			this.expect(sr.read(), Is.equal.to("b"))
 			this.expect(sr.read(), Is.equal.to("c"))
@@ -48,7 +48,7 @@ export class StringReaderTest extends Fixture {
 			this.expect(sr.read(), Is.equal.to("f"))
 		})
 		this.add("simple string with location", () => {
-			var sr = new StringReader("abc\ndef")
+			const sr = new StringReader("abc\ndef")
 			this.expect(sr.location.column, Is.equal.to(1))
 			this.expect(sr.location.line, Is.equal.to(1))
 			sr.read()
@@ -73,7 +73,7 @@ export class StringReaderTest extends Fixture {
 			this.expect(sr.isEmpty)
 		})
 		this.add("tabs and newlines", () => {
-			var sr = new StringReader("\t\t\t\n\t\t\t")
+			const sr = new StringReader("\t\t\t\n\t\t\t")
 			this.expect(sr.location.column, Is.equal.to(1))
 			this.expect(sr.location.line, Is.equal.to(1))
 			sr.read()
@@ -98,10 +98,10 @@ export class StringReaderTest extends Fixture {
 			this.expect(sr.isEmpty)
 		})
 		this.add("mark", () => {
-			var sr = new StringReader("abc\0")
+			const sr = new StringReader("abc\0")
 			this.expect(sr.mark(), Is.not.nullOrUndefined)
 			sr.read(); sr.read(); sr.read()
-			var region = sr.region
+			const region = sr.region
 			this.expect(region.start.line, Is.equal.to(1))
 			this.expect(region.start.column, Is.equal.to(1))
 			this.expect(region.end.line, Is.equal.to(1))

@@ -30,7 +30,7 @@ export class BufferedReader extends Reader {
 	private lastContent: string = ""
 	get isEmpty(): boolean { return (this.buffer.length == 0 || this.buffer[0].data == "\0") && this.backend.isEmpty }
 	get resource(): string {
-		var location = this.location
+		const location = this.location
 		return location ? location.resource : undefined
 	}
 	get location(): Error.Location {
@@ -46,7 +46,7 @@ export class BufferedReader extends Reader {
 	peek(length?: number): string {
 		if (!length)
 			length = 1
-		var next: string = null
+		const next: string = null
 		while (length > this.buffer.length && (next = this.backend.read()))
 			this.buffer.push({ data: next, location: this.backend.location })
 		return this.buffer.length == 0 ? undefined : this.buffer.slice(0, length > this.buffer.length ? this.buffer.length : length).map(value => value.data).join("")
@@ -54,7 +54,7 @@ export class BufferedReader extends Reader {
 	read(length?: number): string {
 		if (!length)
 			length = 1
-		var result = this.peek(length)
+		const result = this.peek(length)
 		if (result) {
 			if (this.buffer.length >= result.length && result.length > 0) {
 				this.buffer.splice(0, result.length)
@@ -64,33 +64,33 @@ export class BufferedReader extends Reader {
 		return result
 	}
 	peekIs(value: string | string[], count?: number): string {
-		var result: string
+		const result: string
 		if (value)
 			if (typeof(value) == "string") {
 				while (count && count-- > 0)
-					value += <string>value
-				result = (this.peek(value.length) == <string>value ? <string>value : undefined)
-			} else if ((<string[]>value).length > 0 && !(result = this.peekIs((<string[]>value)[0])) && (<string[]>value).length > 1)
-				result = this.peekIs((<string[]>value).slice(1))
+					value += value as string
+				result = (this.peek(value.length) == value as string ? value as string : undefined)
+			} else if ((value as string).length > 0 && !(result = this.peekIs((value as string[])[0])) && (value as string[]).length )
+				result = this.peekIs((value as string[]).slice(1))
 		return result
 	}
 	readIf(value: string|string[]): string {
-		var result: string
+		const result: string
 		if (value)
 			if (typeof(value) == "string")
-				result = (this.peek(value.length) == <string>value ? this.read(value.length) : undefined)
-			else if ((<string[]>value).length > 0 && !(result = this.readIf((<string[]>value)[0])) && (<string[]>value).length > 1)
-				result = this.readIf((<string[]>value).slice(1))
+				result = (this.peek(value.length) == value as string ? this.read(value.length) : undefined)
+			else if ((value as string[]).length > 0 && !(result = this.readIf((value as string[])[0])) && (value as string[]).length )
+				result = this.readIf((value as string[]).slice(1))
 		return result
 	}
-	readAll() : string {
-		var result = ""
+	readAll(): string {
+		const result = ""
 		while (this.peek())
 			result += this.read()
 		return result != "" ? result : undefined
 	}
 	mark(): Error.Region {
-		var result = this.region
+		const result = this.region
 		this.lastMark = this.location
 		this.lastContent = ""
 		return result

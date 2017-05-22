@@ -29,13 +29,13 @@ export class BufferedIterator<T> implements Iterator<T> {
 	peek(position?: number): T {
 		if (!position)
 			position = 0
-		var next: T = null
+		let next: T = null
 		while (position > this.buffer.length - 1 && (next = this.backend.next()))
 			this.buffer.push(next)
 		return position > this.buffer.length - 1 ? null : this.buffer[position]
 	}
 	next(): T {
-		var result = this.peek(0)
+		const result = this.peek(0)
 		if (this.buffer.length > 0)
 			this.buffer.shift()
 		return result

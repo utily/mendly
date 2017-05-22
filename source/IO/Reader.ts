@@ -33,12 +33,12 @@ export abstract class Reader {
 	static addOpener(open: (path: string, extension: string) => Reader, priority?: number) {
 		if (!priority)
 			priority = 0
-		Reader.openers.push({ open: open, priority: priority})
+		Reader.openers.push({ open, priority})
 		Reader.openers = Reader.openers.sort((left, right) => right.priority - left.priority)
 	}
 	static open(path: string, extension: string): Reader {
-		var result: Reader
-		var i = 0
+		const result: Reader
+		const i = 0
 		do
 			result = Reader.openers[i++].open(path, extension)
 		while (!result && i < Reader.openers.length)

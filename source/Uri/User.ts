@@ -24,7 +24,7 @@ export class User {
 	constructor(readonly name: string, readonly password: string) {
 	}
 	toString(): string {
-		var result: string
+		const result: string
 		if (this.name)
 			result = this.name
 		if (this.password)
@@ -32,9 +32,9 @@ export class User {
 		return result
 	}
 	static parse(data: string): User {
-		var result: User
+		const result: User
 		if (data) {
-			var splitted = data.split(":", 2)
+			const splitted = data.split(":", 2)
 			result = new User(splitted[0], splitted[1])
 		}
 		return result

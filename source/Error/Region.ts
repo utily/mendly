@@ -37,7 +37,7 @@ export class Region {
 	}
 	merge(other: Region) { return new Region(this.resource, this.start, other.end, this.content + other.content) }
 	toString() {
-		var result = this.resource
+		const result = this.resource
 		if (this.start && this.end)
 			result += " (" + this.start.toString() + " - " + this.end.toString() + ") "
 		if (this.content)

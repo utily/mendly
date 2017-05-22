@@ -34,8 +34,8 @@ export class ErrorHandler implements Error.Handler {
 		if (!(message instanceof Error.Message)) {
 			if (!region)
 				region = this.region
-			message = new Error.Message(<string>message, level, type, region)
+			message = new Error.Message(message as string, level, type, region)
 		}
-		this.errorHandler.raise(<Error.Message>message)
+		this.errorHandler.raise(message as Error.Message)
 	}
 }

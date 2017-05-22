@@ -32,10 +32,10 @@ export class CompareConstraint extends Constraint {
 		return this.compare(value, this.correct)
 	}
 	compare(left: any, right: any): boolean {
-		var result = false
-		var type = typeof(left)
+		const result = false
+		const type = typeof(left)
 		if (type == typeof(right)) {
-			switch(type) {
+			switch (type) {
 				case "number":
 				case "string":
 				case "boolean":
@@ -43,10 +43,10 @@ export class CompareConstraint extends Constraint {
 					break
 				case "object":
 					if (!(result = left == right)) {
-						if (left instanceof(Array) && right instanceof(Array)) {
-							if (result = (<Array<any>>left).length == (<Array<any>>right).length)
-								for (var i = 0; result && i < (<Array<any>>left).length; i++)
-									result = this.compare((<Array<any>>left)[i], (<Array<any>>right)[i])
+						if (left instanceof Array && right instanceof Array) {
+							if (result = left.length == right.length)
+								for (let i = 0; result && i < left.length; i++)
+									result = this.compare(left, right)
 						} else
 							console.log(type)
 					}

@@ -2,7 +2,6 @@
 	"version": "0.1.0",
 	"command": "npm",
 	"isShellCommand": true,
-	"showOutput": "always",
 	"suppressTaskName": true,
 	"tasks": [
 		{
@@ -17,62 +16,25 @@
 			"taskName": "dev",
 			"args": ["dev"],
 			"isBackground": true,
-			"problemMatcher": {
-				"owner": "tsc",
-				"fileLocation": ["relative", "${workspaceRoot}"],
-				"pattern": {
-					"regexp": "^([\\w,\\/,\\.]+)\\((\\d+),(\\d+)\\):\\s(error)\\s\\w+:\\s+(.+)$",
-					"file": 1,
-					"line": 2,
-					"column": 3,
-					"severity": 4,
-					"message": 5
-				}
-			}
+			"problemMatcher": [ "$tsc", "$tslint5" ]
 		},
 		{
 			"taskName": "build",
 			"args": ["run", "build"],
 			"isBuildCommand": true,
-			"problemMatcher": {
-				"owner": "tsc",
-				"fileLocation": ["relative", "${workspaceRoot}"],
-				"pattern": {
-					"regexp": "^([\\w,\\/,\\.]+)\\((\\d+),(\\d+)\\):\\s(error)\\s\\w+:\\s+(.+)$",
-					"file": 1,
-					"line": 2,
-					"column": 3,
-					"severity": 4,
-					"message": 5
-				}
-			}
-		},
-		{
-			"taskName": "publish",
-			"args": ["publish"]
+			"problemMatcher": [ "$tsc", "$tslint5" ]
 		},
 		{
 			"taskName": "release",
+			"showOutput": "always",
 			"args": ["run", "release"]
 		},
 		{
 			"taskName": "test",
 			"args": ["run", "test"],
 			"isTestCommand": true,
-			"problemMatcher": [
-				{
-					"owner": "tsc",
-					"fileLocation": ["relative", "${workspaceRoot}"],
-					"pattern": {
-						"regexp": "^([\\w,\/,\\.]+)\\((\\d+),(\\d+)\\):\\s+\\w+\\s+(\\w+):\\s+(.*)$",
-						"file": 1,
-						"line": 2,
-						"column": 3,
-						"severity": 4,
-						"message": 5
-					}
-				}
-			]
+			"showOutput": "always",
+			"problemMatcher": [ "$tsc", "$tslint5" ]
 		}
 	]
 }

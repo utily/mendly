@@ -31,11 +31,11 @@ export class ArrayIteratorTest extends Fixture {
 			this.expect(new ArrayIterator([]).next(), Is.undefined)
 		})
 		this.add("integers", () => {
-			var integers = [1, 2, 4, 8, 16]
-			var iterator = new ArrayIterator(integers)
+			const integers = [1, 2, 4, 8, 16]
+			const iterator = new ArrayIterator(integers)
 			integers.forEach(value => {
 				this.expect(iterator.next(), Is.equal.to(value))
-			});
+			})
 			this.expect(iterator.next(), Is.undefined)
 		})
 	}

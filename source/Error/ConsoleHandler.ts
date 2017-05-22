@@ -31,7 +31,7 @@ import { Handler } from "./Handler"
 export class ConsoleHandler implements Handler {
 	raise(message: string | Message, level?: Level, type?: Type, region?: Region): void {
 		if (!(message instanceof Message))
-			message = new Message(<string>message, level, type, region)
+			message = new Message(message as string, level, type, region)
 		console.error(message.toString())
 	}
 }
