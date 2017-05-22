@@ -5,12 +5,13 @@
 	"files.trimTrailingWhitespace": true,
 	"search.exclude": {
 		"node_modules": true,
+		"build": true,
 		"typings": true,
 		".vscode": true
 	},
 	"files.exclude": {
 		"node_modules": true,
-		"build": false,
+		"build": true,
 		"**/.git": true
 	},
 	"licenser.license": "MIT",
