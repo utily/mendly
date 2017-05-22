@@ -27,19 +27,19 @@ export class EqualTest extends Fixture {
 	constructor() {
 		super("Unit.Constraints.Equal")
 		this.add("true is true", () => {
-			this.expect(true, Is.Equal().To(true))
+			this.expect(true, Is.equal.to(true))
 		})
 		this.add("false is false", () => {
-			this.expect(false, Is.Equal().To(false))
+			this.expect(false, Is.equal.to(false))
 		})
 		this.add("null equals null", () => {
-			this.expect(null, Is.Equal().To(null))
+			this.expect(null, Is.equal.to(null))
 		})
 		this.add("undefined equals undefined", () => {
-			this.expect(undefined, Is.Equal().To(undefined))
+			this.expect(undefined, Is.equal.to(undefined))
 		})
 		this.add("\"foo\" equals \"foo\"", () => {
-			this.expect("foo", Is.Equal().To("foo"))
+			this.expect("foo", Is.equal.to("foo"))
 		})
 	}
 }

@@ -27,16 +27,16 @@ export class EmptyTest extends Fixture {
 	constructor() {
 		super("Unit.Constraints.Empty")
 		this.add("empty string", () => {
-			this.expect("", Is.Empty())
+			this.expect("", Is.empty)
 		})
 		this.add("empty array", () => {
-			this.expect([], Is.Empty())
+			this.expect([], Is.empty)
 		})
 		this.add("string is not empty", () => {
-			this.expect("foobar", Is.Not().Empty())
+			this.expect("foobar", Is.not.empty)
 		})
 		this.add("array is not empty", () => {
-			this.expect([1, 2, 3], Is.Not().Empty())
+			this.expect([1, 2, 3], Is.not.empty)
 		})
 	}
 }

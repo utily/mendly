@@ -23,8 +23,8 @@
 import { Modifier } from "./Modifier"
 
 export abstract class Constraint extends Modifier {
+	abstract get expectedValue(): any
 	constructor(parent?: Modifier) {
 		super(parent)
 	}
-	abstract getExpectedValue(): any
 }

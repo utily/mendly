@@ -27,21 +27,21 @@ export class BooleanTest extends Fixture {
 	constructor() {
 		super("Unit.Constraints.Boolean")
 		this.add("empty string evaluates to false", () => {
-			this.expect("", Is.False())
+			this.expect("", Is.false)
 		})
 		this.add("true is true", () => {
-			this.expect(true, Is.True())
+			this.expect(true, Is.true)
 		})
 		this.add("false is false", () => {
-			this.expect(false, Is.False())
+			this.expect(false, Is.false)
 		})
 		this.add("foo === foo (true)", () => {
-			this.expect("foo" === "foo", Is.True())
+			this.expect("foo" === "foo", Is.true)
 		})
 		this.add("foo === bar (false)", () => {
 			var foo: string = "foo"
 			var bar: string = "bar"
-			this.expect(foo === bar, Is.False())
+			this.expect(foo === bar, Is.false)
 		})
 		this.add("expect true overload", () => {
 			this.expect(null === null)

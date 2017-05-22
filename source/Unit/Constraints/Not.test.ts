@@ -27,29 +27,29 @@ export class NotTest extends Fixture {
 	constructor() {
 		super("Unit.Constraints.Not")
 		this.add("foobar is not null", () => {
-			this.expect("foobar", Is.Not().Null())
+			this.expect("foobar", Is.not.null)
 		})
 		this.add("foobar is not equal to moobar", () => {
-			this.expect("foobar", Is.Not().Equal().To("moobar"))
+			this.expect("foobar", Is.not.equal.to("moobar"))
 		})
 		this.add("foo === bar is not true", () => {
 			var foo: string = "foo"
 			var bar: string = "bar"
-			this.expect(foo === bar, Is.Not().True())
+			this.expect(foo === bar, Is.not.true)
 		})
 		this.add("foo !== bar is not false", () => {
 			var foo: string = "foo"
 			var bar: string = "bar"
-			this.expect(foo !== bar, Is.Not().False())
+			this.expect(foo !== bar, Is.not.false)
 		})
 		this.add("null is not undefined", () => {
-			this.expect(null, Is.Not().Undefined())
+			this.expect(null, Is.not.undefined)
 		})
 		this.add("undefined is not null", () => {
-			this.expect(undefined, Is.Not().Null())
+			this.expect(undefined, Is.not.null)
 		})
 		this.add("empty string is not null nor undefined", () => {
-			this.expect("", Is.Not().NullOrUndefined())
+			this.expect("", Is.not.nullOrUndefined)
 		})
 	}
 }

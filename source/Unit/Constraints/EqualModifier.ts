@@ -28,7 +28,7 @@ export class EqualModifier extends Modifier {
 	constructor(parent?: Modifier) {
 		super(parent)
 	}
-	To(correct: any): CompareConstraint {
+	to(correct: any): CompareConstraint {
 		return new CompareConstraint(correct, this)
 	}
 }

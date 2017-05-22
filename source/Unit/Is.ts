@@ -23,12 +23,12 @@
 import * as Constraints from "./Constraints"
 
 export class Is {
-	static True(): Constraints.TrueConstraint	{ return new Constraints.TrueConstraint() }
-	static False(): Constraints.FalseConstraint { return new Constraints.FalseConstraint() }
-	static Null():  Constraints.NullConstraint{ return new Constraints.NullConstraint() }
-	static NullOrUndefined(): Constraints.NullOrUndefinedConstraint { return new Constraints.NullOrUndefinedConstraint() }
-	static Undefined(): Constraints.UndefinedConstraint { return new Constraints.UndefinedConstraint() }
-	static Equal():  Constraints.EqualModifier { return new Constraints.EqualModifier() }
-	static Not(): Constraints.NotModifier { return new Constraints.NotModifier() }
-	static Empty(): Constraints.EmptyConstraint { return new Constraints.EmptyConstraint() }
+	static get true(): Constraints.TrueConstraint	{ return new Constraints.TrueConstraint() }
+	static get false(): Constraints.FalseConstraint { return new Constraints.FalseConstraint() }
+	static get null():  Constraints.NullConstraint{ return new Constraints.NullConstraint() }
+	static get nullOrUndefined(): Constraints.NullOrUndefinedConstraint { return new Constraints.NullOrUndefinedConstraint() }
+	static get undefined(): Constraints.UndefinedConstraint { return new Constraints.UndefinedConstraint() }
+	static get equal():  Constraints.EqualModifier { return new Constraints.EqualModifier() }
+	static get not(): Constraints.NotModifier { return new Constraints.NotModifier() }
+	static get empty(): Constraints.EmptyConstraint { return new Constraints.EmptyConstraint() }
 }

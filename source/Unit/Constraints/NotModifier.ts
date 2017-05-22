@@ -38,12 +38,12 @@ export class NotModifier extends Modifier {
 	test(value: any): boolean {
 		return !(this.testChild(value))
 	}
-	Null() { return new NullConstraint(this) }
-	NullOrUndefined() { return new NullOrUndefinedConstraint(this) }
-	Undefined() { return new UndefinedConstraint(this) }
-	False() { return new FalseConstraint(this) }
-	True() { return new TrueConstraint(this) }
-	Equal() { return new EqualModifier(this) }
-	Not() { return new NotModifier(this) }
-	Empty() { return new EmptyConstraint(this) }
+	get null() { return new NullConstraint(this) }
+	get nullOrUndefined() { return new NullOrUndefinedConstraint(this) }
+	get undefined() { return new UndefinedConstraint(this) }
+	get false() { return new FalseConstraint(this) }
+	get true() { return new TrueConstraint(this) }
+	get equal() { return new EqualModifier(this) }
+	get not() { return new NotModifier(this) }
+	get empty() { return new EmptyConstraint(this) }
 }

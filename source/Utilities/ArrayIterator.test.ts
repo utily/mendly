@@ -28,15 +28,15 @@ export class ArrayIteratorTest extends Fixture {
 	constructor() {
 		super("Utilities.ArrayIterator")
 		this.add("empty", () => {
-			this.expect(new ArrayIterator([]).next(), Is.Undefined())
+			this.expect(new ArrayIterator([]).next(), Is.undefined)
 		})
 		this.add("integers", () => {
 			var integers = [1, 2, 4, 8, 16]
 			var iterator = new ArrayIterator(integers)
 			integers.forEach(value => {
-				this.expect(iterator.next(), Is.Equal().To(value))
+				this.expect(iterator.next(), Is.equal.to(value))
 			});
-			this.expect(iterator.next(), Is.Undefined())
+			this.expect(iterator.next(), Is.undefined)
 		})
 	}
 }

@@ -24,10 +24,10 @@ import { Constraint } from "./Constraint"
 import { Modifier } from "./Modifier"
 
 export class CompareConstraint extends Constraint {
+	get expectedValue(): any { return this.correct }
 	constructor(private correct: any, parent?: Modifier) {
 		super(parent)
 	}
-	getExpectedValue(): any { return this.correct }
 	test(value: any): boolean {
 		return this.compare(value, this.correct)
 	}

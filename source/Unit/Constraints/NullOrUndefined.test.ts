@@ -27,22 +27,22 @@ export class NullOrUndefinedTest extends Fixture {
 	constructor() {
 		super("Unit.Constraints.NullOrUndefined")
 		this.add("null or undefined 1", () => {
-			this.expect(null, Is.NullOrUndefined())
+			this.expect(null, Is.nullOrUndefined)
 		})
 		this.add("null or undefined 2", () => {
-			this.expect(undefined, Is.NullOrUndefined())
+			this.expect(undefined, Is.nullOrUndefined)
 		})
 		this.add("null or undefined 3", () => {
 			var s: string = null
-			this.expect(s, Is.NullOrUndefined())
+			this.expect(s, Is.nullOrUndefined)
 		})
 		this.add("null or undefined 4", () => {
 			var s: string = undefined
-			this.expect(s, Is.NullOrUndefined())
+			this.expect(s, Is.nullOrUndefined)
 		})
 		this.add("null or undefined 5", () => {
 			var s: string = ""
-			this.expect(s, Is.Not().NullOrUndefined())
+			this.expect(s, Is.not.nullOrUndefined)
 		})
 	}
 }

@@ -24,10 +24,10 @@ import { Constraint } from "./Constraint"
 import { Modifier } from "./Modifier"
 
 export class UndefinedConstraint extends Constraint {
+	get expectedValue(): any { return undefined }
 	constructor(parent?: Modifier) {
 		super(parent)
 	}
-	getExpectedValue(): any { return undefined }
 	test(value: any): boolean {
 		return value === undefined
 	}

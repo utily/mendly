@@ -24,22 +24,18 @@ import * as Constraints from "./Constraints"
 import { Test } from "./Test"
 
 export class TestFailedError implements Error {
-	name = "TestFailedError"
-	private test: Test
-	private expectId: number
-	constructor(private value: any, private constraint: Constraints.Constraint, public message = "") {
+	readonly name = "TestFailedError"
+	expectId: number
+	private _test: Test
+	get test() { return this._test }
+	set test(value: Test) {
+		this.message = value.name
+		this._test = value
 	}
-	getValue(): any { return this.value }
-	getConstraint(): Constraints.Constraint { return this.constraint }
-	getName(): string { return this.name }
-	getTest() { return this.test }
-	setTest(value: Test) {
-		this.message = value.getName()
-		this.test = value
+	constructor(readonly value: any, readonly constraint: Constraints.Constraint, public message = "")
+	{
 	}
-	getExpectId() { return this.expectId }
-	setExpectId(value: number) { this.expectId = value }
 	toString(): string {
-		return this.name + ": " + this.test.getName()
+		return this.name + ": " + this.test.name
 	}
 }

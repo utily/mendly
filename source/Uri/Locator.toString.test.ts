@@ -28,15 +28,15 @@ export class LocatorToStringTest extends Fixture {
 		super("Uri.Locator.toString")
 		this.add("full https", () => {
 			var absolute = Locator.parse("https://server.example.com/folder0/folder1/")
-			this.expect(absolute.toString(), Is.Equal().To("https://server.example.com/folder0/folder1/"))
+			this.expect(absolute.toString(), Is.equal.to("https://server.example.com/folder0/folder1/"))
 		})
 		this.add("absolute file", () => {
 			var relative = Locator.parse("/folder2/file.extension")
-			this.expect(relative.toString(), Is.Equal().To("/folder2/file.extension"))
+			this.expect(relative.toString(), Is.equal.to("/folder2/file.extension"))
 		})
 		this.add("relative", () => {
 			var relative = Locator.parse("./folder2/file.extension")
-			this.expect(relative.toString(), Is.Equal().To("./folder2/file.extension"))
+			this.expect(relative.toString(), Is.equal.to("./folder2/file.extension"))
 		})
 	}
 }

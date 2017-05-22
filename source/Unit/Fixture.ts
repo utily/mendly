@@ -31,12 +31,11 @@ export abstract class Fixture {
 	private tests: Test[] = []
 	private expectCounter = 0
 	private errorHandler: Error.Handler
-	constructor(private name: string, private reportOnPass?: boolean) {
+	constructor(readonly name: string, private reportOnPass?: boolean) {
 		if (reportOnPass == undefined)
 			this.reportOnPass = true
 		this.errorHandler = new ErrorHandler(new Error.ConsoleHandler(), new Error.Region(name))
 	}
-	getName(): string { return this.name }
 	add(name: string, action: () => void): void {
 		this.tests.push(new Test(name, action))
 	}
@@ -52,8 +51,8 @@ export abstract class Fixture {
 				} catch (error) {
 					if (error instanceof TestFailedError) {
 						var e = <TestFailedError>error
-						e.setTest(test)
-						e.setExpectId(this.expectCounter)
+						e.test = test
+						e.expectId = this.expectCounter
 						failures.push(e)
 						result = false
 					} else {
@@ -68,8 +67,8 @@ export abstract class Fixture {
 			this.prettyPrintTestResult(result)
 		if (!result) {
 			failures.forEach(failure => {
-				var expectedMessage = "expected '" + failure.getConstraint().getExpectedValue() + "', found '" + failure.getValue() + "'"
-				var whereMessage = "[expect #" + failure.getExpectId() + " in '" + failure.getTest().toString() + "']"
+				var expectedMessage = "expected '" + failure.constraint.expectedValue + "', found '" + failure.value + "'"
+				var whereMessage = "[expect #" + failure.expectId + " in '" + failure.test.toString() + "']"
 				this.errorHandler.raise("  -> " + expectedMessage + " " + whereMessage)
 			})
 		}

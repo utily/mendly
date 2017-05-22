@@ -39,7 +39,7 @@ export class BufferedIteratorTest extends Fixture {
 		super("Utilities.BufferedIterator")
 		this.add("empty string", () => {
 			var bi = new BufferedIterator(new StringIterator(""))
-			this.expect(bi.next(), Is.Equal().To(null))
+			this.expect(bi.next(), Is.equal.to(null))
 		})
 		this.add("iterate using peek()", () => {
 			var testString = "let's iterate this string using peek()"
@@ -48,7 +48,7 @@ export class BufferedIteratorTest extends Fixture {
 			while (bi.peek()) {
 				result += bi.next()
 			}
-			this.expect(result, Is.Equal().To(testString))
+			this.expect(result, Is.equal.to(testString))
 		})
 		this.add("iterate using next()", () => {
 			var testString = "let's iterate this string using next()"
@@ -58,19 +58,19 @@ export class BufferedIteratorTest extends Fixture {
 			while ((character = bi.next())) {
 				result += character
 			}
-			this.expect(result, Is.Equal().To(testString))
+			this.expect(result, Is.equal.to(testString))
 		})
 		this.add("peek() and next()", () => {
 			var testString = "abcdef"
 			var bi = new BufferedIterator(new StringIterator(testString))
 			// Force the reader to buffer the entire string
-			this.expect(bi.peek(5), Is.Equal().To("f"))
-			this.expect(bi.next(), Is.Equal().To("a"))
-			this.expect(bi.next(), Is.Equal().To("b"))
-			this.expect(bi.next(), Is.Equal().To("c"))
-			this.expect(bi.next(), Is.Equal().To("d"))
-			this.expect(bi.next(), Is.Equal().To("e"))
-			this.expect(bi.next(), Is.Equal().To("f"))
+			this.expect(bi.peek(5), Is.equal.to("f"))
+			this.expect(bi.next(), Is.equal.to("a"))
+			this.expect(bi.next(), Is.equal.to("b"))
+			this.expect(bi.next(), Is.equal.to("c"))
+			this.expect(bi.next(), Is.equal.to("d"))
+			this.expect(bi.next(), Is.equal.to("e"))
+			this.expect(bi.next(), Is.equal.to("f"))
 		})
 	}
 }

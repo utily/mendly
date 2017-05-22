@@ -24,10 +24,10 @@ import { Constraint } from "./Constraint"
 import { Modifier } from "./Modifier"
 
 export class EmptyConstraint extends Constraint {
+	get expectedValue(): any { return 0 }
 	constructor(parent?: Modifier) {
 		super(parent)
 	}
-	getExpectedValue(): any { return 0 }
 	test(value: string | any[]): boolean {
 		return value.length == 0
 	}

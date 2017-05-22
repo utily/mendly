@@ -27,15 +27,15 @@ export class NullTest extends Fixture {
 	constructor() {
 		super("Unit.Constraints.Null")
 		this.add("null 1", () => {
-			this.expect(null, Is.Null())
+			this.expect(null, Is.null)
 		})
 		this.add("null 2", () => {
 			var s: string = null
-			this.expect(s, Is.Null())
+			this.expect(s, Is.null)
 		})
 		this.add("null 3", () => {
 			var s: string = ""
-			this.expect(s, Is.Not().Null())
+			this.expect(s, Is.not.null)
 		})
 	}
 }

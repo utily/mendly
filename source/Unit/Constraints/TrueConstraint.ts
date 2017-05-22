@@ -24,10 +24,10 @@ import { Constraint } from "./Constraint"
 import { Modifier } from "./Modifier"
 
 export class TrueConstraint extends Constraint {
+	get expectedValue(): any { return true }
 	constructor(parent?: Modifier) {
 		super(parent)
 	}
-	getExpectedValue(): any { return true }
 	test(value: any): boolean {
 		return value == true
 	}

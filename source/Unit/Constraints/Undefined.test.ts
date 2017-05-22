@@ -27,15 +27,15 @@ export class UndefinedTest extends Fixture {
 	constructor() {
 		super("Unit.Constraints.Undefined")
 		this.add("undefined 1", () => {
-			this.expect(undefined, Is.Undefined())
+			this.expect(undefined, Is.undefined)
 		})
 		this.add("undefined 2", () => {
 			var s: string
-			this.expect(s, Is.Undefined())
+			this.expect(s, Is.undefined)
 		})
 		this.add("undefined 3", () => {
 			var s: string = ""
-			this.expect(s, Is.Not().Undefined())
+			this.expect(s, Is.not.undefined)
 		})
 	}
 }

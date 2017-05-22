@@ -21,10 +21,8 @@
 // SOFTWARE.
 
 export class Test {
-	constructor(private name: string, private action: () => void) {
+	constructor(readonly name: string, readonly action: () => void) {
 	}
-	getName(): string { return this.name }
-	getAction(): () => void { return this.action }
 	run(): void {
 		this.action()
 	}
