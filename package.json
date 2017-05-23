@@ -1,12 +1,12 @@
 {
   "name": "@cogneco/mend",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Mend is a utility library for typescript and javascript mending the standard library.",
   "main": "build/index.js",
   "typings": "build/index",
   "scripts": {
     "dev": "watch 'npm run build' source",
-		"prebuild": "tslint --config .vscode/tslint.json --project source/tsconfig.json",
+    "prebuild": "tslint --config .vscode/tslint.json --project source/tsconfig.json",
     "build": "tsc -p source",
     "pretest": "npm run build",
     "test": "node build/index.test.js",
