@@ -27,7 +27,7 @@ import { BufferedReader } from "./BufferedReader"
 export class TillReader {
 	private done = false
 	private backend: BufferedReader
-	isEmpty(): boolean {
+	get isEmpty(): boolean {
 		return this.done || this.backend.isEmpty
 	}
 	get resource(): string { return this.backend.resource }
