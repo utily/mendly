@@ -43,7 +43,7 @@ export class StringReader extends Reader {
 			this.path = content
 	}
 	read(): string {
-		const result: string
+		let result: string
 		if (this.count < this.content.length)
 			result = this.content.charAt(this.count)
 		else if (this.count == this.content.length)

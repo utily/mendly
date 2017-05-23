@@ -28,7 +28,7 @@ export class String {
 		return String.pad(value, paddingCharacter, width, false)
 	}
 	private static pad(value: string, paddingCharacter: string, width: number, padLeft?: boolean) {
-		const padding = ""
+		let padding = ""
 		const count = width - value.length
 		for (let i = 0; i < count; i++)
 			padding += paddingCharacter

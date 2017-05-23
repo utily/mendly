@@ -46,7 +46,7 @@ export class BufferedIteratorTest extends Fixture {
 		this.add("iterate using peek()", () => {
 			const testString = "let's iterate this string using peek()"
 			const bi = new BufferedIterator(new StringIterator(testString))
-			const result: string = ""
+			let result: string = ""
 			while (bi.peek()) {
 				result += bi.next()
 			}
@@ -55,8 +55,8 @@ export class BufferedIteratorTest extends Fixture {
 		this.add("iterate using next()", () => {
 			const testString = "let's iterate this string using next()"
 			const bi = new BufferedIterator(new StringIterator(testString))
-			const character: string
-			const result: string = ""
+			let character: string
+			let result: string = ""
 			while ((character = bi.next())) {
 				result += character
 			}

@@ -32,7 +32,7 @@ export class CompareConstraint extends Constraint {
 		return this.compare(value, this.correct)
 	}
 	compare(left: any, right: any): boolean {
-		const result = false
+		let result = false
 		const type = typeof(left)
 		if (type == typeof(right)) {
 			switch (type) {
@@ -46,7 +46,7 @@ export class CompareConstraint extends Constraint {
 						if (left instanceof Array && right instanceof Array) {
 							if (result = left.length == right.length)
 								for (let i = 0; result && i < left.length; i++)
-									result = this.compare(left, right)
+									result = this.compare(left[i], right[i])
 						} else
 							console.log(type)
 					}

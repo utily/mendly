@@ -45,7 +45,7 @@ export class FolderReader extends Reader {
 		}
 	}
 	read(): string {
-		const result: string = null
+		let result: string = null
 		if (!this.current && this.files.length > 0)
 			this.current = new FileReader(this.files.shift())
 		if (this.current) {
@@ -63,7 +63,7 @@ export class FolderReader extends Reader {
 	private static getFiles(folder: string, filetype: string, ignoreFiles?: string[]): string[] {
 		if (!ignoreFiles)
 			ignoreFiles = []
-		const result: string[] = []
+		let result: string[] = []
 		const files: string[] = fs.readdirSync(folder)
 		files.forEach(file => {
 			const filename = folder + "/" + file

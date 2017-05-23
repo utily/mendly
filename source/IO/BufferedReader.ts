@@ -46,7 +46,7 @@ export class BufferedReader extends Reader {
 	peek(length?: number): string {
 		if (!length)
 			length = 1
-		const next: string = null
+		let next: string = null
 		while (length > this.buffer.length && (next = this.backend.read()))
 			this.buffer.push({ data: next, location: this.backend.location })
 		return this.buffer.length == 0 ? undefined : this.buffer.slice(0, length > this.buffer.length ? this.buffer.length : length).map(value => value.data).join("")
@@ -64,18 +64,18 @@ export class BufferedReader extends Reader {
 		return result
 	}
 	peekIs(value: string | string[], count?: number): string {
-		const result: string
+		let result: string
 		if (value)
 			if (typeof(value) == "string") {
 				while (count && count-- > 0)
 					value += value as string
 				result = (this.peek(value.length) == value as string ? value as string : undefined)
-			} else if ((value as string).length > 0 && !(result = this.peekIs((value as string[])[0])) && (value as string[]).length )
+			} else if ((value as string[]).length > 0 && !(result = this.peekIs((value as string[])[0])) && (value as string[]).length )
 				result = this.peekIs((value as string[]).slice(1))
 		return result
 	}
 	readIf(value: string|string[]): string {
-		const result: string
+		let result: string
 		if (value)
 			if (typeof(value) == "string")
 				result = (this.peek(value.length) == value as string ? this.read(value.length) : undefined)
@@ -84,7 +84,7 @@ export class BufferedReader extends Reader {
 		return result
 	}
 	readAll(): string {
-		const result = ""
+		let result = ""
 		while (this.peek())
 			result += this.read()
 		return result != "" ? result : undefined

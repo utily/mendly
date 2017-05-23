@@ -34,16 +34,16 @@ export class Locator {
 	get folder(): Locator {
 		return this.isFolder ? this : new Locator(this.scheme, this.authority, this.path.filter((value, index) => index < this.path.length - 1), this.query, this.fragment)
 	}
-	private createArray(value as T: T, count: number): T[] {
+	private createArray<T>(value: T, count: number): T[] {
 		const result: T[] = []
 		while (count-- > 0)
 			result.push(value)
 		return result
 	}
 	normalize(): Locator {
-		const skip = 0
+		let skip = 0
 		const path = this.path.reverse().filter((item, index) => {
-					const r = false
+					let r = false
 					if ((item == "" || item == ".") && index < this.path.length - 1)
 						r = false // do nothing
 					else if (item == "..")
@@ -60,13 +60,13 @@ export class Locator {
 		return new Locator(this.scheme ? this.scheme : absolute.scheme, this.authority ? this.authority : absolute.authority, this.isRelative ? absolute.folder.path.concat(this.path) : this.path, this.query, this.fragment).normalize()
 	}
 	toString(): string {
-		const result = ""
+		let result = ""
 		if (this.scheme)
 			result += this.scheme.join("+") + ":"
 		if (this.authority)
 			result += "//" + this.authority.toString()
 		if (this.path) {
-			const path = this.path.join("/")
+			let path = this.path.join("/")
 			if (path[0] != ".")
 				path = "/" + path
 			result += path
@@ -78,7 +78,7 @@ export class Locator {
 		return result
 	}
 	static parse(data: string): Locator {
-		const result: Locator
+		let result: Locator
 		switch (data) {
 			case "":
 			case undefined:
@@ -87,9 +87,9 @@ export class Locator {
 				result = null
 				break
 			default:
-				const hasAuthority = true
-				const scheme: string[]
-				const splitted = data.split("://", 2)
+				let hasAuthority = true
+				let scheme: string[]
+				let splitted = data.split("://", 2)
 				if (splitted.length > 1) {
 					scheme = splitted.shift().split("+")
 					data = splitted.shift()
@@ -97,13 +97,13 @@ export class Locator {
 					data = data.slice(2)
 				else
 					hasAuthority = false
-				const index: number
-				const fragment: string
+				let index: number
+				let fragment: string
 				if (data && (index = data.lastIndexOf("#")) > -1) {
 					fragment = data.slice(index + 1)
 					data = data.slice(0, index)
 				}
-				const query: { [key: string]: string }
+				let query: { [key: string]: string }
 				if (data && (index = data.lastIndexOf("?")) > -1) {
 					query = new Object() as { [key: string]: string }
 					data.slice(index + 1).split(";").forEach(element => {
@@ -112,8 +112,8 @@ export class Locator {
 					})
 					data = data.slice(0, index)
 				}
-				const authority: Authority
-				const path: string[]
+				let authority: Authority
+				let path: string[]
 				if (data) {
 					splitted = data.split("/")
 					if (splitted.length > 0) {

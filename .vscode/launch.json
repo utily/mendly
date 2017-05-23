@@ -4,8 +4,9 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Launch Program",
+			"name": "unit tests",
 			"program": "${workspaceRoot}/build/index.test.js",
+			"args": [ "debug" ],
 			"protocol": "inspector",
 			"preLaunchTask": "build",
 			"sourceMaps": true,

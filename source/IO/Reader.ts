@@ -37,8 +37,8 @@ export abstract class Reader {
 		Reader.openers = Reader.openers.sort((left, right) => right.priority - left.priority)
 	}
 	static open(path: string, extension: string): Reader {
-		const result: Reader
-		const i = 0
+		let result: Reader
+		let i = 0
 		do
 			result = Reader.openers[i++].open(path, extension)
 		while (!result && i < Reader.openers.length)

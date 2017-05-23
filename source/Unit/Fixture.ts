@@ -30,7 +30,7 @@ import { ErrorHandler } from "./ErrorHandler"
 export abstract class Fixture {
 	private tests: Test[] = []
 	private expectCounter = 0
-	private errorHandler: Error.Handlerr
+	private errorHandler: Error.Handler
 	constructor(readonly name: string, private reportOnPass?: boolean) {
 		if (reportOnPass == undefined)
 			this.reportOnPass = true
@@ -41,7 +41,7 @@ export abstract class Fixture {
 	}
 	run(debug?: boolean): boolean {
 		const failures: TestFailedError[] = []
-		const result = true
+		let result = true
 		this.tests.forEach(test => {
 			if (debug)
 				test.run()

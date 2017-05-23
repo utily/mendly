@@ -27,7 +27,7 @@ export class Authority {
 	constructor(readonly user: User, readonly endpoint: Endpoint) {
 	}
 	toString(): string {
-		const result: string
+		let result: string
 		if (this.user)
 			result = this.user.toString() + "@"
 		if (this.endpoint)
@@ -35,11 +35,11 @@ export class Authority {
 		return result
 	}
 	static parse(data: string): Authority {
-		const result: Authority
+		let result: Authority
 		if (data) {
 			const splitted = data.split("@", 2)
-			const user: User
-			const endpoint: Endpoint
+			let user: User
+			let endpoint: Endpoint
 			if (splitted.length == 2)
 				user = User.parse(splitted.pop())
 			endpoint = Endpoint.parse(splitted.pop())

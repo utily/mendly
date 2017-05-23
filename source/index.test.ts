@@ -26,4 +26,4 @@ import "./IO/index.test"
 import "./Uri/index.test"
 import { Fixture } from "./Unit"
 
-process.exit(Fixture.run() ? 0 : 1)
+process.exit(Fixture.run(process.argv.length > 2 && process.argv[2] == "debug") ? 0 : 1)

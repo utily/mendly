@@ -37,7 +37,7 @@ export class TillReader {
 		this.backend = backend instanceof BufferedReader ? backend : new BufferedReader(backend)
 	}
 	read(): string {
-		const result: string
+		let result: string
 		if (!this.isEmpty) {
 			result = this.backend.read()
 			this.done = this.backend.peekIs(this.endMark) != undefined
