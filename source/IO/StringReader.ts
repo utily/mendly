@@ -39,8 +39,6 @@ export class StringReader extends Reader {
 		super()
 		this.content += "\0"
 		this.lastPosition = this.location
-		if (!this.path)
-			this.path = content
 	}
 	read(): string | undefined {
 		let result: string | undefined
