@@ -25,7 +25,7 @@ import { Is } from "../Is"
 
 export class CompareConstraintTest extends Fixture {
 	constructor() {
-		super("Unit.Constraints.Equal")
+		super("Unit.Constraints.CompareConstraint")
 		this.add("true is true", () => {
 			this.expect(true, Is.equal.to(true))
 		})
@@ -45,10 +45,13 @@ export class CompareConstraintTest extends Fixture {
 			this.expect({}, Is.equal.to({}))
 		})
 		this.add("object equals object", () => {
-			this.expect({ meaning: 42, other: 13.37 }, Is.equal.to({ meaning: 42, other: 1337 }))
+			this.expect({ meaning: 42, other: 13.37 }, Is.equal.to({ meaning: 42, other: 13.37 }))
 		})
 		this.add("object not equals object", () => {
-			this.expect({ meaning: 42, other: 13.37 }, Is.equal.to({ meaning: 42, other: 13.37 }))
+			this.expect({ meaning: 42, other: 13.37 }, Is.not.equal.to({ meaning: 42, other: 1337 }))
+		})
+		this.add("object equals object with undefined property", () => {
+			this.expect({ meaning: 42, other: 13.37 }, Is.equal.to({ meaning: 42, other: 13.37, not: undefined }))
 		})
 		this.add("empty array equals empty array", () => {
 			this.expect([], Is.equal.to([]))
