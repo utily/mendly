@@ -27,21 +27,14 @@ import { FileReader } from "./FileReader"
 import * as fs from "fs"
 
 export class FolderReader extends Reader {
-	private files: string[]
-	private current: Reader | null
+	private current: Reader | undefined
 	private lastLocation: Error.Location
 	get isEmpty(): boolean { return this.files.length == 0 && (!this.current || this.current.isEmpty) }
 	get resource(): string { return this.current ? this.current.resource : this.lastLocation.resource }
 	get location(): Error.Location { return this.current ? this.current.location : this.lastLocation }
 	get region(): Error.Region { return this.current ? this.current.region : new Error.Region(this.resource) }
-	constructor(private path: string, extension: string) {
+	constructor(private files: string[]) {
 		super()
-		try {
-			this.files = FolderReader.getFiles(this.path, extension)
-		} catch (error) {
-			console.error(`Failed to open folder: ${path}`)
-			this.files = []
-		}
 	}
 	read(): string | undefined {
 		let result: string | undefined
@@ -50,7 +43,7 @@ export class FolderReader extends Reader {
 		if (this.current) {
 			result = this.current.read()
 			if (result && this.files.length > 0) {
-				this.current = null
+				this.current = undefined
 				result = "\0"
 			}
 		}
@@ -73,5 +66,13 @@ export class FolderReader extends Reader {
 		})
 		return result
 	}
+	static open(path: string, extension: string): Reader | undefined {
+		let files: string[] | undefined
+		try {
+			files = FolderReader.getFiles(path, extension)
+		} catch (error) {
+		}
+		return files ? new FolderReader(files) : undefined
+	}
 }
-Reader.addOpener((path, extension) => new FolderReader(path, extension), 0)
+Reader.addOpener((path, extension) => FolderReader.open(path, extension), 0)

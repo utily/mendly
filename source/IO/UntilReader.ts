@@ -33,8 +33,8 @@ export class UntilReader {
 	get resource(): string { return this.backend.resource }
 	get location(): Error.Location { return this.backend.location }
 	get region(): Error.Region { return this.backend.region }
-	constructor(backend: Reader, private endMark: string | string[]) {
-		this.backend = backend instanceof BufferedReader ? backend : new BufferedReader(backend)
+	private constructor(backend: Reader, private endMark: string | string[]) {
+		this.backend = backend instanceof BufferedReader ? backend : BufferedReader.create(backend)
 	}
 	read(): string | undefined {
 		let result: string | undefined
@@ -49,4 +49,9 @@ export class UntilReader {
 		return result
 	}
 	mark(): Error.Region { return this.backend.mark() }
+	static open(backend: undefined, endMark?: string | string[]): undefined
+	static open(backend: Reader, endMark?: string | string[]): Reader
+	static open(backend: Reader | undefined, endMark?: string | string[]): Reader | undefined {
+		return backend && endMark ? new UntilReader(backend, endMark) : backend
+	}
 }

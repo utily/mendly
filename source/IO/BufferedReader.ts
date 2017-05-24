@@ -39,7 +39,7 @@ export class BufferedReader extends Reader {
 	get region(): Error.Region {
 		return new Error.Region(this.resource, this.lastMark, this.location, this.lastContent)
 	}
-	constructor(private backend: Reader) {
+	private constructor(private backend: Reader) {
 		super()
 		this.lastMark = this.location
 	}
@@ -94,5 +94,10 @@ export class BufferedReader extends Reader {
 		this.lastMark = this.location
 		this.lastContent = ""
 		return result
+	}
+	static create(backend: undefined): undefined
+	static create(backend: Reader): BufferedReader
+	static create(backend: Reader | undefined): BufferedReader | undefined {
+		return backend ? new BufferedReader(backend) : undefined
 	}
 }

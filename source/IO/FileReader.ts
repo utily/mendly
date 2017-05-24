@@ -35,17 +35,19 @@ export class FileReader extends Reader {
 	}
 	read(): string | undefined { return this.backend.read() }
 	mark(): Error.Region { return this.backend.mark() }
-	static open(path?: string): Reader | null {
+	static open(path?: undefined): undefined
+	static open(path?: string): Reader
+	static open(path?: string): Reader | undefined {
 		let backend: Reader | undefined
 		if (path)
 			try {
-				backend = new StringReader(fs.readFileSync(path, "utf-8"), path)
+				backend = StringReader.open(fs.readFileSync(path, "utf-8"), path)
 			} catch (error) {
 				console.log(`Failed to open file: ${path}`)
 			}
-		return backend ? new FileReader(backend) : null
+		return backend ? new FileReader(backend) : undefined
 	}
 }
 Reader.addOpener((path, extension) => {
-	return path.slice(-extension.length - 1) == "." + extension ? FileReader.open(path) : null
+	return path.slice(-extension.length - 1) == "." + extension ? FileReader.open(path) : undefined
 }, 10)

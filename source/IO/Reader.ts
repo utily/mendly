@@ -29,15 +29,15 @@ export abstract class Reader {
 	abstract get region(): Error.Region
 	abstract read(): string | undefined
 	abstract mark(): Error.Region
-	private static openers: { open: ((path: string, extension: string) => Reader | null), priority: number }[] = []
-	static addOpener(open: (path: string, extension: string) => Reader | null, priority?: number) {
+	private static openers: { open: ((path: string, extension: string) => Reader | undefined), priority: number }[] = []
+	static addOpener(open: (path: string, extension: string) => Reader | undefined, priority?: number) {
 		if (!priority)
 			priority = 0
 		Reader.openers.push({ open, priority})
 		Reader.openers = Reader.openers.sort((left, right) => right.priority - left.priority)
 	}
-	static open(path: string, extension: string): Reader | null {
-		let result: Reader | null
+	static open(path: string, extension: string): Reader | undefined {
+		let result: Reader | undefined
 		let i = 0
 		do
 			result = Reader.openers[i++].open(path, extension)

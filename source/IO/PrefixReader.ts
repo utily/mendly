@@ -34,7 +34,7 @@ export class PrefixReader {
 	get location(): Error.Location { return this.backend.location }
 	get region(): Error.Region { return this.backend.region }
 	constructor(backend: Reader, private prefix: string | string[]) {
-		this.backend = backend instanceof BufferedReader ? backend : new BufferedReader(backend)
+		this.backend = backend instanceof BufferedReader ? backend : BufferedReader.create(backend) as BufferedReader
 	}
 	read(): string | undefined {
 		let result: string | undefined
@@ -45,4 +45,9 @@ export class PrefixReader {
 		return result
 	}
 	mark(): Error.Region { return this.backend.mark() }
+	static open(backend: undefined, prefix?: string | string[]): undefined
+	static open(backend: Reader, prefix?: string | string[]): Reader
+	static open(backend: Reader | undefined, prefix?: string | string[]): Reader | undefined {
+		return backend && prefix ? new PrefixReader(backend, prefix) : backend
+	}
 }
