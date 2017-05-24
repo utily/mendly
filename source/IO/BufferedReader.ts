@@ -39,7 +39,7 @@ export class BufferedReader extends Reader {
 	get region(): Error.Region {
 		return new Error.Region(this.resource, this.lastMark, this.location, this.lastContent)
 	}
-	private constructor(private backend: Reader) {
+	protected constructor(private backend: Reader) {
 		super()
 		this.lastMark = this.location
 	}
