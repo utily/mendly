@@ -22,8 +22,6 @@
 
 import { Type } from "./Type"
 import { Level } from "./Level"
-import { Position } from "./Position"
-import { Location } from "./Location"
 import { Region } from "./Region"
 import { Message } from "./Message"
 

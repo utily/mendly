@@ -23,7 +23,7 @@
 import { Authority } from "./Authority"
 
 export class Locator {
-	constructor(readonly scheme: string[], readonly authority: Authority, readonly path: string[], readonly query: { [key: string]: string }, readonly fragment: string) {
+	constructor(readonly scheme: string[] = [], readonly authority: Authority = new Authority(), readonly path: string[] = [], readonly query: { [key: string]: string } = {}, readonly fragment?: string) {
 	}
 	get isRelative(): boolean {
 		return this.path[0] == "." || this.path[0] == ".."
@@ -56,14 +56,14 @@ export class Locator {
 				}).concat(this.createArray("..", skip)).reverse()
 		return new Locator(this.scheme, this.authority, path, this.query, this.fragment)
 	}
-	resolve(absolute: Locator): Locator {
-		return new Locator(this.scheme ? this.scheme : absolute.scheme, this.authority ? this.authority : absolute.authority, this.isRelative ? absolute.folder.path.concat(this.path) : this.path, this.query, this.fragment).normalize()
+	resolve(absolute?: Locator): Locator {
+		return !absolute ? this : new Locator(this.scheme.length > 0 ? this.scheme : absolute.scheme, !this.authority.isEmpty ? this.authority : absolute.authority, this.isRelative ? absolute.folder.path.concat(this.path) : this.path, this.query, this.fragment).normalize()
 	}
 	toString(): string {
 		let result = ""
-		if (this.scheme)
+		if (this.scheme.length > 0)
 			result += this.scheme.join("+") + ":"
-		if (this.authority)
+		if (!this.authority.isEmpty)
 			result += "//" + this.authority.toString()
 		if (this.path) {
 			let path = this.path.join("/")
@@ -71,49 +71,50 @@ export class Locator {
 				path = "/" + path
 			result += path
 		}
-		if (this.query)
+		if (Object.keys(this.query).length > 0)
 			result += "?" + this.query.toString()
 		if (this.fragment)
 			result += "#" + this.fragment
 		return result
 	}
-	static parse(data: string): Locator {
-		let result: Locator
+	static parse(data?: string): Locator | undefined {
+		let result: Locator | undefined
 		switch (data) {
 			case "":
-			case undefined:
-				break
 			case null:
-				result = null
+			case undefined:
 				break
 			default:
 				let hasAuthority = true
-				let scheme: string[]
+				let scheme: string[] = []
 				let splitted = data.split("://", 2)
 				if (splitted.length > 1) {
-					scheme = splitted.shift().split("+")
+					scheme = (splitted.shift() || "").split("+")
 					data = splitted.shift()
 				} else if (data.slice(0, 2) == "//")
 					data = data.slice(2)
 				else
 					hasAuthority = false
 				let index: number
-				let fragment: string
+				let fragment: string | undefined
 				if (data && (index = data.lastIndexOf("#")) > -1) {
 					fragment = data.slice(index + 1)
 					data = data.slice(0, index)
 				}
-				let query: { [key: string]: string }
+				let query: { [key: string]: string } = {}
 				if (data && (index = data.lastIndexOf("?")) > -1) {
 					query = new Object() as { [key: string]: string }
 					data.slice(index + 1).split(";").forEach(element => {
 						splitted = element.split("=")
-						query[splitted.shift()] = splitted.shift()
+						const key = splitted.shift()
+						const value = splitted.shift()
+						if (key && value)
+							query[key] = value
 					})
 					data = data.slice(0, index)
 				}
-				let authority: Authority
-				let path: string[]
+				let authority: Authority | undefined
+				let path: string[] = []
 				if (data) {
 					splitted = data.split("/")
 					if (splitted.length > 0) {

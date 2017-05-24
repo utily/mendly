@@ -36,11 +36,11 @@ export class UntilReader {
 	constructor(backend: Reader, private endMark: string | string[]) {
 		this.backend = backend instanceof BufferedReader ? backend : new BufferedReader(backend)
 	}
-	read(): string {
-		let result: string
+	read(): string | undefined {
+		let result: string | undefined
 		if (!this.isEmpty) {
 			result = this.backend.read()
-			let peeked: string
+			let peeked: string | undefined
 			if (this.done > 0)
 				this.done--
 			else if (peeked = this.backend.peekIs(this.endMark))

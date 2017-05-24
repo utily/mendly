@@ -26,7 +26,7 @@ export class ArrayIterator<T> implements Iterator<T> {
 	private position = 0
 	constructor(private backend: T[]) {
 	}
-	next(): T {
+	next(): T | undefined {
 		return this.position < this.backend.length ? this.backend[this.position++] : undefined
 	}
 }

@@ -32,9 +32,9 @@ export class StringReader extends Reader {
 	get isEmpty(): boolean {
 		return this.count + 1 >= this.content.length
 	}
-	get resource(): string { return this.path }
-	get location(): Error.Location { return new Error.Location(this.path, this.line, this.column) }
-	get region(): Error.Region { return new Error.Region(this.path, this.lastPosition, this.location, this.lastContent) }
+	get resource(): string { return this.path ? this.path : "" }
+	get location(): Error.Location { return new Error.Location(this.resource, this.line, this.column) }
+	get region(): Error.Region { return new Error.Region(this.resource, this.lastPosition, this.location, this.lastContent) }
 	constructor(private content: string, private path?: string) {
 		super()
 		this.content += "\0"
@@ -42,8 +42,8 @@ export class StringReader extends Reader {
 		if (!this.path)
 			this.path = content
 	}
-	read(): string {
-		let result: string
+	read(): string | undefined {
+		let result: string | undefined
 		if (this.count < this.content.length)
 			result = this.content.charAt(this.count)
 		else if (this.count == this.content.length)

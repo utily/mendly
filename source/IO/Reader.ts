@@ -27,17 +27,17 @@ export abstract class Reader {
 	abstract get resource(): string
 	abstract get location(): Error.Location
 	abstract get region(): Error.Region
-	abstract read(): string
+	abstract read(): string | undefined
 	abstract mark(): Error.Region
-	private static openers: { open: ((path: string, extension: string) => Reader), priority: number }[] = []
-	static addOpener(open: (path: string, extension: string) => Reader, priority?: number) {
+	private static openers: { open: ((path: string, extension: string) => Reader | null), priority: number }[] = []
+	static addOpener(open: (path: string, extension: string) => Reader | null, priority?: number) {
 		if (!priority)
 			priority = 0
 		Reader.openers.push({ open, priority})
 		Reader.openers = Reader.openers.sort((left, right) => right.priority - left.priority)
 	}
-	static open(path: string, extension: string): Reader {
-		let result: Reader
+	static open(path: string, extension: string): Reader | null {
+		let result: Reader | null
 		let i = 0
 		do
 			result = Reader.openers[i++].open(path, extension)

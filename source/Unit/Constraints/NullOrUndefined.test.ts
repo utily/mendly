@@ -33,11 +33,11 @@ export class NullOrUndefinedTest extends Fixture {
 			this.expect(undefined, Is.nullOrUndefined)
 		})
 		this.add("null or undefined 3", () => {
-			const s: string = null
+			const s: string | null = null
 			this.expect(s, Is.nullOrUndefined)
 		})
 		this.add("null or undefined 4", () => {
-			const s: string = undefined
+			const s: string | undefined = undefined
 			this.expect(s, Is.nullOrUndefined)
 		})
 		this.add("null or undefined 5", () => {

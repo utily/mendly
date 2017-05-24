@@ -24,26 +24,24 @@ import { User } from "./User"
 import { Endpoint } from "./Endpoint"
 
 export class Authority {
-	constructor(readonly user: User, readonly endpoint: Endpoint) {
+	get isEmpty() {
+		return this.user.isEmpty && this.endpoint.isEmpty
+	}
+	constructor(readonly user: User = new User(), readonly endpoint: Endpoint = new Endpoint()) {
 	}
 	toString(): string {
-		let result: string
-		if (this.user)
+		let result = ""
+		if (!this.user.isEmpty)
 			result = this.user.toString() + "@"
-		if (this.endpoint)
-			result = (result ? result : "") + this.endpoint.toString()
+		if (!this.endpoint.isEmpty)
+			result = result + this.endpoint.toString()
 		return result
 	}
-	static parse(data: string): Authority {
-		let result: Authority
+	static parse(data: string | undefined): Authority | undefined {
+		let result: Authority | undefined
 		if (data) {
 			const splitted = data.split("@", 2)
-			let user: User
-			let endpoint: Endpoint
-			if (splitted.length == 2)
-				user = User.parse(splitted.pop())
-			endpoint = Endpoint.parse(splitted.pop())
-			result = new Authority(user, endpoint)
+			result = new Authority(User.parse(splitted.length == 2 ? splitted.pop() : undefined), Endpoint.parse(splitted.pop()))
 		}
 		return result
 	}

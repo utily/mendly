@@ -36,8 +36,8 @@ export class PrefixReader {
 	constructor(backend: Reader, private prefix: string | string[]) {
 		this.backend = backend instanceof BufferedReader ? backend : new BufferedReader(backend)
 	}
-	read(): string {
-		let result: string
+	read(): string | undefined {
+		let result: string | undefined
 		if (!this.isEmpty) {
 			result = this.backend.read()
 			this.done = result == "\n" && !this.backend.readIf(this.prefix) && !this.backend.peekIs("\n")

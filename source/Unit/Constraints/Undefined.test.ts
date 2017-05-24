@@ -31,7 +31,7 @@ export class UndefinedTest extends Fixture {
 		})
 		this.add("undefined 2", () => {
 			// tslint:disable prefer-const
-			let s: string
+			let s: string | undefined
 			// tslint:enable prefer-const
 			this.expect(s, Is.undefined)
 		})

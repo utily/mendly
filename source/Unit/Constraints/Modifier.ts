@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 export abstract class Modifier {
-	private child: Modifier
+	private child?: Modifier
 	constructor(private parent?: Modifier) {
 	}
 	verify(value: any, child?: Modifier): boolean {

@@ -31,7 +31,7 @@ export class BufferedReader extends Reader {
 	get isEmpty(): boolean { return (this.buffer.length == 0 || this.buffer[0].data == "\0") && this.backend.isEmpty }
 	get resource(): string {
 		const location = this.location
-		return location ? location.resource : undefined
+		return location ? location.resource : ""
 	}
 	get location(): Error.Location {
 		return this.buffer && this.buffer.length > 0 ? this.buffer[0].location : this.backend.location
@@ -43,15 +43,15 @@ export class BufferedReader extends Reader {
 		super()
 		this.lastMark = this.location
 	}
-	peek(length?: number): string {
+	peek(length?: number): string | undefined {
 		if (!length)
 			length = 1
-		let next: string = null
+		let next: string | undefined
 		while (length > this.buffer.length && (next = this.backend.read()))
 			this.buffer.push({ data: next, location: this.backend.location })
 		return this.buffer.length == 0 ? undefined : this.buffer.slice(0, length > this.buffer.length ? this.buffer.length : length).map(value => value.data).join("")
 	}
-	read(length?: number): string {
+	read(length?: number): string | undefined {
 		if (!length)
 			length = 1
 		const result = this.peek(length)
@@ -63,8 +63,8 @@ export class BufferedReader extends Reader {
 		}
 		return result
 	}
-	peekIs(value: string | string[], count?: number): string {
-		let result: string
+	peekIs(value: string | string[], count?: number): string | undefined {
+		let result: string | undefined
 		if (value)
 			if (typeof(value) == "string") {
 				while (count && count-- > 0)
@@ -74,8 +74,8 @@ export class BufferedReader extends Reader {
 				result = this.peekIs((value as string[]).slice(1))
 		return result
 	}
-	readIf(value: string|string[]): string {
-		let result: string
+	readIf(value: string|string[]): string | undefined {
+		let result: string | undefined
 		if (value)
 			if (typeof(value) == "string")
 				result = (this.peek(value.length) == value as string ? this.read(value.length) : undefined)
@@ -83,7 +83,7 @@ export class BufferedReader extends Reader {
 				result = this.readIf((value as string[]).slice(1))
 		return result
 	}
-	readAll(): string {
+	readAll(): string | undefined {
 		let result = ""
 		while (this.peek())
 			result += this.read()

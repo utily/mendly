@@ -32,7 +32,7 @@ class StringIterator implements Iterator<string> {
 		if (!content)
 			content = ""
 	}
-	next(): string {
+	next(): string | undefined {
 		return this.position < this.content.length ? this.content.charAt(this.position++) : undefined
 	}
 }
@@ -41,7 +41,7 @@ export class BufferedIteratorTest extends Fixture {
 		super("Utilities.BufferedIterator")
 		this.add("empty string", () => {
 			const bi = new BufferedIterator(new StringIterator(""))
-			this.expect(bi.next(), Is.equal.to(null))
+			this.expect(bi.next(), Is.undefined)
 		})
 		this.add("iterate using peek()", () => {
 			const testString = "let's iterate this string using peek()"
@@ -55,7 +55,7 @@ export class BufferedIteratorTest extends Fixture {
 		this.add("iterate using next()", () => {
 			const testString = "let's iterate this string using next()"
 			const bi = new BufferedIterator(new StringIterator(testString))
-			let character: string
+			let character: string | undefined
 			let result: string = ""
 			while ((character = bi.next())) {
 				result += character

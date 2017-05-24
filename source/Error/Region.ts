@@ -21,21 +21,12 @@
 // SOFTWARE.
 
 import { Position } from "./Position"
-import { Location } from "./Location"
 
 export class Region {
-	readonly resource: string
-	readonly start: Position
-	readonly end: Position
-	readonly content: string
-	constructor(resource: string, start?: Position, end?: Position, content?: string)
+	constructor(readonly resource: string, readonly start?: Position, readonly end?: Position, readonly content?: string)
 	{
-		this.resource = resource
-		this.start = start
-		this.end = end
-		this.content = content
 	}
-	merge(other: Region) { return new Region(this.resource, this.start, other.end, this.content + other.content) }
+	merge(other: Region) { return new Region(this.resource, this.start, other.end, this.content ? this.content : "" + other.content ? other.content : "") }
 	toString() {
 		let result = this.resource
 		if (this.start && this.end)

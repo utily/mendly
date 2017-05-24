@@ -21,5 +21,5 @@
 // SOFTWARE.
 
 export interface Iterator<T> {
-	next(): T
+	next(): T | undefined
 }

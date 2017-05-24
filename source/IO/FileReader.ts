@@ -26,23 +26,26 @@ import { Reader } from "./Reader"
 import { StringReader } from "./StringReader"
 
 export class FileReader extends Reader {
-	private backend: Reader
 	get isEmpty(): boolean { return this.backend.isEmpty }
-	get resource(): string { return this.backend ? this.backend.resource : null }
+	get resource(): string { return this.backend ? this.backend.resource : "" }
 	get location(): Error.Location { return this.backend.location }
 	get region(): Error.Region { return this.backend.region }
-	constructor(path: string) {
+	private constructor(private backend: Reader) {
 		super()
-		try {
-			this.backend = new StringReader(fs.readFileSync(path, "utf-8"), path)
-		} catch (error) {
-			console.error(`Failed to open file: ${path}`)
-			this.backend = new StringReader("", path)
-		}
 	}
-	read(): string { return this.backend.read() }
+	read(): string | undefined { return this.backend.read() }
 	mark(): Error.Region { return this.backend.mark() }
+	static open(path?: string): Reader | null {
+		let backend: Reader | undefined
+		if (path)
+			try {
+				backend = new StringReader(fs.readFileSync(path, "utf-8"), path)
+			} catch (error) {
+				console.log(`Failed to open file: ${path}`)
+			}
+		return backend ? new FileReader(backend) : null
+	}
 }
 Reader.addOpener((path, extension) => {
-	return path.slice(-extension.length - 1) == "." + extension ? new FileReader(path) : null
+	return path.slice(-extension.length - 1) == "." + extension ? FileReader.open(path) : null
 }, 10)

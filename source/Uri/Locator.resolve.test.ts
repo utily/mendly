@@ -29,12 +29,15 @@ export class LocatorResolveTest extends Fixture {
 		this.add("resolve relative", () => {
 			const absolute = Locator.parse("https://server.example.com/folder0/folder1/")
 			const relative = Locator.parse("./folder2/file.extension")
-			const locator = relative.resolve(absolute)
-			this.expect(locator.scheme, Is.equal.to(["https"]))
-			this.expect(locator.authority.user, Is.undefined)
-			this.expect(locator.authority.endpoint.host, Is.equal.to(["server", "example", "com"]))
-			this.expect(locator.authority.endpoint.port, Is.undefined)
-			this.expect(locator.path, Is.equal.to(["folder0", "folder1", "folder2", "file.extension"]))
+			this.expect(relative, Is.not.nullOrUndefined)
+			if (relative) {
+				const locator = relative.resolve(absolute)
+				this.expect(locator.scheme, Is.equal.to(["https"]))
+				this.expect(locator.authority.user.isEmpty)
+				this.expect(locator.authority.endpoint.host, Is.equal.to(["server", "example", "com"]))
+				this.expect(locator.authority.endpoint.port, Is.undefined)
+				this.expect(locator.path, Is.equal.to(["folder0", "folder1", "folder2", "file.extension"]))
+			}
 		})
 	}
 }

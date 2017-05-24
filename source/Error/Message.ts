@@ -22,14 +22,12 @@
 
 import { Type } from "./Type"
 import { Level } from "./Level"
-import { Position } from "./Position"
-import { Location } from "./Location"
 import { Region } from "./Region"
 
 export class Message {
-	constructor(private description: string, private level: Level, private type: Type, private region: Region) {
+	constructor(private description: string, private level = Level.Recoverable, private type = Type.Symbol, private region?: Region) {
 	}
 	toString(): string {
-		return Level[this.level] + ": " + Type[this.type] + " error. " + this.description + " @ " + this.region.toString()
+		return Level[this.level] + ": " + Type[this.type] + " error. " + this.description + (this.region ? " @ " + this.region.toString() : "")
 	}
 }

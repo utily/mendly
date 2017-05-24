@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Constraint } from "./Constraint"
 import { Modifier } from "./Modifier"
 import { CompareConstraint } from "./CompareConstraint"
 

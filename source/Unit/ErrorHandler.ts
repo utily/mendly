@@ -21,7 +21,6 @@
 // SOFTWARE.
 
 import * as Error from "../Error"
-import * as IO from "../IO"
 
 export class ErrorHandler implements Error.Handler {
 	constructor(private errorHandler: Error.Handler, private region: Error.Region) {

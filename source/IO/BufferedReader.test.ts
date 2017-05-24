@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import * as Error from "../Error"
 import { Fixture, Is } from "../Unit"
 import { StringReader } from "./StringReader"
 import { BufferedReader } from "./BufferedReader"
@@ -28,7 +27,6 @@ import { BufferedReader } from "./BufferedReader"
 export class BufferedReaderTest extends Fixture {
 	constructor() {
 		super("IO.BufferedReader")
-		const errorHandler = new Error.ConsoleHandler()
 		this.add("empty", () => {
 			const br = new BufferedReader(new StringReader(""))
 			this.expect(br.isEmpty)
@@ -123,10 +121,19 @@ export class BufferedReaderTest extends Fixture {
 			this.expect(br.mark(), Is.not.nullOrUndefined)
 			br.read(); br.read(); br.read()
 			const region = br.region
-			this.expect(region.start.line, Is.equal.to(1))
-			this.expect(region.start.column, Is.equal.to(1))
-			this.expect(region.end.line, Is.equal.to(1))
-			this.expect(region.end.column, Is.equal.to(4))
+			this.expect(region, Is.not.nullOrUndefined)
+			if (region) {
+				this.expect(region.start, Is.not.nullOrUndefined)
+				if (region.start) {
+					this.expect(region.start.line, Is.equal.to(1))
+					this.expect(region.start.column, Is.equal.to(1))
+				}
+				this.expect(region.end, Is.not.nullOrUndefined)
+				if (region.end) {
+					this.expect(region.end.line, Is.equal.to(1))
+					this.expect(region.end.column, Is.equal.to(4))
+				}
+			}
 		})
 	}
 }

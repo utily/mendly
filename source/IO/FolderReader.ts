@@ -23,18 +23,17 @@
 import * as Error from "../Error"
 import { Reader } from "./Reader"
 import { FileReader } from "./FileReader"
-import { Iterator } from "../Utilities/Iterator"
 
 import * as fs from "fs"
 
 export class FolderReader extends Reader {
 	private files: string[]
-	private current: Reader
+	private current: Reader | null
 	private lastLocation: Error.Location
 	get isEmpty(): boolean { return this.files.length == 0 && (!this.current || this.current.isEmpty) }
 	get resource(): string { return this.current ? this.current.resource : this.lastLocation.resource }
 	get location(): Error.Location { return this.current ? this.current.location : this.lastLocation }
-	get region(): Error.Region { return this.current.region }
+	get region(): Error.Region { return this.current ? this.current.region : new Error.Region(this.resource) }
 	constructor(private path: string, extension: string) {
 		super()
 		try {
@@ -44,10 +43,10 @@ export class FolderReader extends Reader {
 			this.files = []
 		}
 	}
-	read(): string {
-		let result: string = null
+	read(): string | undefined {
+		let result: string | undefined
 		if (!this.current && this.files.length > 0)
-			this.current = new FileReader(this.files.shift())
+			this.current = FileReader.open(this.files.shift())
 		if (this.current) {
 			result = this.current.read()
 			if (result && this.files.length > 0) {
@@ -58,11 +57,9 @@ export class FolderReader extends Reader {
 		this.lastLocation = this.location
 		return result
 	}
-	mark(): Error.Region { return this.current.mark() }
+	mark(): Error.Region { return this.current ? this.current.mark() : new Error.Region(this.resource) }
 
-	private static getFiles(folder: string, filetype: string, ignoreFiles?: string[]): string[] {
-		if (!ignoreFiles)
-			ignoreFiles = []
+	private static getFiles(folder: string, filetype: string, ignoreFiles: string[] = []): string[] {
 		let result: string[] = []
 		const files: string[] = fs.readdirSync(folder)
 		files.forEach(file => {

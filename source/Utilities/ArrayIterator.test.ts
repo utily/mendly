@@ -21,7 +21,6 @@
 // SOFTWARE.
 
 import { Fixture, Is } from "../Unit"
-import { Iterator } from "./Iterator"
 import { ArrayIterator } from "./ArrayIterator"
 
 export class ArrayIteratorTest extends Fixture {
