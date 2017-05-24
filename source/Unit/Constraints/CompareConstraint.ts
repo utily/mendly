@@ -47,8 +47,11 @@ export class CompareConstraint extends Constraint {
 							if (result = left.length == right.length)
 								for (let i = 0; result && i < left.length; i++)
 									result = this.compare(left[i], right[i])
-						} else
-							console.log(type)
+						} else if (result = (Object.keys(left).length == Object.keys(right).length)) {
+							for (const key in left)
+								if (!(result = (left.hasOwnProperty(key) && right.hasOwnProperty(key) && this.compare(left[key], right[key]))))
+									break
+						}
 					}
 					break
 				case "undefined":

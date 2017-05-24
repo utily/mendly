@@ -23,7 +23,7 @@
 import { Fixture } from "../Fixture"
 import { Is } from "../Is"
 
-export class EqualTest extends Fixture {
+export class CompareConstraintTest extends Fixture {
 	constructor() {
 		super("Unit.Constraints.Equal")
 		this.add("true is true", () => {
@@ -41,6 +41,24 @@ export class EqualTest extends Fixture {
 		this.add("\"foo\" equals \"foo\"", () => {
 			this.expect("foo", Is.equal.to("foo"))
 		})
+		this.add("empty object equals empty object", () => {
+			this.expect({}, Is.equal.to({}))
+		})
+		this.add("object equals object", () => {
+			this.expect({ meaning: 42, other: 13.37 }, Is.equal.to({ meaning: 42, other: 1337 }))
+		})
+		this.add("object not equals object", () => {
+			this.expect({ meaning: 42, other: 13.37 }, Is.equal.to({ meaning: 42, other: 13.37 }))
+		})
+		this.add("empty array equals empty array", () => {
+			this.expect([], Is.equal.to([]))
+		})
+		this.add("array equals array", () => {
+			this.expect([42, 13.37], Is.equal.to([42, 13.37]))
+		})
+		this.add("recursive object equals recursive object", () => {
+			this.expect({ meaning: 42, other: 13.37, array: [ 1337 ], object: { meaning: 42 }, empty: {} }, Is.equal.to({ meaning: 42, other: 13.37, array: [ 1337 ], object: { meaning: 42 }, empty: {} }))
+		})
 	}
 }
-Fixture.add(new EqualTest())
+Fixture.add(new CompareConstraintTest())
