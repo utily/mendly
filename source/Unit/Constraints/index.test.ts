@@ -22,8 +22,7 @@
 
 import "./Boolean.test"
 import "./Empty.test"
-import "./Empty.test"
-import "./Equal.test"
+import "./CompareConstraint.test"
 import "./Not.test"
 import "./NullOrUndefined.test"
 import "./Null.test"
