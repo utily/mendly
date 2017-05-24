@@ -67,7 +67,7 @@ export abstract class Fixture {
 			this.prettyPrintTestResult(result)
 		if (!result) {
 			failures.forEach(failure => {
-				const expectedMessage = "expected '" + failure.constraint.expectedValue + "', found '" + failure.value + "'"
+				const expectedMessage = "expected '" + JSON.stringify(failure.constraint.expectedValue) + "', found '" + JSON.stringify(failure.value) + "'"
 				const whereMessage = "[expect #" + failure.expectId + " in '" + failure.test.toString() + "']"
 				this.errorHandler.raise("  -> " + expectedMessage + " " + whereMessage)
 			})
