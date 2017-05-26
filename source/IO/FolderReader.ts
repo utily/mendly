@@ -42,10 +42,8 @@ export class FolderReader extends Reader {
 			this.current = FileReader.open(this.files.shift())
 		if (this.current) {
 			result = this.current.read()
-			if (result && this.files.length > 0) {
+			if (result == undefined || result == "\0")
 				this.current = undefined
-				result = "\0"
-			}
 		}
 		this.lastLocation = this.location
 		return result

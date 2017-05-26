@@ -41,7 +41,7 @@ export class FileReader extends Reader {
 		let backend: Reader | undefined
 		if (path)
 			try {
-				backend = StringReader.open(fs.readFileSync(path, "utf-8"), path)
+				backend = StringReader.create(fs.readFileSync(path, "utf-8"), path)
 			} catch (error) {
 				console.log(`Failed to open file: ${path}`)
 			}
