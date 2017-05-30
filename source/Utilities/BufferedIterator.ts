@@ -22,9 +22,15 @@
 
 import { Iterator } from "./Iterator"
 
-export class BufferedIterator<T> implements Iterator<T> {
+export class BufferedIterator<T> extends Iterator<T> {
 	private buffer: T[] = []
 	constructor(private backend: Iterator<T>) {
+		super(() => {
+			const result = this.peek(0)
+			if (this.buffer.length > 0)
+				this.buffer.shift()
+			return result
+		})
 	}
 	peek(position?: number): T | undefined {
 		if (!position)
@@ -33,11 +39,5 @@ export class BufferedIterator<T> implements Iterator<T> {
 		while (position > this.buffer.length - 1 && (next = this.backend.next()))
 			this.buffer.push(next)
 		return position > this.buffer.length - 1 ? undefined : this.buffer[position]
-	}
-	next(): T | undefined {
-		const result = this.peek(0)
-		if (this.buffer.length > 0)
-			this.buffer.shift()
-		return result
 	}
 }

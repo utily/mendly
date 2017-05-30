@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Simon Mika
+// Copyright (c) 2017 Simon Mika
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,44 +32,44 @@ class StringIterator extends Iterator<string> {
 		super(() => this.position < this.content.length ? this.content.charAt(this.position++) : undefined)
 	}
 }
-export class BufferedIteratorTest extends Fixture {
+export class IteratorTest extends Fixture {
 	constructor() {
-		super("Utilities.BufferedIterator")
+		super("Utilities.Iterator")
 		this.add("empty string", () => {
-			const bi = new BufferedIterator(new StringIterator(""))
-			this.expect(bi.next(), Is.undefined)
-		})
-		this.add("iterate using peek()", () => {
-			const testString = "let's iterate this string using peek()"
-			const bi = new BufferedIterator(new StringIterator(testString))
-			let result: string = ""
-			while (bi.peek()) {
-				result += bi.next()
-			}
-			this.expect(result, Is.equal.to(testString))
+			const iterator = new StringIterator("")<.
+			this.expect(iterator.next(), Is.undefined)
 		})
 		this.add("iterate using next()", () => {
-			const testString = "let's iterate this string using next()"
-			const bi = new BufferedIterator(new StringIterator(testString))
-			let character: string | undefined
+			const content = "let's iterate this string using next()"
+			const iterator = new StringIterator(content)
 			let result: string = ""
-			while ((character = bi.next())) {
-				result += character
-			}
-			this.expect(result, Is.equal.to(testString))
+			let item: string | undefined
+			while (item = iterator.next())
+				result += item
+			this.expect(result, Is.equal.to(content))
 		})
-		this.add("peek() and next()", () => {
-			const testString = "abcdef"
-			const bi = new BufferedIterator(new StringIterator(testString))
-			// Force the reader to buffer the entire string
-			this.expect(bi.peek(5), Is.equal.to("f"))
-			this.expect(bi.next(), Is.equal.to("a"))
-			this.expect(bi.next(), Is.equal.to("b"))
-			this.expect(bi.next(), Is.equal.to("c"))
-			this.expect(bi.next(), Is.equal.to("d"))
-			this.expect(bi.next(), Is.equal.to("e"))
-			this.expect(bi.next(), Is.equal.to("f"))
+		this.add("map", () => {
+			const content = "let's map this string using map to upper case"
+			const iterator = new StringIterator(content).map(c => c.toUpperCase())
+			let result: string = ""
+			let item: string | undefined
+			while (item = iterator.next())
+				result += item
+			this.expect(result, Is.equal.to(content.toUpperCase()))
+		})
+		this.add("reduce", () => {
+			const content = "let's reduce this string back to a string again using reduce"
+			const iterator = new StringIterator(content)
+			const result = iterator.reduce((item, r) => r + item, "")
+			this.expect(result, Is.equal.to(content))
+		})
+		this.add("reduce", () => {
+			const content = "let's reduce this string back to a string again using reduce"
+			const iterator = new StringIterator(content)
+			let i = 0
+			iterator.apply(item => this.expect(item, Is.equal.to(content[i++])))
+			this.expect(i, Is.equal.to(content.length))
 		})
 	}
 }
-Fixture.add(new BufferedIteratorTest())
+Fixture.add(new IteratorTest())

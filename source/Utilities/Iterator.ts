@@ -20,6 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-export interface Iterator<T> {
-	next(): T | undefined
+export class Iterator<T> {
+	constructor(readonly next: () => T | undefined) {
+	}
+	map<S>(mapping: (item: T) => S): Iterator<S> {
+		return new Iterator<S>(() => { const item = this.next(); return item && mapping(item) })
+	}
+	reduce<S>(reduce: (item: T, result: S) => S, result: S): S {
+		const item = this.next()
+		return item ? reduce(item, result) : result
+	}
+	apply(apply: (item: T) => void): void {
+		const item = this.next()
+		if (item)
+			apply(item)
+	}
 }

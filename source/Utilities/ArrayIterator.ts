@@ -22,11 +22,9 @@
 
 import { Iterator } from "./Iterator"
 
-export class ArrayIterator<T> implements Iterator<T> {
+export class ArrayIterator<T> extends Iterator<T> {
 	private position = 0
 	constructor(private backend: T[]) {
-	}
-	next(): T | undefined {
-		return this.position < this.backend.length ? this.backend[this.position++] : undefined
+		super(() => this.position < this.backend.length ? this.backend[this.position++] : undefined)
 	}
 }
