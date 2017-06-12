@@ -22,7 +22,6 @@
 
 import { Fixture, Is } from "../Unit"
 import { Iterator } from "./Iterator"
-import { BufferedIterator } from "./BufferedIterator"
 
 // tslint:disable:max-classes-per-file
 
@@ -36,7 +35,7 @@ export class IteratorTest extends Fixture {
 	constructor() {
 		super("Utilities.Iterator")
 		this.add("empty string", () => {
-			const iterator = new StringIterator("")<.
+			const iterator = new StringIterator("")
 			this.expect(iterator.next(), Is.undefined)
 		})
 		this.add("iterate using next()", () => {
@@ -60,15 +59,21 @@ export class IteratorTest extends Fixture {
 		this.add("reduce", () => {
 			const content = "let's reduce this string back to a string again using reduce"
 			const iterator = new StringIterator(content)
-			const result = iterator.reduce((item, r) => r + item, "")
+			const result = iterator.reduce((r, item) => r + item, "")
 			this.expect(result, Is.equal.to(content))
 		})
-		this.add("reduce", () => {
-			const content = "let's reduce this string back to a string again using reduce"
+		this.add("apply", () => {
+			const content = "let's verify the characters of this string one by one using apply"
 			const iterator = new StringIterator(content)
 			let i = 0
 			iterator.apply(item => this.expect(item, Is.equal.to(content[i++])))
 			this.expect(i, Is.equal.to(content.length))
+		})
+		this.add("toArray", () => {
+			const content = "let's reduce this string back to an array of single character strings"
+			const iterator = new StringIterator(content)
+			const result = iterator.toArray()
+			this.expect(result, Is.equal.to(content.split("")))
 		})
 	}
 }

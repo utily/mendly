@@ -26,13 +26,26 @@ export class Iterator<T> {
 	map<S>(mapping: (item: T) => S): Iterator<S> {
 		return new Iterator<S>(() => { const item = this.next(); return item && mapping(item) })
 	}
-	reduce<S>(reduce: (item: T, result: S) => S, result: S): S {
+	reduce<S>(reduce: (result: S, item: T) => S, result: S): S {
 		const item = this.next()
-		return item ? reduce(item, result) : result
+		return item ? this.reduce(reduce, reduce(result, item)) : result
 	}
 	apply(apply: (item: T) => void): void {
 		const item = this.next()
-		if (item)
+		if (item) {
 			apply(item)
+			this.apply(apply)
+		}
+	}
+	toArray(): T[] {
+		const item = this.next()
+		let result: T[]
+		if (!item)
+			result = []
+		else {
+			result = this.toArray()
+			result.unshift(item)
+		}
+		return result
 	}
 }
