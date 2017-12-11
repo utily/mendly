@@ -34,6 +34,13 @@ export class Locator {
 	get folder(): Locator {
 		return this.isFolder ? this : new Locator(this.scheme, this.authority, this.path.filter((value, index) => index < this.path.length - 1), this.query, this.fragment)
 	}
+	get name(): string {
+		return this.path[this.path.length - 1]
+	}
+	get extension(): string {
+		const splitted = this.name.split(".")
+		return splitted.length > 1 ? splitted[splitted.length - 1] : ""
+	}
 	private createArray<T>(value: T, count: number): T[] {
 		const result: T[] = []
 		while (count-- > 0)
