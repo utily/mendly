@@ -25,11 +25,11 @@ import * as Error from "../Error"
 export class ErrorHandler implements Error.Handler {
 	constructor(private errorHandler: Error.Handler, private region: Error.Region) {
 	}
-	raise(message: string | Error.Message, level?: Error.Level, type?: Error.Type, region?: Error.Region): void {
+	raise(message: string | Error.Message, level?: Error.Level, type?: string, region?: Error.Region): void {
 		if (!level)
 			level = Error.Level.Recoverable
 		if (!type)
-			type = Error.Type.SelfTest
+			type = "self-test"
 		if (!(message instanceof Error.Message)) {
 			if (!region)
 				region = this.region

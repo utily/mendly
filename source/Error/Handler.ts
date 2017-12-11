@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Type } from "./Type"
 import { Level } from "./Level"
 import { Region } from "./Region"
 import { Message } from "./Message"
@@ -28,6 +27,6 @@ import { Message } from "./Message"
 export interface Handler {
 	raise: {
 		(message: Message): void
-		(message: string, level?: Level, type?: Type, region?: Region): void,
+		(message: string, level?: Level, type?: string, region?: Region): void,
 	}
 }

@@ -20,14 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Type } from "./Type"
 import { Level } from "./Level"
 import { Region } from "./Region"
 import { Message } from "./Message"
 import { Handler } from "./Handler"
 
 export class ConsoleHandler implements Handler {
-	raise(message: string | Message, level?: Level, type?: Type, region?: Region): void {
+	raise(message: string | Message, level?: Level, type?: string, region?: Region): void {
 		if (!(message instanceof Message))
 			message = new Message(message as string, level, type, region)
 		console.error(message.toString())
