@@ -69,17 +69,17 @@ export class BufferedReader extends Reader {
 			if (typeof(value) == "string") {
 				while (count && count-- > 0)
 					value += value as string
-				result = (this.peek(value.length) == value as string ? value as string : undefined)
-			} else if ((value as string[]).length > 0 && !(result = this.peekIs((value as string[])[0])) && (value as string[]).length )
+				result = this.peek(value.length) == value as string && value as string || undefined
+			} else if ((value as string[]).length > 0 && !(result = this.peekIs((value as string[])[0])) && (value as string[]).length)
 				result = this.peekIs((value as string[]).slice(1))
 		return result
 	}
-	readIf(value: string|string[]): string | undefined {
+	readIf(value: string | string[]): string | undefined {
 		let result: string | undefined
 		if (value)
 			if (typeof(value) == "string")
-				result = (this.peek(value.length) == value as string ? this.read(value.length) : undefined)
-			else if ((value as string[]).length > 0 && !(result = this.readIf((value as string[])[0])) && (value as string[]).length )
+				result = this.peek(value.length) == value as string && this.read(value.length) || undefined
+			else if ((value as string[]).length > 0 && !(result = this.readIf((value as string[])[0])) && (value as string[]).length)
 				result = this.readIf((value as string[]).slice(1))
 		return result
 	}
