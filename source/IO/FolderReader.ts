@@ -28,7 +28,7 @@ import * as fs from "fs"
 
 export class FolderReader extends Reader {
 	private current: Reader | undefined
-	private lastLocation: Error.Location
+	private lastLocation: Error.Location = new Error.Location("", 0, 0)
 	get isEmpty(): boolean { return this.files.length == 0 && (!this.current || this.current.isEmpty) }
 	get resource(): string { return this.current ? this.current.resource : this.lastLocation.resource }
 	get location(): Error.Location { return this.current ? this.current.location : this.lastLocation }

@@ -25,17 +25,18 @@ import { Test } from "./Test"
 
 export class TestFailedError implements Error {
 	readonly name = "TestFailedError"
-	expectId: number
-	private testField: Test
+	expectId: number = -1
+	private testField: Test | undefined
 	get test() { return this.testField }
-	set test(value: Test) {
-		this.message = value.name
+	set test(value: Test | undefined) {
+		if (value != undefined)
+			this.message = value.name
 		this.testField = value
 	}
 	constructor(readonly value: any, readonly constraint: Constraints.Constraint, public message = "")
 	{
 	}
 	toString(): string {
-		return this.name + ": " + this.test.name
+		return this.name + ": " + (this.test != undefined ? this.test.name : "")
 	}
 }
