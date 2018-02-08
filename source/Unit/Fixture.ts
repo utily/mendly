@@ -68,7 +68,7 @@ export abstract class Fixture {
 		if (!result) {
 			failures.forEach(failure => {
 				const expectedMessage = "expected '" + JSON.stringify(failure.constraint.expectedValue) + "', found '" + JSON.stringify(failure.value) + "'"
-				const whereMessage = "[expect #" + failure.expectId + " in '" + failure.test.toString() + "']"
+				const whereMessage = "[expect #" + failure.expectId + " in '" + (failure.test ? failure.test.toString() : "") + "']"
 				this.errorHandler.raise("  -> " + expectedMessage + " " + whereMessage)
 			})
 		}
