@@ -22,6 +22,7 @@
 
 import { Fixture, Is } from "../Unit"
 import { ArrayIterator } from "./ArrayIterator"
+import { Iterator } from "./Iterator"
 
 export class ArrayIteratorTest extends Fixture {
 	constructor() {
@@ -34,6 +35,15 @@ export class ArrayIteratorTest extends Fixture {
 			const iterator = new ArrayIterator(integers)
 			integers.forEach(value => {
 				this.expect(iterator.next(), Is.equal.to(value))
+			})
+			this.expect(iterator.next(), Is.undefined)
+		})
+		this.add("map", () => {
+			const integers = [1, 2, 3, 4, 5]
+			let iterator: Iterator<number> = new ArrayIterator(integers)
+			iterator = iterator.map(integer => 2 ** integer)
+			integers.forEach(value => {
+				this.expect(iterator.next(), Is.equal.to(2 ** value))
 			})
 			this.expect(iterator.next(), Is.undefined)
 		})
