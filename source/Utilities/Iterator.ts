@@ -24,7 +24,9 @@ export class Iterator<T> {
 	constructor(readonly next: () => T | undefined) {
 	}
 	map<S>(mapping: (item: T) => S): Iterator<S> {
-		return new Iterator<S>(() => { const item = this.next(); return item && mapping(item) })
+		return new Iterator<S>(() => {
+			const item = this.next()
+			return (item != undefined) ? mapping(item) : undefined })
 	}
 	reduce<S>(reduce: (result: S, item: T) => S, result: S): S {
 		const item = this.next()
