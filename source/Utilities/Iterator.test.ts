@@ -75,6 +75,12 @@ export class IteratorTest extends Fixture {
 			const result = iterator.toArray()
 			this.expect(result, Is.equal.to(content.split("")))
 		})
+		this.add("last", () => {
+			const content = "let's reduce this string back to an array of single character strings"
+			const iterator = new StringIterator(content)
+			const result = iterator.last
+			this.expect(result, Is.equal.to("s"))
+		})
 	}
 }
 Fixture.add(new IteratorTest())

@@ -23,8 +23,7 @@
 export class Iterator<T> {
 	get last(): T | undefined {
 		const next = this.next()
-		const recursive = this.last
-		return recursive != undefined ? next : recursive
+		return next ? this.last || next : next
 	}
 	constructor(readonly next: () => T | undefined) {
 	}
