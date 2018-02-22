@@ -21,6 +21,11 @@
 // SOFTWARE.
 
 export class Iterator<T> {
+	get last(): T | undefined {
+		const next = this.next()
+		const recursive = this.last
+		return recursive != undefined ? next : recursive
+	}
 	constructor(readonly next: () => T | undefined) {
 	}
 	map<S>(mapping: (item: T) => S): Iterator<S> {
@@ -38,6 +43,15 @@ export class Iterator<T> {
 			apply(item)
 			this.apply(apply)
 		}
+	}
+	filter(filter: (item: T) => boolean): Iterator<T> {
+		return new Iterator<T>(() => {
+			let item: T | undefined
+			do
+				item = this.next()
+			while (item != undefined && !filter(item))
+			return item
+		})
 	}
 	toArray(): T[] {
 		const item = this.next()
