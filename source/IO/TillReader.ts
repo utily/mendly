@@ -21,20 +21,29 @@
 // SOFTWARE.
 
 import * as Error from "../Error"
+import * as Uri from "../Uri"
 import { Reader } from "./Reader"
 import { BufferedReader } from "./BufferedReader"
 
-export class TillReader {
-	private done = false
+export class TillReader extends Reader {
 	private backend: BufferedReader
-	get isEmpty(): boolean {
-		return this.done || this.backend.isEmpty
-	}
-	get resource(): string { return this.backend.resource }
+	private done = false
+	get readable(): boolean { return this.backend.readable }
+	get opened(): boolean { return !this.done && this.backend.opened }
+	private async isEmptyHelper(): Promise<boolean> { return this.done || await this.backend.isEmpty }
+	get isEmpty() { return this.isEmptyHelper() }
+	get resource(): Uri.Locator { return this.backend.resource }
 	get location(): Error.Location { return this.backend.location }
 	get region(): Error.Region { return this.backend.region }
 	private constructor(backend: Reader, private endMark: string | string[]) {
+		super()
 		this.backend = backend instanceof BufferedReader ? backend : BufferedReader.create(backend)
+	}
+	close(): Promise<boolean> {
+		const result = !this.done
+		if (result)
+			this.done = true
+		return Promise.resolve(result)
 	}
 	read(): string | undefined {
 		let result: string | undefined
@@ -45,9 +54,9 @@ export class TillReader {
 		return result
 	}
 	mark(): Error.Region { return this.backend.mark() }
-	static open(backend: undefined, endMark?: string | string[]): undefined
-	static open(backend: Reader, endMark?: string | string[]): Reader
-	static open(backend: Reader | undefined, endMark?: string | string[]): Reader | undefined {
+	static create(backend: undefined, endMark?: string | string[]): undefined
+	static create(backend: Reader, endMark?: string | string[]): Reader
+	static create(backend: Reader | undefined, endMark?: string | string[]): Reader | undefined {
 		return backend && endMark ? new TillReader(backend, endMark) : backend
 	}
 }

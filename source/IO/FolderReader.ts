@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import * as Uri from "../Uri"
 import * as Error from "../Error"
 import { Reader } from "./Reader"
 import { FileReader } from "./FileReader"
@@ -27,14 +28,20 @@ import { FileReader } from "./FileReader"
 import * as fs from "fs"
 
 export class FolderReader extends Reader {
+	get readable(): boolean { return this.current != undefined && this.current.readable || this.files.length > 0 }
+	get opened(): boolean { return this.current != undefined || this.files.length > 0 }
 	private current: Reader | undefined
-	private lastLocation: Error.Location = new Error.Location("", 0, 0)
-	get isEmpty(): boolean { return this.files.length == 0 && (!this.current || this.current.isEmpty) }
-	get resource(): string { return this.current ? this.current.resource : this.lastLocation.resource }
+	private lastLocation: Error.Location = new Error.Location(Uri.Locator.empty, 0, 0)
+	private async isEmptyHelper(): Promise<boolean> { return this.files.length == 0 && (!this.current || await this.current.isEmpty) }
+	get isEmpty(): Promise<boolean> { return this.isEmptyHelper() }
+	get resource(): Uri.Locator { return this.current ? this.current.resource : this.lastLocation.resource }
 	get location(): Error.Location { return this.current ? this.current.location : this.lastLocation }
 	get region(): Error.Region { return this.current ? this.current.region : new Error.Region(this.resource) }
-	constructor(private files: string[]) {
+	constructor(private files: Uri.Locator[]) {
 		super()
+	}
+	async close(): Promise<boolean> {
+		return this.current != undefined && await this.current.close()
 	}
 	read(): string | undefined {
 		let result: string | undefined
@@ -42,8 +49,11 @@ export class FolderReader extends Reader {
 			this.current = FileReader.open(this.files.shift())
 		if (this.current) {
 			result = this.current.read()
-			if (result == undefined || result == "\0")
+			if (result == undefined || result == "\0") {
+				/* await */
+				this.current.close()
 				this.current = undefined
+			}
 		}
 		this.lastLocation = this.location
 		return result
@@ -64,13 +74,14 @@ export class FolderReader extends Reader {
 		})
 		return result
 	}
-	static open(path: string, extension: string): Reader | undefined {
+	static open(resource: Uri.Locator): Reader | undefined {
 		let files: string[] | undefined
 		try {
-			files = FolderReader.getFiles(path, extension)
+			if (resource.scheme == ["file"] && resource.isFolder || resource.name.match("*"))
+				files = FolderReader.getFiles((resource.isRelative ? "" : "/") + resource.folder.path.join("/"), resource.extension)
 		} catch (error) {
 		}
-		return files ? new FolderReader(files) : undefined
+		return files ? new FolderReader(files.map(f => new Uri.Locator(["file"], undefined, f.split("/")))) : undefined
 	}
 }
-Reader.addOpener((path, extension) => FolderReader.open(path, extension), 0)
+Reader.addOpener((resource) => FolderReader.open(resource), 0)

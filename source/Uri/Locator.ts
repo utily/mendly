@@ -84,6 +84,7 @@ export class Locator {
 			result += "#" + this.fragment
 		return result
 	}
+	static readonly empty = new Locator(undefined, undefined, undefined, undefined, undefined)
 	static parse(data?: string): Locator | undefined {
 		let result: Locator | undefined
 		switch (data) {

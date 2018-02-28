@@ -20,15 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import * as Uri from "../Uri"
 import { Position } from "./Position"
 
 export class Region {
-	constructor(readonly resource: string, readonly start?: Position, readonly end?: Position, readonly content?: string)
+	constructor(readonly resource: Uri.Locator, readonly start?: Position, readonly end?: Position, readonly content?: string)
 	{
 	}
 	merge(other: Region) { return new Region(this.resource, this.start, other.end, this.content ? this.content : "" + other.content ? other.content : "") }
 	toString() {
-		let result = this.resource
+		let result = this.resource.toString()
 		if (this.start && this.end)
 			result += " (" + this.start.toString() + " - " + this.end.toString() + ") "
 		if (this.content)

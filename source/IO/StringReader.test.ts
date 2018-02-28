@@ -26,9 +26,9 @@ import { StringReader } from "./StringReader"
 export class StringReaderTest extends Fixture {
 	constructor() {
 		super("IO.StringReader")
-		this.add("empty", () => {
+		this.add("empty", async () => {
 			const sr = StringReader.create("")
-			this.expect(sr.isEmpty)
+			this.expect(await sr.isEmpty)
 		})
 		this.add("state check", () => {
 			const sr = StringReader.create("")
@@ -45,7 +45,7 @@ export class StringReaderTest extends Fixture {
 			this.expect(sr.read(), Is.equal.to("e"))
 			this.expect(sr.read(), Is.equal.to("f"))
 		})
-		this.add("simple string with location", () => {
+		this.add("simple string with location", async () => {
 			const sr = StringReader.create("abc\ndef")
 			this.expect(sr.location.column, Is.equal.to(1))
 			this.expect(sr.location.line, Is.equal.to(1))
@@ -68,9 +68,9 @@ export class StringReaderTest extends Fixture {
 			this.expect(sr.location.column, Is.equal.to(3))
 			this.expect(sr.location.line, Is.equal.to(2))
 			sr.read()
-			this.expect(sr.isEmpty)
+			this.expect(await sr.isEmpty)
 		})
-		this.add("tabs and newlines", () => {
+		this.add("tabs and newlines", async () => {
 			const sr = StringReader.create("\t\t\t\n\t\t\t")
 			this.expect(sr.location.column, Is.equal.to(1))
 			this.expect(sr.location.line, Is.equal.to(1))
@@ -93,7 +93,7 @@ export class StringReaderTest extends Fixture {
 			this.expect(sr.location.column, Is.equal.to(3))
 			this.expect(sr.location.line, Is.equal.to(2))
 			sr.read()
-			this.expect(sr.isEmpty)
+			this.expect(await sr.isEmpty)
 		})
 		this.add("mark", () => {
 			const sr = StringReader.create("abc\0")

@@ -22,6 +22,7 @@
 
 import { Test } from "./Test"
 import { TestFailedError } from "./TestFailedError"
+import * as Uri from "../Uri"
 import * as Error from "../Error"
 import * as Constraints from "./Constraints"
 import * as Utilities from "../Utilities"
@@ -34,7 +35,7 @@ export abstract class Fixture {
 	constructor(readonly name: string, private reportOnPass?: boolean) {
 		if (reportOnPass == undefined)
 			this.reportOnPass = true
-		this.errorHandler = new ErrorHandler(new Error.ConsoleHandler(), new Error.Region(name))
+		this.errorHandler = new ErrorHandler(new Error.ConsoleHandler(), new Error.Region(new Uri.Locator([ "test" ], Uri.Authority.parse(name))))
 	}
 	add(name: string, action: () => void): void {
 		this.tests.push(new Test(name, action))

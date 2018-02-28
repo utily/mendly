@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 import * as Error from "../Error"
+import * as Uri from "../Uri"
 import { Reader } from "./Reader"
 
 export class StringReader extends Reader {
@@ -29,16 +30,23 @@ export class StringReader extends Reader {
 	private column: number = 1
 	private lastPosition: Error.Position
 	private lastContent: string = ""
-	get isEmpty(): boolean {
-		return this.count + 1 >= this.content.length
+	readonly readable = true
+	get opened(): boolean { return this.count + 1 >= this.content.length }
+	get isEmpty(): Promise<boolean> {
+		return Promise.resolve(this.opened)
 	}
-	get resource(): string { return this.path ? this.path : "" }
 	get location(): Error.Location { return new Error.Location(this.resource, this.line, this.column) }
 	get region(): Error.Region { return new Error.Region(this.resource, this.lastPosition, this.location, this.lastContent) }
-	private constructor(private content: string, private path?: string) {
+	private constructor(private content: string, readonly resource: Uri.Locator) {
 		super()
 		this.content += "\0"
 		this.lastPosition = this.location
+	}
+	async close(): Promise<boolean> {
+		const result = !await this.isEmpty
+		if (result)
+			this.count = this.content.length
+		return result
 	}
 	read(): string | undefined {
 		let result: string | undefined
@@ -63,9 +71,9 @@ export class StringReader extends Reader {
 		this.lastContent = ""
 		return result
 	}
-	static create(content: undefined, path?: string): undefined
-	static create(content: string, path?: string): Reader
-	static create(content: string | undefined, path?: string): Reader | undefined {
-		return content != undefined ? new StringReader(content, path) : undefined
+	static create(content: undefined, path?: Uri.Locator): undefined
+	static create(content: string, path?: Uri.Locator): Reader
+	static create(content: string | undefined, resource?: Uri.Locator): Reader | undefined {
+		return content != undefined ? new StringReader(content, resource || Uri.Locator.empty) : undefined
 	}
 }

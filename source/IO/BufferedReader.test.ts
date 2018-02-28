@@ -27,9 +27,9 @@ import { BufferedReader } from "./BufferedReader"
 export class BufferedReaderTest extends Fixture {
 	constructor() {
 		super("IO.BufferedReader")
-		this.add("empty", () => {
+		this.add("empty", async () => {
 			const br = BufferedReader.create(StringReader.create(""))
-			this.expect(br.isEmpty)
+			this.expect(await br.isEmpty)
 		})
 		this.add("state check", () => {
 			const br = BufferedReader.create(StringReader.create(""))
@@ -66,7 +66,7 @@ export class BufferedReaderTest extends Fixture {
 			this.expect(br.read(1), Is.equal.to("\n"))
 			this.expect(br.read(3), Is.equal.to("def"))
 		})
-		this.add("string location", () => {
+		this.add("string location", async () => {
 			const br = BufferedReader.create(StringReader.create("abc\ndef"))
 			this.expect(br.location.column, Is.equal.to(1))
 			this.expect(br.location.line, Is.equal.to(1))
@@ -89,9 +89,9 @@ export class BufferedReaderTest extends Fixture {
 			this.expect(br.location.column, Is.equal.to(3))
 			this.expect(br.location.line, Is.equal.to(2))
 			br.read()
-			this.expect(br.isEmpty)
+			this.expect(await br.isEmpty)
 		})
-		this.add("tabs and newlines location", () => {
+		this.add("tabs and newlines location", async () => {
 			const br = BufferedReader.create(StringReader.create("\t\t\t\n\t\t\t"))
 			this.expect(br.location.column, Is.equal.to(1))
 			this.expect(br.location.line, Is.equal.to(1))
@@ -114,7 +114,7 @@ export class BufferedReaderTest extends Fixture {
 			this.expect(br.location.column, Is.equal.to(3))
 			this.expect(br.location.line, Is.equal.to(2))
 			br.read()
-			this.expect(br.isEmpty)
+			this.expect(await br.isEmpty)
 		})
 		this.add("mark", () => {
 			const br = BufferedReader.create(StringReader.create("abc\0"))

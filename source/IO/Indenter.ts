@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Simon Mika
+// Copyright (c) 2018 Simon Mika
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,14 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import * as Uri from "../Uri"
-import { Position } from "./Position"
+import { Writer } from "./Writer"
+import { Iterator } from "../Utilities"
 
-export class Location extends Position {
-	constructor(readonly resource: Uri.Locator, line: number, column: number) {
-		super(line, column)
+export class Indenter extends Writer {
+	get writable(): boolean { return this.backend.writable }
+	autoFlush: boolean
+	indentionSymbol = "\t"
+	private indentionCount
+	constructor(private readonly backend: Writer) {
+		super()
 	}
-	toString() {
-		return this.resource.toString() + " @ " + super.toString()
+	increase(): boolean {
+		this.indentionCount++
+		return true
 	}
+	decrease(): boolean {
+		this.indentionCount--
+		return this.indentionCount >= 0
+	}
+	protected writeImplementation(buffer: Iterator<string>): Promise<boolean> {
+		let item: string
+		const result: Promise<boolean>[] = []
+		while (item = buffer.next())
+			result.push(this.backend.write(item.replace(this.newLineSymbol, this.indentionSymbol.repeat(this.indentionCount) + this.newLineSymbol)))
+		return Promise.all(result).then(r => r.reduce((previous, current) => previous && current, true))
+	}
+	flush(): Promise<boolean> {
+		return this.backend.flush()
+	}
+
 }

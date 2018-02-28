@@ -27,6 +27,9 @@ export class Iterator<T> {
 	}
 	constructor(readonly next: () => T | undefined) {
 	}
+	append(item: T | Iterator<T>): Iterator<T> {
+		return new Iterator(() => this.next() || (item instanceof Iterator ? item.next() : item))
+	}
 	map<S>(mapping: (item: T) => S): Iterator<S> {
 		return new Iterator<S>(() => {
 			const item = this.next()

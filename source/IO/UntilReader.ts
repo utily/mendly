@@ -20,21 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import * as Uri from "../Uri"
 import * as Error from "../Error"
 import { Reader } from "./Reader"
 import { BufferedReader } from "./BufferedReader"
 
-export class UntilReader {
+export class UntilReader extends Reader {
 	private done = -1
 	private backend: BufferedReader
-	get isEmpty(): boolean {
-		return this.done == 0 || this.backend.isEmpty
-	}
-	get resource(): string { return this.backend.resource }
+	get readable(): boolean { return this.backend.readable }
+	get opened(): boolean { return !this.done && this.backend.opened }
+	private async isEmptyHelper(): Promise<boolean> { return this.done == 0 || await this.backend.isEmpty }
+	get isEmpty(): Promise<boolean> { return this.isEmptyHelper() }
+	get resource(): Uri.Locator { return this.backend.resource }
 	get location(): Error.Location { return this.backend.location }
 	get region(): Error.Region { return this.backend.region }
 	private constructor(backend: Reader, private endMark: string | string[]) {
+		super()
 		this.backend = backend instanceof BufferedReader ? backend : BufferedReader.create(backend)
+	}
+	close(): Promise<boolean> {
+		const result = this.done > 0
+		if (result)
+			this.done = 0
+		return Promise.resolve(result)
 	}
 	read(): string | undefined {
 		let result: string | undefined
@@ -49,9 +58,9 @@ export class UntilReader {
 		return result
 	}
 	mark(): Error.Region { return this.backend.mark() }
-	static open(backend: undefined, endMark?: string | string[]): undefined
-	static open(backend: Reader, endMark?: string | string[]): Reader
-	static open(backend: Reader | undefined, endMark?: string | string[]): Reader | undefined {
+	static create(backend: undefined, endMark?: string | string[]): undefined
+	static create(backend: Reader, endMark?: string | string[]): Reader
+	static create(backend: Reader | undefined, endMark?: string | string[]): Reader | undefined {
 		return backend && endMark ? new UntilReader(backend, endMark) : backend
 	}
 }

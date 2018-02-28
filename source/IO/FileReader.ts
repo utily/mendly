@@ -21,33 +21,37 @@
 // SOFTWARE.
 
 import * as fs from "fs"
+import * as Uri from "../Uri"
 import * as Error from "../Error"
 import { Reader } from "./Reader"
 import { StringReader } from "./StringReader"
 
 export class FileReader extends Reader {
-	get isEmpty(): boolean { return this.backend.isEmpty }
-	get resource(): string { return this.backend ? this.backend.resource : "" }
+	get readable(): boolean { return this.backend.readable }
+	get opened(): boolean { return this.backend.opened }
+	get isEmpty(): Promise<boolean> { return this.backend.isEmpty }
+	get resource(): Uri.Locator { return this.backend ? this.backend.resource : Uri.Locator.empty }
 	get location(): Error.Location { return this.backend.location }
 	get region(): Error.Region { return this.backend.region }
 	private constructor(private backend: Reader) {
 		super()
 	}
+	close(): Promise<boolean> {
+		return this.backend.close()
+	}
 	read(): string | undefined { return this.backend.read() }
 	mark(): Error.Region { return this.backend.mark() }
-	static open(path?: undefined): undefined
-	static open(path?: string): Reader
-	static open(path?: string): Reader | undefined {
+	static open(resource?: undefined): undefined
+	static open(resource?: Uri.Locator): Reader
+	static open(resource?: Uri.Locator): Reader | undefined {
 		let backend: Reader | undefined
-		if (path)
+		if (resource && resource.scheme == [ "file" ])
 			try {
-				backend = StringReader.create(fs.readFileSync(path, "utf-8"), path)
+				backend = StringReader.create(fs.readFileSync((resource.isRelative ? "" : "/") + resource.path.join("/"), "utf-8"), resource)
 			} catch (error) {
-				console.log(`Failed to open file: ${path}`)
+				console.log(`Failed to open file: ${resource.toString()}`)
 			}
 		return backend ? new FileReader(backend) : undefined
 	}
 }
-Reader.addOpener((path, extension) => {
-	return path.slice(-extension.length - 1) == "." + extension ? FileReader.open(path) : undefined
-}, 10)
+Reader.addOpener(path => FileReader.open(path), 10)

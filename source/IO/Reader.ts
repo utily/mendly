@@ -21,26 +21,26 @@
 // SOFTWARE.
 
 import * as Error from "../Error"
+import * as Uri from "../Uri"
+import { InDevice } from "./InDevice"
 
-export abstract class Reader {
-	abstract get isEmpty(): boolean
-	abstract get resource(): string
+export abstract class Reader extends InDevice {
 	abstract get location(): Error.Location
 	abstract get region(): Error.Region
 	abstract read(): string | undefined
 	abstract mark(): Error.Region
-	private static openers: { open: ((path: string, extension: string) => Reader | undefined), priority: number }[] = []
-	static addOpener(open: (path: string, extension: string) => Reader | undefined, priority?: number) {
+	private static openers: { open: ((locator: Uri.Locator) => Reader | undefined), priority: number }[] = []
+	static addOpener(open: (locator: Uri.Locator) => Reader | undefined, priority?: number) {
 		if (!priority)
 			priority = 0
 		Reader.openers.push({ open, priority})
 		Reader.openers = Reader.openers.sort((left, right) => right.priority - left.priority)
 	}
-	static open(path: string, extension: string): Reader | undefined {
+	static open(locator: Uri.Locator): Reader | undefined {
 		let result: Reader | undefined
 		let i = 0
 		do
-			result = Reader.openers[i++].open(path, extension)
+			result = Reader.openers[i++].open(locator)
 		while (!result && i < Reader.openers.length)
 		return result
 	}

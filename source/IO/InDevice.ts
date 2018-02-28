@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Simon Mika
+// Copyright (c) 2018 Simon Mika
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,14 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import * as Uri from "../Uri"
-import { Position } from "./Position"
+import { Device } from "./Device"
 
-export class Location extends Position {
-	constructor(readonly resource: Uri.Locator, line: number, column: number) {
-		super(line, column)
-	}
-	toString() {
-		return this.resource.toString() + " @ " + super.toString()
-	}
+export abstract class InDevice extends Device {
+	abstract get readable(): boolean
+	abstract get isEmpty(): Promise<boolean>
 }

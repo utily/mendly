@@ -20,18 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import * as Uri from "../Uri"
 import * as Error from "../Error"
 import { Reader } from "./Reader"
 
 export { Reader } from "./Reader"
 export class BufferedReader extends Reader {
+	get readable(): boolean { return !!this.backend }
+	get opened(): boolean { return !!this.backend }
 	private buffer: { data: string, location: Error.Location }[] = []
 	private lastMark: Error.Location
 	private lastContent: string = ""
-	get isEmpty(): boolean { return (this.buffer.length == 0 || this.buffer[0].data == "\0") && this.backend.isEmpty }
-	get resource(): string {
+	private async isEmptyHelper(): Promise<boolean> { return (this.buffer.length == 0 || this.buffer[0].data == "\0") && await this.backend.isEmpty }
+	get isEmpty(): Promise<boolean> { return this.isEmptyHelper() }
+	get resource(): Uri.Locator {
 		const location = this.location
-		return location ? location.resource : ""
+		return location ? location.resource : Uri.Locator.empty
 	}
 	get location(): Error.Location {
 		return this.buffer && this.buffer.length > 0 ? this.buffer[0].location : this.backend.location
@@ -42,6 +46,9 @@ export class BufferedReader extends Reader {
 	protected constructor(private backend: Reader) {
 		super()
 		this.lastMark = this.location
+	}
+	close(): Promise<boolean> {
+		return this.backend.close()
 	}
 	peek(length?: number): string | undefined {
 		if (!length)
