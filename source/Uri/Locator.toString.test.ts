@@ -32,6 +32,12 @@ export class LocatorToStringTest extends Fixture {
 			if (absolute)
 				this.expect(absolute.toString(), Is.equal.to("https://server.example.com/folder0/folder1/"))
 		})
+		this.add("full file", () => {
+			const absolute = Locator.parse("file:///folder0/folder1/")
+			this.expect(absolute, Is.not.nullOrUndefined)
+			if (absolute)
+				this.expect(absolute.toString(), Is.equal.to("file:///folder0/folder1/"))
+		})
 		this.add("absolute file", () => {
 			const relative = Locator.parse("/folder2/file.extension")
 			this.expect(relative, Is.not.nullOrUndefined)

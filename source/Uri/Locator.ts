@@ -72,9 +72,11 @@ export class Locator {
 			result += this.scheme.join("+") + ":"
 		if (!this.authority.isEmpty)
 			result += "//" + this.authority.toString()
+		else if (this.scheme.length > 0)
+			result += "//"
 		if (this.path) {
 			let path = this.path.join("/")
-			if (path[0] != ".")
+			if (path[0] != "." || result.length > 0)
 				path = "/" + path
 			result += path
 		}

@@ -77,7 +77,7 @@ export class FolderReader extends Reader {
 	static open(resource: Uri.Locator): Reader | undefined {
 		let files: string[] | undefined
 		try {
-			if (resource.scheme == ["file"] && resource.isFolder || resource.name.match("*"))
+			if (resource && (resource.scheme.length == 0 || resource.scheme.length == 1 && resource.scheme[0] == "file") && resource.isFolder || resource.name.match("*"))
 				files = FolderReader.getFiles((resource.isRelative ? "" : "/") + resource.folder.path.join("/"), resource.extension)
 		} catch (error) {
 		}

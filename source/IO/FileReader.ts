@@ -45,7 +45,7 @@ export class FileReader extends Reader {
 	static open(resource?: Uri.Locator): Reader
 	static open(resource?: Uri.Locator): Reader | undefined {
 		let backend: Reader | undefined
-		if (resource && resource.scheme == [ "file" ])
+		if (resource && (resource.scheme.length == 0 || resource.scheme.length == 1 && resource.scheme[0] == "file"))
 			try {
 				backend = StringReader.create(fs.readFileSync((resource.isRelative ? "" : "/") + resource.path.join("/"), "utf-8"), resource)
 			} catch (error) {
