@@ -20,7 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-export abstract class OutDevice {
+import { Device } from "./Device"
+
+export abstract class OutDevice extends Device {
 	abstract get writable(): boolean
 	abstract get autoFlush(): boolean
 	abstract flush(): Promise<boolean>

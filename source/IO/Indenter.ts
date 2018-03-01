@@ -20,16 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import * as Uri from "../Uri"
 import { Writer } from "./Writer"
 import { Iterator } from "../Utilities"
 
 export class Indenter extends Writer {
+	get resource(): Uri.Locator { return this.backend.resource }
+	get opened(): boolean { return this.backend.opened }
 	get writable(): boolean { return this.backend.writable }
 	autoFlush: boolean = true
 	indentionSymbol = "\t"
 	private indentionCount = 0
 	constructor(private readonly backend: Writer) {
 		super()
+	}
+	flush(): Promise<boolean> {
+		return this.backend.flush()
+	}
+	close(): Promise<boolean> {
+		return this.backend.close()
 	}
 	increase(): boolean {
 		this.indentionCount++
@@ -45,8 +54,5 @@ export class Indenter extends Writer {
 		while (item = buffer.next())
 			result.push(this.backend.write(item.replace(this.newLineSymbol, this.indentionSymbol.repeat(this.indentionCount) + this.newLineSymbol)))
 		return Promise.all(result).then(r => r.reduce((previous, current) => previous && current, true))
-	}
-	flush(): Promise<boolean> {
-		return this.backend.flush()
 	}
 }

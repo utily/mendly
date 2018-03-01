@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import * as Uri from "../Uri"
 import { Iterator, ArrayIterator } from "../Utilities"
 import { OutDevice } from "./OutDevice"
 
@@ -36,18 +37,18 @@ export abstract class Writer extends OutDevice {
 			this.writeImplementation(new ArrayIterator([message, this.newLineSymbol]))
 	}
 	protected abstract writeImplementation(buffer: Iterator<string>): Promise<boolean>
-	private static openers: { open: ((path: string, extension: string) => Writer | undefined), priority: number }[] = []
-	static addOpener(open: (path: string, extension: string) => Writer | undefined, priority?: number) {
+	private static openers: { open: ((resource: Uri.Locator) => Promise<Writer | undefined>), priority: number }[] = []
+	static addOpener(open: (resource: Uri.Locator) => Promise<Writer | undefined>, priority?: number) {
 		if (!priority)
 			priority = 0
 		Writer.openers.push({ open, priority})
 		Writer.openers = Writer.openers.sort((left, right) => right.priority - left.priority)
 	}
-	static open(path: string, extension: string): Writer | undefined {
+	static async open(resource: Uri.Locator): Promise<Writer | undefined> {
 		let result: Writer | undefined
 		let i = 0
 		do
-			result = Writer.openers[i++].open(path, extension)
+			result = await Writer.openers[i++].open(resource)
 		while (!result && i < Writer.openers.length)
 		return result
 	}
