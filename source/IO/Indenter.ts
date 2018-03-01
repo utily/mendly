@@ -25,9 +25,9 @@ import { Iterator } from "../Utilities"
 
 export class Indenter extends Writer {
 	get writable(): boolean { return this.backend.writable }
-	autoFlush: boolean
+	autoFlush: boolean = true
 	indentionSymbol = "\t"
-	private indentionCount
+	private indentionCount = 0
 	constructor(private readonly backend: Writer) {
 		super()
 	}
@@ -40,7 +40,7 @@ export class Indenter extends Writer {
 		return this.indentionCount >= 0
 	}
 	protected writeImplementation(buffer: Iterator<string>): Promise<boolean> {
-		let item: string
+		let item: string | undefined
 		const result: Promise<boolean>[] = []
 		while (item = buffer.next())
 			result.push(this.backend.write(item.replace(this.newLineSymbol, this.indentionSymbol.repeat(this.indentionCount) + this.newLineSymbol)))

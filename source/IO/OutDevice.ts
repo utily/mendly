@@ -20,8 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Iterator } from "../Utilities"
-
 export abstract class OutDevice {
 	abstract get writable(): boolean
 	abstract get autoFlush(): boolean
