@@ -20,11 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-export { Reader } from "./Reader"
 export { BufferedReader } from "./BufferedReader"
-export { StringReader } from "./StringReader"
+export { Device } from "./Device"
 export { FileReader } from "./FileReader"
 export { FolderReader } from "./FolderReader"
+export { Indenter } from "./Indenter"
+export { InDevice } from "./InDevice"
+export { OutDevice } from "./OutDevice"
 export { PrefixReader } from "./PrefixReader"
+export { Reader } from "./Reader"
+export { StringReader } from "./StringReader"
 export { TillReader } from "./TillReader"
 export { UntilReader } from "./UntilReader"
+export { Writer } from "./Writer"
