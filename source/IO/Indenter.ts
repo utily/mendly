@@ -49,5 +49,4 @@ export class Indenter extends Writer {
 	flush(): Promise<boolean> {
 		return this.backend.flush()
 	}
-
 }

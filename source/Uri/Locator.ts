@@ -66,6 +66,9 @@ export class Locator {
 	resolve(absolute?: Locator): Locator {
 		return !absolute ? this : new Locator(this.scheme.length > 0 ? this.scheme : absolute.scheme, !this.authority.isEmpty ? this.authority : absolute.authority, this.isRelative ? absolute.folder.path.concat(this.path) : this.path, this.query, this.fragment).normalize()
 	}
+	appendPath(path: string | string[]): Locator {
+		return new Locator(this.scheme, this.authority, path instanceof Array ? [...this.path, ...path] : [...this.path, path], this.query, this.fragment)
+	}
 	toString(): string {
 		let result = ""
 		if (this.scheme.length > 0)
