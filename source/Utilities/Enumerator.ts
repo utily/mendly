@@ -20,18 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-export class Iterator<T> {
+export class Enumerator<T> {
 	get last(): T | undefined {
 		const next = this.next()
 		return next ? this.last || next : next
 	}
 	constructor(readonly next: () => T | undefined) {
 	}
-	append(item: T | Iterator<T>): Iterator<T> {
-		return new Iterator(() => this.next() || (item instanceof Iterator ? item.next() : item))
+	append(item: T | Enumerator<T>): Enumerator<T> {
+		return new Enumerator(() => this.next() || (item instanceof Enumerator ? item.next() : item))
 	}
-	map<S>(mapping: (item: T) => S): Iterator<S> {
-		return new Iterator<S>(() => {
+	map<S>(mapping: (item: T) => S): Enumerator<S> {
+		return new Enumerator<S>(() => {
 			const item = this.next()
 			return (item != undefined) ? mapping(item) : undefined })
 	}
@@ -46,8 +46,8 @@ export class Iterator<T> {
 			this.apply(apply)
 		}
 	}
-	filter(filter: (item: T) => boolean): Iterator<T> {
-		return new Iterator<T>(() => {
+	filter(filter: (item: T) => boolean): Enumerator<T> {
+		return new Enumerator<T>(() => {
 			let item: T | undefined
 			do
 				item = this.next()

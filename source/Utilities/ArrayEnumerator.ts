@@ -20,24 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Iterator } from "./Iterator"
+import { Enumerator } from "./Enumerator"
 
-export class BufferedIterator<T> extends Iterator<T> {
-	private buffer: T[] = []
-	constructor(private backend: Iterator<T>) {
-		super(() => {
-			const result = this.peek(0)
-			if (this.buffer.length > 0)
-				this.buffer.shift()
-			return result
-		})
-	}
-	peek(position?: number): T | undefined {
-		if (!position)
-			position = 0
-		let next: T | undefined
-		while (position > this.buffer.length - 1 && (next = this.backend.next()))
-			this.buffer.push(next)
-		return position > this.buffer.length - 1 ? undefined : this.buffer[position]
+export class ArrayEnumerator<T> extends Enumerator<T> {
+	private position = 0
+	constructor(private backend: T[]) {
+		super(() => this.position < this.backend.length ? this.backend[this.position++] : undefined)
 	}
 }

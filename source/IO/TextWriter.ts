@@ -23,7 +23,7 @@
 import * as fs from "async-file"
 
 import * as Uri from "../Uri"
-import { Iterator } from "../Utilities"
+import { Enumerator } from "../Utilities"
 import { Writer } from "./Writer"
 
 export class TextWriter extends Writer {
@@ -54,7 +54,7 @@ export class TextWriter extends Writer {
 		}
 		return result
 	}
-	protected async writeImplementation(buffer: Iterator<string>): Promise<boolean> {
+	protected async writeImplementation(buffer: Enumerator<string>): Promise<boolean> {
 		let result = true
 		try {
 			await buffer.map(async item => await fs.write(this.descriptor, item, 0, "utf8")).reduce(async (r, item) => { await r; await item }, Promise.resolve())

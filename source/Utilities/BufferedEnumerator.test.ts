@@ -21,36 +21,36 @@
 // SOFTWARE.
 
 import { Fixture, Is } from "../Unit"
-import { Iterator } from "./Iterator"
-import { BufferedIterator } from "./BufferedIterator"
+import { Enumerator } from "./Enumerator"
+import { BufferedEnumerator } from "./BufferedEnumerator"
 
 // tslint:disable:max-classes-per-file
 
-class StringIterator extends Iterator<string> {
+class StringEnumerator extends Enumerator<string> {
 	private position: number = 0
 	constructor(private content: string) {
 		super(() => this.position < this.content.length ? this.content.charAt(this.position++) : undefined)
 	}
 }
-export class BufferedIteratorTest extends Fixture {
+export class BufferedEnumeratorTest extends Fixture {
 	constructor() {
-		super("Utilities.BufferedIterator")
+		super("Utilities.BufferedEnumerator")
 		this.add("empty string", () => {
-			const bi = new BufferedIterator(new StringIterator(""))
+			const bi = new BufferedEnumerator(new StringEnumerator(""))
 			this.expect(bi.next(), Is.undefined)
 		})
-		this.add("iterate using peek()", () => {
-			const testString = "let's iterate this string using peek()"
-			const bi = new BufferedIterator(new StringIterator(testString))
+		this.add("enumerate using peek()", () => {
+			const testString = "let's enumerate this string using peek()"
+			const bi = new BufferedEnumerator(new StringEnumerator(testString))
 			let result: string = ""
 			while (bi.peek()) {
 				result += bi.next()
 			}
 			this.expect(result, Is.equal.to(testString))
 		})
-		this.add("iterate using next()", () => {
-			const testString = "let's iterate this string using next()"
-			const bi = new BufferedIterator(new StringIterator(testString))
+		this.add("enumerate using next()", () => {
+			const testString = "let's enumerate this string using next()"
+			const bi = new BufferedEnumerator(new StringEnumerator(testString))
 			let character: string | undefined
 			let result: string = ""
 			while ((character = bi.next())) {
@@ -60,7 +60,7 @@ export class BufferedIteratorTest extends Fixture {
 		})
 		this.add("peek() and next()", () => {
 			const testString = "abcdef"
-			const bi = new BufferedIterator(new StringIterator(testString))
+			const bi = new BufferedEnumerator(new StringEnumerator(testString))
 			// Force the reader to buffer the entire string
 			this.expect(bi.peek(5), Is.equal.to("f"))
 			this.expect(bi.next(), Is.equal.to("a"))
@@ -72,4 +72,4 @@ export class BufferedIteratorTest extends Fixture {
 		})
 	}
 }
-Fixture.add(new BufferedIteratorTest())
+Fixture.add(new BufferedEnumeratorTest())

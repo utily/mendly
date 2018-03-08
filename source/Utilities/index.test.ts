@@ -20,6 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import "./Iterator.test"
-import "./ArrayIterator.test"
-import "./BufferedIterator.test"
+import "./Enumerator.test"
+import "./ArrayEnumerator.test"
+import "./BufferedEnumerator.test"

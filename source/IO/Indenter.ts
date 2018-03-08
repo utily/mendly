@@ -22,7 +22,7 @@
 
 import * as Uri from "../Uri"
 import { Writer } from "./Writer"
-import { Iterator } from "../Utilities"
+import { Enumerator } from "../Utilities"
 
 export class Indenter extends Writer {
 	get resource(): Uri.Locator { return this.backend.resource }
@@ -48,7 +48,7 @@ export class Indenter extends Writer {
 		this.indentionCount--
 		return this.indentionCount >= 0
 	}
-	protected writeImplementation(buffer: Iterator<string>): Promise<boolean> {
+	protected writeImplementation(buffer: Enumerator<string>): Promise<boolean> {
 		let item: string | undefined
 		const result: Promise<boolean>[] = []
 		while (item = buffer.next())

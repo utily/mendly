@@ -20,6 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Iterator } from "./Iterator"
+import { Enumerator } from "./Enumerator"
 
-export type Iterable<T> = () => Iterator<T>
+export type Enumerable<T> = () => Enumerator<T>
