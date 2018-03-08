@@ -20,27 +20,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-export class Enumerator<T> {
+function *generate<T>(next: () => T | undefined): Iterator<T> {
+	let result: T | undefined
+	while ((result = next()) != undefined)
+		yield result
+}
+
+export class Enumerator<T> implements Iterator<T> {
+	private readonly iterator: Iterator<T>
 	get last(): T | undefined {
 		const next = this.next()
-		return next ? this.last || next : next
+		return next.done ? undefined : this.last || next.value
 	}
-	constructor(readonly next: () => T | undefined) {
+	constructor(backend: (() => T | undefined) | Iterator<T>) {
+		this.iterator = backend instanceof Function ? generate(backend) : backend
+	}
+	fetch(): T | undefined {
+		const result = this.next()
+		return result.done ? undefined : result.value
+	}
+	next(value?: any): IteratorResult<T> {
+		return this.iterator.next(value)
 	}
 	append(item: T | Enumerator<T>): Enumerator<T> {
-		return new Enumerator(() => this.next() || (item instanceof Enumerator ? item.next() : item))
+		return new Enumerator(() => this.fetch() || (item instanceof Enumerator ? item.fetch() : item))
 	}
 	map<S>(mapping: (item: T) => S): Enumerator<S> {
 		return new Enumerator<S>(() => {
-			const item = this.next()
+			const item = this.fetch()
 			return (item != undefined) ? mapping(item) : undefined })
 	}
 	reduce<S>(reduce: (result: S, item: T) => S, result: S): S {
-		const item = this.next()
+		const item = this.fetch()
 		return item ? this.reduce(reduce, reduce(result, item)) : result
 	}
 	apply(apply: (item: T) => void): void {
-		const item = this.next()
+		const item = this.fetch()
 		if (item) {
 			apply(item)
 			this.apply(apply)
@@ -50,13 +65,13 @@ export class Enumerator<T> {
 		return new Enumerator<T>(() => {
 			let item: T | undefined
 			do
-				item = this.next()
+				item = this.fetch()
 			while (item != undefined && !filter(item))
 			return item
 		})
 	}
 	toArray(): T[] {
-		const item = this.next()
+		const item = this.fetch()
 		let result: T[]
 		if (!item)
 			result = []

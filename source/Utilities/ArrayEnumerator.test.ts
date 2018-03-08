@@ -28,7 +28,7 @@ export class ArrayEnumeratorTest extends Fixture {
 	constructor() {
 		super("Utilities.ArrayEnumerator")
 		this.add("empty", () => {
-			this.expect(new ArrayEnumerator([]).next(), Is.undefined)
+			this.expect(new ArrayEnumerator([]).fetch(), Is.undefined)
 		})
 		this.add("integers", () => {
 			const integers = [1, 2, 4, 8, 16]
@@ -36,10 +36,10 @@ export class ArrayEnumeratorTest extends Fixture {
 			let count = 0
 			integers.forEach(value => {
 				count++
-				this.expect(enumerator.next(), Is.equal.to(value))
+				this.expect(enumerator.fetch(), Is.equal.to(value))
 			})
 			this.expect(count, Is.equal.to(5))
-			this.expect(enumerator.next(), Is.undefined)
+			this.expect(enumerator.fetch(), Is.undefined)
 		})
 		this.add("map", () => {
 			const integers = [0, 1, 2, 3, 4]
@@ -48,11 +48,11 @@ export class ArrayEnumeratorTest extends Fixture {
 			let count = 0
 			integers.forEach(value => {
 				count++
-				const current = enumerator.next()
+				const current = enumerator.fetch()
 				this.expect(current, Is.equal.to(2 ** value))
 			})
 			this.expect(count, Is.equal.to(5))
-			this.expect(enumerator.next(), Is.undefined)
+			this.expect(enumerator.fetch(), Is.undefined)
 		})
 		this.add("map empty", () => {
 			const integers: number[] = []
@@ -61,7 +61,7 @@ export class ArrayEnumeratorTest extends Fixture {
 			let count = 0
 			integers.forEach(value => count++)
 			this.expect(count, Is.equal.to(0))
-			this.expect(enumerator.next(), Is.undefined)
+			this.expect(enumerator.fetch(), Is.undefined)
 		})
 		this.add("map single", () => {
 			const integers = [4]
@@ -70,10 +70,10 @@ export class ArrayEnumeratorTest extends Fixture {
 			let count = 0
 			integers.forEach(value => {
 				count++
-				this.expect(enumerator.next(), Is.equal.to(16))
+				this.expect(enumerator.fetch(), Is.equal.to(16))
 			})
 			this.expect(count, Is.equal.to(1))
-			this.expect(enumerator.next(), Is.undefined)
+			this.expect(enumerator.fetch(), Is.undefined)
 		})
 	}
 }

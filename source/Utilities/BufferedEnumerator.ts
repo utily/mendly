@@ -36,7 +36,7 @@ export class BufferedEnumerator<T> extends Enumerator<T> {
 		if (!position)
 			position = 0
 		let next: T | undefined
-		while (position > this.buffer.length - 1 && (next = this.backend.next()))
+		while (position > this.buffer.length - 1 && (next = this.backend.fetch()))
 			this.buffer.push(next)
 		return position > this.buffer.length - 1 ? undefined : this.buffer[position]
 	}

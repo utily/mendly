@@ -37,14 +37,14 @@ export class BufferedEnumeratorTest extends Fixture {
 		super("Utilities.BufferedEnumerator")
 		this.add("empty string", () => {
 			const bi = new BufferedEnumerator(new StringEnumerator(""))
-			this.expect(bi.next(), Is.undefined)
+			this.expect(bi.fetch(), Is.undefined)
 		})
 		this.add("enumerate using peek()", () => {
 			const testString = "let's enumerate this string using peek()"
 			const bi = new BufferedEnumerator(new StringEnumerator(testString))
 			let result: string = ""
 			while (bi.peek()) {
-				result += bi.next()
+				result += bi.fetch()
 			}
 			this.expect(result, Is.equal.to(testString))
 		})
@@ -53,7 +53,7 @@ export class BufferedEnumeratorTest extends Fixture {
 			const bi = new BufferedEnumerator(new StringEnumerator(testString))
 			let character: string | undefined
 			let result: string = ""
-			while ((character = bi.next())) {
+			while ((character = bi.fetch())) {
 				result += character
 			}
 			this.expect(result, Is.equal.to(testString))
@@ -63,12 +63,12 @@ export class BufferedEnumeratorTest extends Fixture {
 			const bi = new BufferedEnumerator(new StringEnumerator(testString))
 			// Force the reader to buffer the entire string
 			this.expect(bi.peek(5), Is.equal.to("f"))
-			this.expect(bi.next(), Is.equal.to("a"))
-			this.expect(bi.next(), Is.equal.to("b"))
-			this.expect(bi.next(), Is.equal.to("c"))
-			this.expect(bi.next(), Is.equal.to("d"))
-			this.expect(bi.next(), Is.equal.to("e"))
-			this.expect(bi.next(), Is.equal.to("f"))
+			this.expect(bi.fetch(), Is.equal.to("a"))
+			this.expect(bi.fetch(), Is.equal.to("b"))
+			this.expect(bi.fetch(), Is.equal.to("c"))
+			this.expect(bi.fetch(), Is.equal.to("d"))
+			this.expect(bi.fetch(), Is.equal.to("e"))
+			this.expect(bi.fetch(), Is.equal.to("f"))
 		})
 	}
 }

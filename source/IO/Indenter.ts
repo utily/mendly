@@ -51,7 +51,7 @@ export class Indenter extends Writer {
 	protected writeImplementation(buffer: Enumerator<string>): Promise<boolean> {
 		let item: string | undefined
 		const result: Promise<boolean>[] = []
-		while (item = buffer.next())
+		while (item = buffer.fetch())
 			result.push(this.backend.write(item.replace(this.newLineSymbol, this.indentionSymbol.repeat(this.indentionCount) + this.newLineSymbol)))
 		return Promise.all(result).then(r => r.reduce((previous, current) => previous && current, true))
 	}

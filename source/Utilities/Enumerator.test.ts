@@ -36,14 +36,14 @@ export class EnumeratorTest extends Fixture {
 		super("Utilities.Enumerator")
 		this.add("empty string", () => {
 			const enumerator = new StringEnumerator("")
-			this.expect(enumerator.next(), Is.undefined)
+			this.expect(enumerator.fetch(), Is.undefined)
 		})
 		this.add("enumerate using next()", () => {
 			const content = "let's enumerate this string using next()"
 			const enumerator = new StringEnumerator(content)
 			let result: string = ""
 			let item: string | undefined
-			while (item = enumerator.next())
+			while (item = enumerator.fetch())
 				result += item
 			this.expect(result, Is.equal.to(content))
 		})
@@ -52,7 +52,7 @@ export class EnumeratorTest extends Fixture {
 			const enumerator = new StringEnumerator(content).map(c => c.toUpperCase())
 			let result: string = ""
 			let item: string | undefined
-			while (item = enumerator.next())
+			while (item = enumerator.fetch())
 				result += item
 			this.expect(result, Is.equal.to(content.toUpperCase()))
 		})
