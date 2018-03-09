@@ -21,7 +21,9 @@
 // SOFTWARE.
 
 import { Enumerator } from "./Enumerator"
-
+function isIterable<T>(other: any): other is Iterable<T> {
+	return other == null ? false : typeof other[Symbol.iterator] === "function"
+}
 export class Enumerable<T> implements Iterable<T> {
 	get length(): number {
 		return this.get().length
@@ -59,10 +61,10 @@ export class Enumerable<T> implements Iterable<T> {
 		return this.getEnumerator().toArray()
 	}
 	static from<T>(get: (() => Iterator<T>) | Iterable<T>): Enumerable<T> {
-		return get instanceof Function ? new Enumerable(() => {
+		return isIterable(get) ? Enumerable.from(get[Symbol.iterator]) : new Enumerable(() => {
 				const r = get()
 				return r instanceof Enumerator ? r as Enumerator<T> : new Enumerator(r)
-			}) : Enumerable.from(get[Symbol.iterator])
+			})
 	}
 	static readonly empty = Enumerable.from([])
 }
