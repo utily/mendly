@@ -26,6 +26,9 @@ export class Enumerable<T> implements Iterable<T> {
 	get length(): number {
 		return this.get().length
 	}
+	get first(): T | undefined {
+		return this.get().fetch()
+	}
 	get last(): T | undefined {
 		return this.get().last
 	}
