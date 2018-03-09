@@ -60,8 +60,8 @@ export class Enumerable<T> implements Iterable<T> {
 	toArray(): T[] {
 		return this.getEnumerator().toArray()
 	}
-	static from<T>(get: (() => Iterator<T>) | Iterable<T>): Enumerable<T> {
-		return isIterable(get) ? Enumerable.from(get[Symbol.iterator]) : new Enumerable(() => {
+	static from<T>(get: (() => Iterator<T>) | Iterable<T> | T[]): Enumerable<T> {
+		return isIterable(get) ? new Enumerable(() => new Enumerator(get[Symbol.iterator]())) : new Enumerable(() => {
 				const r = get()
 				return r instanceof Enumerator ? r as Enumerator<T> : new Enumerator(r)
 			})
