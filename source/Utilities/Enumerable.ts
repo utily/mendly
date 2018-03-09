@@ -59,4 +59,5 @@ export class Enumerable<T> implements Iterable<T> {
 				return r instanceof Enumerator ? r as Enumerator<T> : new Enumerator(r)
 			}) : Enumerable.from(get[Symbol.iterator])
 	}
+	static readonly empty = Enumerable.from([])
 }
