@@ -40,6 +40,12 @@ function* merge<T>(left: Iterator<T>, right: T | Iterator<T>): Iterator<T> {
 }
 export class Enumerator<T> implements Iterator<T> {
 	private readonly iterator: Iterator<T>
+	get length(): number {
+		let result = 0
+		while (!this.next().done)
+			result++
+		return result
+	}
 	get last(): T | undefined {
 		const next = this.next()
 		return next.done ? undefined : this.last || next.value
@@ -93,4 +99,8 @@ export class Enumerator<T> implements Iterator<T> {
 		}
 		return result
 	}
+	static from<T>(backend: (() => T | undefined) | Iterator<T>): Enumerator<T> {
+		return new Enumerator(backend)
+	}
+	static readonly empty = Enumerator.from(() => undefined as never)
 }

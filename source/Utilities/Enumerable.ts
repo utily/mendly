@@ -23,7 +23,9 @@
 import { Enumerator } from "./Enumerator"
 
 export class Enumerable<T> implements Iterable<T> {
-
+	get length(): number {
+		return this.get().length
+	}
 	get last(): T | undefined {
 		return this.get().last
 	}
