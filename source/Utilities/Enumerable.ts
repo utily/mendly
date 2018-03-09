@@ -22,4 +22,41 @@
 
 import { Enumerator } from "./Enumerator"
 
-export type Enumerable<T> = () => Enumerator<T>
+export class Enumerable<T> implements Iterable<T> {
+
+	get last(): T | undefined {
+		return this.get().last
+	}
+	private constructor(private readonly get: () => Enumerator<T>) {
+	}
+	getEnumerator(): Enumerator<T> {
+		return new Enumerator(this.get())
+	}
+	[Symbol.iterator](): Iterator<T> {
+		return this.getEnumerator()
+	}
+	append(item: T | Iterator<T>): Enumerable<T> {
+		return new Enumerable(() => this.get().append(item))
+	}
+	map<S>(mapping: (item: T) => S): Enumerable<S> {
+		return new Enumerable(() => this.get().map(mapping))
+	}
+	reduce<S>(reduce: (result: S, item: T) => S, result: S): S {
+		return this.get().reduce(reduce, result)
+	}
+	apply(apply: (item: T) => void): void {
+		this.get().apply(apply)
+	}
+	filter(filter: (item: T) => boolean): Enumerable<T> {
+		return new Enumerable(() => this.get().filter(filter))
+	}
+	toArray(): T[] {
+		return this.getEnumerator().toArray()
+	}
+	static from<T>(get: (() => Iterator<T>) | Iterable<T>): Enumerable<T> {
+		return get instanceof Function ? new Enumerable(() => {
+				const r = get()
+				return r instanceof Enumerator ? r as Enumerator<T> : new Enumerator(r)
+			}) : Enumerable.from(get[Symbol.iterator])
+	}
+}

@@ -25,7 +25,19 @@ function *generate<T>(next: () => T | undefined): Iterator<T> {
 	while ((result = next()) != undefined)
 		yield result
 }
-
+function isIterator<T>(item: any | Iterator<T>): item is Iterator<T> {
+	return (item as Iterator<T>).next instanceof Function
+}
+function* merge<T>(left: Iterator<T>, right: T | Iterator<T>): Iterator<T> {
+	let result: IteratorResult<T>
+	while (!(result = left.next()).done)
+		yield result.value
+	if (isIterator(right))
+		while (!(result = right.next()).done)
+			yield result.value
+	else
+		yield right
+}
 export class Enumerator<T> implements Iterator<T> {
 	private readonly iterator: Iterator<T>
 	get last(): T | undefined {
@@ -42,8 +54,8 @@ export class Enumerator<T> implements Iterator<T> {
 	next(value?: any): IteratorResult<T> {
 		return this.iterator.next(value)
 	}
-	append(item: T | Enumerator<T>): Enumerator<T> {
-		return new Enumerator(() => this.fetch() || (item instanceof Enumerator ? item.fetch() : item))
+	append(item: T | Iterator<T>): Enumerator<T> {
+		return new Enumerator(merge(this, item))
 	}
 	map<S>(mapping: (item: T) => S): Enumerator<S> {
 		return new Enumerator<S>(() => {
