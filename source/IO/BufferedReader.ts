@@ -31,7 +31,7 @@ export class BufferedReader extends Reader {
 	private buffer: { data: string, location: Error.Location }[] = []
 	private lastMark: Error.Location
 	private lastContent: string = ""
-	private async isEmptyHelper(): Promise<boolean> { return (this.buffer.length == 0 || this.buffer[0].data == "\0") && await this.backend.isEmpty }
+	private async isEmptyHelper(): Promise<boolean> { return (this.buffer.length == 0 || this.buffer[0].data == "\0") && this.backend.isEmpty }
 	get isEmpty(): Promise<boolean> { return this.isEmptyHelper() }
 	get resource(): Uri.Locator {
 		const location = this.location
@@ -74,20 +74,21 @@ export class BufferedReader extends Reader {
 		let result: string | undefined
 		if (value)
 			if (typeof(value) == "string") {
+				const v = value
 				while (count && count-- > 0)
-					value += value as string
-				result = this.peek(value.length) == value as string && value as string || undefined
-			} else if ((value as string[]).length > 0 && !(result = this.peekIs((value as string[])[0])) && (value as string[]).length)
-				result = this.peekIs((value as string[]).slice(1))
+					value += v
+				result = this.peek(value.length) == value ? value : undefined
+			} else if (value.length > 0 && !(result = this.peekIs(value[0])) && value.length)
+				result = this.peekIs(value.slice(1))
 		return result
 	}
 	readIf(value: string | string[]): string | undefined {
 		let result: string | undefined
 		if (value)
 			if (typeof(value) == "string")
-				result = this.peek(value.length) == value as string && this.read(value.length) || undefined
-			else if ((value as string[]).length > 0 && !(result = this.readIf((value as string[])[0])) && (value as string[]).length)
-				result = this.readIf((value as string[]).slice(1))
+				result = this.peek(value.length) == value && this.read(value.length) || undefined
+			else if (value.length > 0 && !(result = this.readIf(value[0])) && value.length)
+				result = this.readIf(value.slice(1))
 		return result
 	}
 	readAll(): string | undefined {
