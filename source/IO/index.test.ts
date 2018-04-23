@@ -22,3 +22,4 @@
 
 import "./StringReader.test"
 import "./BufferedReader.test"
+import "./TillReader.test"
