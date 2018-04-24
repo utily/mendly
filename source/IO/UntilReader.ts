@@ -30,7 +30,7 @@ export class UntilReader extends Reader {
 	private backend: BufferedReader
 	get readable(): boolean { return this.backend.readable }
 	get opened(): boolean { return !this.done && this.backend.opened }
-	private async isEmptyHelper(): Promise<boolean> { return this.done == 0 || await this.backend.isEmpty }
+	private async isEmptyHelper(): Promise<boolean> { return this.done == 0 || this.backend.isEmpty }
 	get isEmpty(): Promise<boolean> { return this.isEmptyHelper() }
 	get resource(): Uri.Locator { return this.backend.resource }
 	get location(): Error.Location { return this.backend.location }
@@ -47,7 +47,7 @@ export class UntilReader extends Reader {
 	}
 	read(): string | undefined {
 		let result: string | undefined
-		if (!this.isEmpty) {
+		if (!this.done) {
 			result = this.backend.read()
 			let peeked: string | undefined
 			if (this.done > 0)
