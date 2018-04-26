@@ -44,7 +44,7 @@ export class PrefixReader extends Reader {
 	}
 	read(): string | undefined {
 		let result: string | undefined
-		if (!this.isEmpty) {
+		if (!this.done) {
 			result = this.backend.read()
 			this.done = result == "\n" && !this.backend.readIf(this.prefix) && !this.backend.peekIs("\n")
 		}
