@@ -47,7 +47,7 @@ export class UntilReader extends Reader {
 	}
 	read(): string | undefined {
 		let result: string | undefined
-		if (!this.done) {
+		if (this.done != 0) {
 			result = this.backend.read()
 			let peeked: string | undefined
 			if (this.done > 0)
