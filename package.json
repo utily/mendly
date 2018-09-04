@@ -5,13 +5,13 @@
   "main": "build/index.js",
   "typings": "build/index",
   "scripts": {
-    "dev": "watch 'npm run build' source",
+    "dev": "watch 'yarn build' source",
     "prebuild": "tslint --config .vscode/tslint.json --project source/tsconfig.json",
     "build": "tsc -p source",
-    "pretest": "npm run build",
+    "pretest": "yarn build",
     "test": "node build/index.test.js",
     "test:watch": "watch 'npm test' source",
-    "prepublish": "npm run build",
+    "prepublish": "yarn build",
     "release": "np",
     "clean": "rm -rf build node_modules"
   },
@@ -26,10 +26,10 @@
   },
   "homepage": "https://github.com/cogneco/mend#readme",
   "devDependencies": {
-    "@types/node": "^9.4.7",
-    "np": "^2.20.1",
+    "@types/node": "^10.9.4",
+    "np": "^3.0.4",
     "tslint": "^5.9.1",
-    "typescript": "^2.7.2",
+    "typescript": "^3.0.3",
     "watch": "^1.0.2"
   },
   "dependencies": {
