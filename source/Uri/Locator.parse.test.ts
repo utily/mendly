@@ -20,130 +20,125 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture, Is } from "../Unit"
 import { Locator } from "./Locator"
 
-export class LocatorParseTest extends Fixture {
-	constructor() {
-		super("Uri.Locator.parse")
-		this.add("undefined", () => {
-			this.expect(Locator.parse(undefined), Is.undefined)
-		})
-		this.add("empty", () => {
-			this.expect(Locator.parse(""), Is.undefined)
-		})
-		this.add("absolute file", () => {
-			const locator = Locator.parse("file:///folder/file.extension")
-			this.expect(locator, Is.not.nullOrUndefined)
-			if (locator) {
-				this.expect(locator.scheme, Is.equal.to(["file"]))
-				this.expect(locator.authority.user.name, Is.undefined)
-				this.expect(locator.authority.user.password, Is.undefined)
-				this.expect(locator.authority.endpoint.host, Is.empty)
-				this.expect(locator.path, Is.equal.to(["folder", "file.extension"]))
-			}
-		})
-		this.add("relative file", () => {
-			const locator = Locator.parse("file://./folder/file.extension")
-			this.expect(locator, Is.not.nullOrUndefined)
-			if (locator) {
-				this.expect(locator.scheme, Is.equal.to(["file"]))
-				this.expect(locator.authority.user.name, Is.undefined)
-				this.expect(locator.authority.user.password, Is.undefined)
-				this.expect(locator.authority.endpoint.host, Is.empty)
-				this.expect(locator.path, Is.equal.to([".", "folder", "file.extension"]))
-			}
-		})
-		this.add("explicitly relative path", () => {
-			const locator = Locator.parse("./folder/file.extension")
-			this.expect(locator, Is.not.nullOrUndefined)
-			if (locator) {
-				this.expect(locator.scheme, Is.empty)
-				this.expect(locator.authority.user.name, Is.undefined)
-				this.expect(locator.authority.user.password, Is.undefined)
-				this.expect(locator.authority.endpoint.host, Is.empty)
-				this.expect(locator.path, Is.equal.to([".", "folder", "file.extension"]))
-			}
-		})
-		this.add("implicitly relative path", () => {
-			const locator = Locator.parse("folder/file.extension")
-			this.expect(locator, Is.not.nullOrUndefined)
-			if (locator) {
-				this.expect(locator.scheme, Is.empty)
-				this.expect(locator.authority.user.name, Is.undefined)
-				this.expect(locator.authority.user.password, Is.undefined)
-				this.expect(locator.authority.endpoint.host, Is.empty)
-				this.expect(locator.path, Is.equal.to([".", "folder", "file.extension"]))
-			}
-		})
-		this.add("absolute path", () => {
-			const locator = Locator.parse("/folder/file.extension")
-			this.expect(locator, Is.not.nullOrUndefined)
-			if (locator) {
-				this.expect(locator.scheme, Is.empty)
-				this.expect(locator.authority.user.name, Is.undefined)
-				this.expect(locator.authority.user.password, Is.undefined)
-				this.expect(locator.authority.endpoint.host, Is.empty)
-				this.expect(locator.path, Is.equal.to(["folder", "file.extension"]))
-			}
-		})
-		this.add("explicitly relative folder path", () => {
-			const locator = Locator.parse("./folder/folder.next/")
-			this.expect(locator, Is.not.nullOrUndefined)
-			if (locator) {
-				this.expect(locator.scheme, Is.empty)
-				this.expect(locator.authority.user.name, Is.undefined)
-				this.expect(locator.authority.user.password, Is.undefined)
-				this.expect(locator.authority.endpoint.host, Is.empty)
-				this.expect(locator.path, Is.equal.to([".", "folder", "folder.next", ""]))
-			}
-		})
-		this.add("implicitly relative folder path", () => {
-			const locator = Locator.parse("folder/folder.next/")
-			this.expect(locator, Is.not.nullOrUndefined)
-			if (locator) {
-				this.expect(locator.scheme, Is.empty)
-				this.expect(locator.authority.user.name, Is.undefined)
-				this.expect(locator.authority.user.password, Is.undefined)
-				this.expect(locator.authority.endpoint.host, Is.empty)
-				this.expect(locator.path, Is.equal.to([".", "folder", "folder.next", ""]))
-			}
-		})
-		this.add("absolute folder path", () => {
-			const locator = Locator.parse("/folder/folder.next/")
-			this.expect(locator, Is.not.nullOrUndefined)
-			if (locator) {
-				this.expect(locator.scheme, Is.empty)
-				this.expect(locator.authority.user.name, Is.undefined)
-				this.expect(locator.authority.user.password, Is.undefined)
-				this.expect(locator.authority.endpoint.host, Is.empty)
-				this.expect(locator.path, Is.equal.to(["folder", "folder.next", ""]))
-			}
-		})
-		this.add("full https url", () => {
-			const locator = Locator.parse("https://server.example.com/folder/file.extension")
-			this.expect(locator, Is.not.nullOrUndefined)
-			if (locator) {
-				this.expect(locator.scheme, Is.equal.to(["https"]))
-				this.expect(locator.authority.user.name, Is.undefined)
-				this.expect(locator.authority.user.password, Is.undefined)
-				this.expect(locator.authority.endpoint.host, Is.equal.to(["server", "example", "com"]))
-				this.expect(locator.authority.endpoint.port, Is.undefined)
-				this.expect(locator.path, Is.equal.to(["folder", "file.extension"]))
-			}
-		})
-		this.add("schemeless url", () => {
-			const locator = Locator.parse("//server.example.com/folder/file.extension")
-			this.expect(locator, Is.not.nullOrUndefined)
-			if (locator) {
-				this.expect(locator.scheme, Is.empty)
-				this.expect(locator.authority.user.name, Is.undefined)
-				this.expect(locator.authority.user.password, Is.undefined)
-				this.expect(locator.authority.endpoint.host, Is.equal.to(["server", "example", "com"]))
-				this.expect(locator.authority.endpoint.port, Is.undefined)
-				this.expect(locator.path, Is.equal.to(["folder", "file.extension"]))
-			}
-		})
-	}
-}
-Fixture.add(new LocatorParseTest())
+describe("Uri.Locator.parse", () => {
+	it("undefined", () => {
+		expect(Locator.parse(undefined)).toBeUndefined()
+	})
+	it("empty", () => {
+		expect(Locator.parse("")).toBeUndefined()
+	})
+	it("absolute file", () => {
+		const locator = Locator.parse("file:///folder/file.extension")
+		expect(locator).toBeTruthy()
+		if (locator) {
+			expect(locator.scheme).toEqual(["file"])
+			expect(locator.authority.user.name).toBeUndefined()
+			expect(locator.authority.user.password).toBeUndefined()
+			expect(locator.authority.endpoint.host).toEqual([])
+			expect(locator.path).toEqual(["folder", "file.extension"])
+		}
+	})
+	it("relative file", () => {
+		const locator = Locator.parse("file://./folder/file.extension")
+		expect(locator).toBeTruthy()
+		if (locator) {
+			expect(locator.scheme).toEqual(["file"])
+			expect(locator.authority.user.name).toBeUndefined()
+			expect(locator.authority.user.password).toBeUndefined()
+			expect(locator.authority.endpoint.host).toEqual([])
+			expect(locator.path).toEqual([".", "folder", "file.extension"])
+		}
+	})
+	it("explicitly relative path", () => {
+		const locator = Locator.parse("./folder/file.extension")
+		expect(locator).toBeTruthy()
+		if (locator) {
+			expect(locator.scheme).toEqual([])
+			expect(locator.authority.user.name).toBeUndefined()
+			expect(locator.authority.user.password).toBeUndefined()
+			expect(locator.authority.endpoint.host).toEqual([])
+			expect(locator.path).toEqual([".", "folder", "file.extension"])
+		}
+	})
+	it("implicitly relative path", () => {
+		const locator = Locator.parse("folder/file.extension")
+		expect(locator).toBeTruthy()
+		if (locator) {
+			expect(locator.scheme).toEqual([])
+			expect(locator.authority.user.name).toBeUndefined()
+			expect(locator.authority.user.password).toBeUndefined()
+			expect(locator.authority.endpoint.host).toEqual([])
+			expect(locator.path).toEqual([".", "folder", "file.extension"])
+		}
+	})
+	it("absolute path", () => {
+		const locator = Locator.parse("/folder/file.extension")
+		expect(locator).toBeTruthy()
+		if (locator) {
+			expect(locator.scheme).toEqual([])
+			expect(locator.authority.user.name).toBeUndefined()
+			expect(locator.authority.user.password).toBeUndefined()
+			expect(locator.authority.endpoint.host).toEqual([])
+			expect(locator.path).toEqual(["folder", "file.extension"])
+		}
+	})
+	it("explicitly relative folder path", () => {
+		const locator = Locator.parse("./folder/folder.next/")
+		expect(locator).toBeTruthy()
+		if (locator) {
+			expect(locator.scheme).toEqual([])
+			expect(locator.authority.user.name).toBeUndefined()
+			expect(locator.authority.user.password).toBeUndefined()
+			expect(locator.authority.endpoint.host).toEqual([])
+			expect(locator.path).toEqual([".", "folder", "folder.next", ""])
+		}
+	})
+	it("implicitly relative folder path", () => {
+		const locator = Locator.parse("folder/folder.next/")
+		expect(locator).toBeTruthy()
+		if (locator) {
+			expect(locator.scheme).toEqual([])
+			expect(locator.authority.user.name).toBeUndefined()
+			expect(locator.authority.user.password).toBeUndefined()
+			expect(locator.authority.endpoint.host).toEqual([])
+			expect(locator.path).toEqual([".", "folder", "folder.next", ""])
+		}
+	})
+	it("absolute folder path", () => {
+		const locator = Locator.parse("/folder/folder.next/")
+		expect(locator).toBeTruthy()
+		if (locator) {
+			expect(locator.scheme).toEqual([])
+			expect(locator.authority.user.name).toBeUndefined()
+			expect(locator.authority.user.password).toBeUndefined()
+			expect(locator.authority.endpoint.host).toEqual([])
+			expect(locator.path).toEqual(["folder", "folder.next", ""])
+		}
+	})
+	it("full https url", () => {
+		const locator = Locator.parse("https://server.example.com/folder/file.extension")
+		expect(locator).toBeTruthy()
+		if (locator) {
+			expect(locator.scheme).toEqual(["https"])
+			expect(locator.authority.user.name).toBeUndefined()
+			expect(locator.authority.user.password).toBeUndefined()
+			expect(locator.authority.endpoint.host).toEqual(["server", "example", "com"])
+			expect(locator.authority.endpoint.port).toBeUndefined()
+			expect(locator.path).toEqual(["folder", "file.extension"])
+		}
+	})
+	it("schemeless url", () => {
+		const locator = Locator.parse("//server.example.com/folder/file.extension")
+		expect(locator).toBeTruthy()
+		if (locator) {
+			expect(locator.scheme).toEqual([])
+			expect(locator.authority.user.name).toBeUndefined()
+			expect(locator.authority.user.password).toBeUndefined()
+			expect(locator.authority.endpoint.host).toEqual(["server", "example", "com"])
+			expect(locator.authority.endpoint.port).toBeUndefined()
+			expect(locator.path).toEqual(["folder", "file.extension"])
+		}
+	})
+})

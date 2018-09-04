@@ -20,124 +20,119 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture, Is } from "../Unit"
 import { StringReader } from "./StringReader"
 import { BufferedReader } from "./BufferedReader"
 
-export class BufferedReaderTest extends Fixture {
-	constructor() {
-		super("IO.BufferedReader")
-		this.add("empty", async () => {
-			const br = BufferedReader.create(StringReader.create(""))
-			this.expect(await br.isEmpty)
-		})
-		this.add("state check", () => {
-			const br = BufferedReader.create(StringReader.create(""))
-			this.expect(br.location, Is.not.nullOrUndefined)
-			this.expect(br.region, Is.not.nullOrUndefined)
-			this.expect(br.resource, Is.not.nullOrUndefined)
-		})
-		this.add("peek", () => {
-			const br = BufferedReader.create(StringReader.create("foobar"))
-			this.expect(br.peek(1), Is.equal.to("f"))
-			this.expect(br.peek(2), Is.equal.to("fo"))
-			this.expect(br.peek(3), Is.equal.to("foo"))
-			this.expect(br.peek(4), Is.equal.to("foob"))
-			this.expect(br.peek(5), Is.equal.to("fooba"))
-			this.expect(br.peek(6), Is.equal.to("foobar"))
-		})
-		this.add("read one at a time", () => {
-			const br = BufferedReader.create(StringReader.create("abcdef"))
-			this.expect(br.read(), Is.equal.to("a"))
-			this.expect(br.read(), Is.equal.to("b"))
-			this.expect(br.read(), Is.equal.to("c"))
-			this.expect(br.read(), Is.equal.to("d"))
-			this.expect(br.read(), Is.equal.to("e"))
-			this.expect(br.read(), Is.equal.to("f"))
-		})
-		this.add("read three at a time", () => {
-			const br = BufferedReader.create(StringReader.create("abcdef"))
-			this.expect(br.read(3), Is.equal.to("abc"))
-			this.expect(br.read(3), Is.equal.to("def"))
-		})
-		this.add("read three at a time with a newline", () => {
-			const br = BufferedReader.create(StringReader.create("abc\ndef"))
-			this.expect(br.read(3), Is.equal.to("abc"))
-			this.expect(br.read(1), Is.equal.to("\n"))
-			this.expect(br.read(3), Is.equal.to("def"))
-		})
-		this.add("string location", async () => {
-			const br = BufferedReader.create(StringReader.create("abc\ndef"))
-			this.expect(br.location.column, Is.equal.to(1))
-			this.expect(br.location.line, Is.equal.to(1))
-			br.read()
-			this.expect(br.location.column, Is.equal.to(2))
-			this.expect(br.location.line, Is.equal.to(1))
-			br.read()
-			this.expect(br.location.column, Is.equal.to(3))
-			this.expect(br.location.line, Is.equal.to(1))
-			br.read()
-			this.expect(br.location.column, Is.equal.to(4))
-			this.expect(br.location.line, Is.equal.to(1))
-			br.read()
-			this.expect(br.location.column, Is.equal.to(1))
-			this.expect(br.location.line, Is.equal.to(2))
-			br.read()
-			this.expect(br.location.column, Is.equal.to(2))
-			this.expect(br.location.line, Is.equal.to(2))
-			br.read()
-			this.expect(br.location.column, Is.equal.to(3))
-			this.expect(br.location.line, Is.equal.to(2))
-			br.read()
-			this.expect(await br.isEmpty)
-		})
-		this.add("tabs and newlines location", async () => {
-			const br = BufferedReader.create(StringReader.create("\t\t\t\n\t\t\t"))
-			this.expect(br.location.column, Is.equal.to(1))
-			this.expect(br.location.line, Is.equal.to(1))
-			br.read()
-			this.expect(br.location.column, Is.equal.to(2))
-			this.expect(br.location.line, Is.equal.to(1))
-			br.read()
-			this.expect(br.location.column, Is.equal.to(3))
-			this.expect(br.location.line, Is.equal.to(1))
-			br.read()
-			this.expect(br.location.column, Is.equal.to(4))
-			this.expect(br.location.line, Is.equal.to(1))
-			br.read()
-			this.expect(br.location.column, Is.equal.to(1))
-			this.expect(br.location.line, Is.equal.to(2))
-			br.read()
-			this.expect(br.location.column, Is.equal.to(2))
-			this.expect(br.location.line, Is.equal.to(2))
-			br.read()
-			this.expect(br.location.column, Is.equal.to(3))
-			this.expect(br.location.line, Is.equal.to(2))
-			br.read()
-			this.expect(await br.isEmpty)
-		})
-		this.add("mark", () => {
-			const br = BufferedReader.create(StringReader.create("abc\0"))
-			this.expect(br, Is.not.nullOrUndefined)
-			if (br) {
-				this.expect(br.mark(), Is.not.nullOrUndefined)
-				br.read(); br.read(); br.read()
-				const region = br.region
-				this.expect(region, Is.not.nullOrUndefined)
-				if (region) {
-					this.expect(region.start, Is.not.nullOrUndefined)
-					if (region.start) {
-						this.expect(region.start.line, Is.equal.to(1))
-						this.expect(region.start.column, Is.equal.to(1))
-					}
-					this.expect(region.end, Is.not.nullOrUndefined)
-					if (region.end) {
-						this.expect(region.end.line, Is.equal.to(1))
-						this.expect(region.end.column, Is.equal.to(4))
-					}
+describe("IO.BufferedReader", () => {
+	it("empty", async () => {
+		const br = BufferedReader.create(StringReader.create(""))
+		expect(await br.isEmpty)
+	})
+	it("state check", () => {
+		const br = BufferedReader.create(StringReader.create(""))
+		expect(br.location).toBeTruthy()
+		expect(br.region).toBeTruthy()
+		expect(br.resource).toBeTruthy()
+	})
+	it("peek", () => {
+		const br = BufferedReader.create(StringReader.create("foobar"))
+		expect(br.peek(1)).toEqual("f")
+		expect(br.peek(2)).toEqual("fo")
+		expect(br.peek(3)).toEqual("foo")
+		expect(br.peek(4)).toEqual("foob")
+		expect(br.peek(5)).toEqual("fooba")
+		expect(br.peek(6)).toEqual("foobar")
+	})
+	it("read one at a time", () => {
+		const br = BufferedReader.create(StringReader.create("abcdef"))
+		expect(br.read()).toEqual("a")
+		expect(br.read()).toEqual("b")
+		expect(br.read()).toEqual("c")
+		expect(br.read()).toEqual("d")
+		expect(br.read()).toEqual("e")
+		expect(br.read()).toEqual("f")
+	})
+	it("read three at a time", () => {
+		const br = BufferedReader.create(StringReader.create("abcdef"))
+		expect(br.read(3)).toEqual("abc")
+		expect(br.read(3)).toEqual("def")
+	})
+	it("read three at a time with a newline", () => {
+		const br = BufferedReader.create(StringReader.create("abc\ndef"))
+		expect(br.read(3)).toEqual("abc")
+		expect(br.read(1)).toEqual("\n")
+		expect(br.read(3)).toEqual("def")
+	})
+	it("string location", async () => {
+		const br = BufferedReader.create(StringReader.create("abc\ndef"))
+		expect(br.location.column).toEqual(1)
+		expect(br.location.line).toEqual(1)
+		br.read()
+		expect(br.location.column).toEqual(2)
+		expect(br.location.line).toEqual(1)
+		br.read()
+		expect(br.location.column).toEqual(3)
+		expect(br.location.line).toEqual(1)
+		br.read()
+		expect(br.location.column).toEqual(4)
+		expect(br.location.line).toEqual(1)
+		br.read()
+		expect(br.location.column).toEqual(1)
+		expect(br.location.line).toEqual(2)
+		br.read()
+		expect(br.location.column).toEqual(2)
+		expect(br.location.line).toEqual(2)
+		br.read()
+		expect(br.location.column).toEqual(3)
+		expect(br.location.line).toEqual(2)
+		br.read()
+		expect(await br.isEmpty)
+	})
+	it("tabs and newlines location", async () => {
+		const br = BufferedReader.create(StringReader.create("\t\t\t\n\t\t\t"))
+		expect(br.location.column).toEqual(1)
+		expect(br.location.line).toEqual(1)
+		br.read()
+		expect(br.location.column).toEqual(2)
+		expect(br.location.line).toEqual(1)
+		br.read()
+		expect(br.location.column).toEqual(3)
+		expect(br.location.line).toEqual(1)
+		br.read()
+		expect(br.location.column).toEqual(4)
+		expect(br.location.line).toEqual(1)
+		br.read()
+		expect(br.location.column).toEqual(1)
+		expect(br.location.line).toEqual(2)
+		br.read()
+		expect(br.location.column).toEqual(2)
+		expect(br.location.line).toEqual(2)
+		br.read()
+		expect(br.location.column).toEqual(3)
+		expect(br.location.line).toEqual(2)
+		br.read()
+		expect(await br.isEmpty)
+	})
+	it("mark", () => {
+		const br = BufferedReader.create(StringReader.create("abc\0"))
+		expect(br).toBeTruthy()
+		if (br) {
+			expect(br.mark()).toBeTruthy()
+			br.read(); br.read(); br.read()
+			const region = br.region
+			expect(region).toBeTruthy()
+			if (region) {
+				expect(region.start).toBeTruthy()
+				if (region.start) {
+					expect(region.start.line).toEqual(1)
+					expect(region.start.column).toEqual(1)
+				}
+				expect(region.end).toBeTruthy()
+				if (region.end) {
+					expect(region.end.line).toEqual(1)
+					expect(region.end.column).toEqual(4)
 				}
 			}
-		})
-	}
-}
-Fixture.add(new BufferedReaderTest())
+		}
+	})
+})

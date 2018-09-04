@@ -20,25 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture, Is } from "../Unit"
 import { Locator } from "./Locator"
 
-export class LocatorResolveTest extends Fixture {
-	constructor() {
-		super("Uri.Locator.resolve")
-		this.add("resolve relative", () => {
-			const absolute = Locator.parse("https://server.example.com/folder0/folder1/")
-			const relative = Locator.parse("./folder2/file.extension")
-			this.expect(relative, Is.not.nullOrUndefined)
-			if (relative) {
-				const locator = relative.resolve(absolute)
-				this.expect(locator.scheme, Is.equal.to(["https"]))
-				this.expect(locator.authority.user.isEmpty)
-				this.expect(locator.authority.endpoint.host, Is.equal.to(["server", "example", "com"]))
-				this.expect(locator.authority.endpoint.port, Is.undefined)
-				this.expect(locator.path, Is.equal.to(["folder0", "folder1", "folder2", "file.extension"]))
-			}
-		})
-	}
-}
-Fixture.add(new LocatorResolveTest())
+describe("Uri.Locator.resolve", () => {
+	it("resolve relative", () => {
+		const absolute = Locator.parse("https://server.example.com/folder0/folder1/")
+		const relative = Locator.parse("./folder2/file.extension")
+		expect(relative).toBeTruthy()
+		if (relative) {
+			const locator = relative.resolve(absolute)
+			expect(locator.scheme).toEqual(["https"])
+			expect(locator.authority.user.isEmpty)
+			expect(locator.authority.endpoint.host).toEqual(["server", "example", "com"])
+			expect(locator.authority.endpoint.port).toBeUndefined()
+			expect(locator.path).toEqual(["folder0", "folder1", "folder2", "file.extension"])
+		}
+	})
+})

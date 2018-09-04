@@ -20,36 +20,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture, Is } from "../Unit"
 import { Locator } from "./Locator"
 
-export class LocatorToStringTest extends Fixture {
-	constructor() {
-		super("Uri.Locator.toString")
-		this.add("full https", () => {
-			const absolute = Locator.parse("https://server.example.com/folder0/folder1/")
-			this.expect(absolute, Is.not.nullOrUndefined)
-			if (absolute)
-				this.expect(absolute.toString(), Is.equal.to("https://server.example.com/folder0/folder1/"))
-		})
-		this.add("full file", () => {
-			const absolute = Locator.parse("file:///folder0/folder1/")
-			this.expect(absolute, Is.not.nullOrUndefined)
-			if (absolute)
-				this.expect(absolute.toString(), Is.equal.to("file:///folder0/folder1/"))
-		})
-		this.add("absolute file", () => {
-			const relative = Locator.parse("/folder2/file.extension")
-			this.expect(relative, Is.not.nullOrUndefined)
-			if (relative)
-				this.expect(relative.toString(), Is.equal.to("/folder2/file.extension"))
-		})
-		this.add("relative", () => {
-			const relative = Locator.parse("./folder2/file.extension")
-			this.expect(relative, Is.not.nullOrUndefined)
-			if (relative)
-				this.expect(relative.toString(), Is.equal.to("./folder2/file.extension"))
-		})
-	}
-}
-Fixture.add(new LocatorToStringTest())
+describe("Uri.Locator.toString", () => {
+	it("full https", () => {
+		const absolute = Locator.parse("https://server.example.com/folder0/folder1/")
+		expect(absolute).toBeTruthy()
+		if (absolute)
+			expect(absolute.toString()).toEqual("https://server.example.com/folder0/folder1/")
+	})
+	it("full file", () => {
+		const absolute = Locator.parse("file:///folder0/folder1/")
+		expect(absolute).toBeTruthy()
+		if (absolute)
+			expect(absolute.toString()).toEqual("file:///folder0/folder1/")
+	})
+	it("absolute file", () => {
+		const relative = Locator.parse("/folder2/file.extension")
+		expect(relative).toBeTruthy()
+		if (relative)
+			expect(relative.toString()).toEqual("/folder2/file.extension")
+	})
+	it("relative", () => {
+		const relative = Locator.parse("./folder2/file.extension")
+		expect(relative).toBeTruthy()
+		if (relative)
+			expect(relative.toString()).toEqual("./folder2/file.extension")
+	})
+})

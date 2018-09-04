@@ -20,61 +20,56 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture, Is } from "../Unit"
 import { ArrayEnumerator } from "./ArrayEnumerator"
 import { Enumerator } from "./Enumerator"
 
-export class ArrayEnumeratorTest extends Fixture {
-	constructor() {
-		super("Utilities.ArrayEnumerator")
-		this.add("empty", () => {
-			this.expect(new ArrayEnumerator([]).fetch(), Is.undefined)
+describe("Utilities.ArrayEnumerator", () => {
+	it("empty", () => {
+		expect(new ArrayEnumerator([]).fetch()).toBeUndefined()
+	})
+	it("integers", () => {
+		const integers = [1, 2, 4, 8, 16]
+		const enumerator = new ArrayEnumerator(integers)
+		let count = 0
+		integers.forEach(value => {
+			count++
+			expect(enumerator.fetch()).toEqual(value)
 		})
-		this.add("integers", () => {
-			const integers = [1, 2, 4, 8, 16]
-			const enumerator = new ArrayEnumerator(integers)
-			let count = 0
-			integers.forEach(value => {
-				count++
-				this.expect(enumerator.fetch(), Is.equal.to(value))
-			})
-			this.expect(count, Is.equal.to(5))
-			this.expect(enumerator.fetch(), Is.undefined)
+		expect(count).toEqual(5)
+		expect(enumerator.fetch()).toBeUndefined()
+	})
+	it("map", () => {
+		const integers = [0, 1, 2, 3, 4]
+		let enumerator: Enumerator<number> = new ArrayEnumerator(integers)
+		enumerator = enumerator.map(integer => 2 ** integer)
+		let count = 0
+		integers.forEach(value => {
+			count++
+			const current = enumerator.fetch()
+			expect(current).toEqual(2 ** value)
 		})
-		this.add("map", () => {
-			const integers = [0, 1, 2, 3, 4]
-			let enumerator: Enumerator<number> = new ArrayEnumerator(integers)
-			enumerator = enumerator.map(integer => 2 ** integer)
-			let count = 0
-			integers.forEach(value => {
-				count++
-				const current = enumerator.fetch()
-				this.expect(current, Is.equal.to(2 ** value))
-			})
-			this.expect(count, Is.equal.to(5))
-			this.expect(enumerator.fetch(), Is.undefined)
+		expect(count).toEqual(5)
+		expect(enumerator.fetch()).toBeUndefined()
+	})
+	it("map empty", () => {
+		const integers: number[] = []
+		let enumerator: Enumerator<number> = new ArrayEnumerator(integers)
+		enumerator = enumerator.map(integer => 2 ** integer)
+		let count = 0
+		integers.forEach(value => count++)
+		expect(count).toEqual(0)
+		expect(enumerator.fetch()).toBeUndefined()
+	})
+	it("map single", () => {
+		const integers = [4]
+		let enumerator: Enumerator<number> = new ArrayEnumerator(integers)
+		enumerator = enumerator.map(integer => 2 ** integer)
+		let count = 0
+		integers.forEach(value => {
+			count++
+			expect(enumerator.fetch()).toEqual(16)
 		})
-		this.add("map empty", () => {
-			const integers: number[] = []
-			let enumerator: Enumerator<number> = new ArrayEnumerator(integers)
-			enumerator = enumerator.map(integer => 2 ** integer)
-			let count = 0
-			integers.forEach(value => count++)
-			this.expect(count, Is.equal.to(0))
-			this.expect(enumerator.fetch(), Is.undefined)
-		})
-		this.add("map single", () => {
-			const integers = [4]
-			let enumerator: Enumerator<number> = new ArrayEnumerator(integers)
-			enumerator = enumerator.map(integer => 2 ** integer)
-			let count = 0
-			integers.forEach(value => {
-				count++
-				this.expect(enumerator.fetch(), Is.equal.to(16))
-			})
-			this.expect(count, Is.equal.to(1))
-			this.expect(enumerator.fetch(), Is.undefined)
-		})
-	}
-}
-Fixture.add(new ArrayEnumeratorTest())
+		expect(count).toEqual(1)
+		expect(enumerator.fetch()).toBeUndefined()
+	})
+})

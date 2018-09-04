@@ -20,57 +20,51 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture, Is } from "../Unit"
 import { StringReader } from "./StringReader"
 import { UntilReader } from "./UntilReader"
 
-export class UntilReaderTest extends Fixture {
-	constructor() {
-		super("IO.UntilReader")
-		this.add("empty", async () => {
-			const reader = UntilReader.create(StringReader.create(""), "\n")
-			this.expect(await reader.isEmpty)
-		})
-		this.add("state check", () => {
-			const reader = UntilReader.create(StringReader.create(""), "\n")
-			this.expect(reader.location, Is.not.nullOrUndefined)
-			// this.expect(sr.region, Is.NullOrUndefined())
-			this.expect(reader.resource, Is.not.nullOrUndefined)
-		})
-		this.add("simple string", async () => {
-			const reader = UntilReader.create(StringReader.create("abcdef"), "d")
-			this.expect(reader.read(), Is.equal.to("a"))
-			this.expect(reader.read(), Is.equal.to("b"))
-			this.expect(reader.read(), Is.equal.to("c"))
-			this.expect(reader.read(), Is.equal.to("d"))
-			this.expect(reader.read(), Is.undefined)
-			this.expect(await reader.isEmpty)
-		})
-		this.add("simple string with location", async () => {
-			const reader = UntilReader.create(StringReader.create("abc\ndef"), "e")
-			this.expect(reader.location.column, Is.equal.to(1))
-			this.expect(reader.location.line, Is.equal.to(1))
-			this.expect(reader.read(), Is.equal.to("a"))
-			this.expect(reader.location.column, Is.equal.to(2))
-			this.expect(reader.location.line, Is.equal.to(1))
-			this.expect(reader.read(), Is.equal.to("b"))
-			this.expect(reader.location.column, Is.equal.to(3))
-			this.expect(reader.location.line, Is.equal.to(1))
-			this.expect(reader.read(), Is.equal.to("c"))
-			this.expect(reader.location.column, Is.equal.to(4))
-			this.expect(reader.location.line, Is.equal.to(1))
-			this.expect(reader.read(), Is.equal.to("\n"))
-			this.expect(reader.location.column, Is.equal.to(1))
-			this.expect(reader.location.line, Is.equal.to(2))
-			this.expect(reader.read(), Is.equal.to("d"))
-			this.expect(reader.location.column, Is.equal.to(2))
-			this.expect(reader.location.line, Is.equal.to(2))
-			this.expect(reader.read(), Is.equal.to("e"))
-			this.expect(reader.location.column, Is.equal.to(3))
-			this.expect(reader.location.line, Is.equal.to(2))
-			this.expect(reader.read(), Is.undefined)
-			this.expect(await reader.isEmpty)
-		})
-	}
-}
-Fixture.add(new UntilReaderTest())
+describe("IO.UntilReader", () => {
+	it("empty", async () => {
+		const reader = UntilReader.create(StringReader.create(""), "\n")
+		expect(await reader.isEmpty).toBeTruthy()
+	})
+	it("state check", () => {
+		const reader = UntilReader.create(StringReader.create(""), "\n")
+		expect(reader.location).toBeTruthy()
+		expect(reader.resource).toBeTruthy()
+	})
+	it("simple string", async () => {
+		const reader = UntilReader.create(StringReader.create("abcdef"), "d")
+		expect(reader.read()).toEqual("a")
+		expect(reader.read()).toEqual("b")
+		expect(reader.read()).toEqual("c")
+		expect(reader.read()).toEqual("d")
+		expect(reader.read()).toBeUndefined()
+		expect(await reader.isEmpty).toBeTruthy()
+	})
+	it("simple string with location", async () => {
+		const reader = UntilReader.create(StringReader.create("abc\ndef"), "e")
+		expect(reader.location.column).toEqual(1)
+		expect(reader.location.line).toEqual(1)
+		expect(reader.read()).toEqual("a")
+		expect(reader.location.column).toEqual(2)
+		expect(reader.location.line).toEqual(1)
+		expect(reader.read()).toEqual("b")
+		expect(reader.location.column).toEqual(3)
+		expect(reader.location.line).toEqual(1)
+		expect(reader.read()).toEqual("c")
+		expect(reader.location.column).toEqual(4)
+		expect(reader.location.line).toEqual(1)
+		expect(reader.read()).toEqual("\n")
+		expect(reader.location.column).toEqual(1)
+		expect(reader.location.line).toEqual(2)
+		expect(reader.read()).toEqual("d")
+		expect(reader.location.column).toEqual(2)
+		expect(reader.location.line).toEqual(2)
+		expect(reader.read()).toEqual("e")
+		expect(reader.location.column).toEqual(3)
+		expect(reader.location.line).toEqual(2)
+		expect(reader.read()).toBeUndefined()
+		expect(await reader.isEmpty).toBeTruthy()
+	})
+})

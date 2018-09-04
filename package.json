@@ -5,12 +5,11 @@
   "main": "build/index.js",
   "typings": "build/index",
   "scripts": {
-    "dev": "watch 'yarn build' source",
-    "prebuild": "tslint --config .vscode/tslint.json --project source/tsconfig.json",
-    "build": "tsc -p source",
-    "pretest": "yarn build",
-    "test": "node build/index.test.js",
-    "test:watch": "watch 'npm test' source",
+    "dev": "watch 'yarn build' .",
+    "prebuild": "tslint --config .vscode/tslint.json --project ./tsconfig.json",
+    "build": "tsc -p .",
+    "test": "jest -c jest.json",
+    "test:watch": "watch 'yarn test' source",
     "prepublish": "yarn build",
     "release": "np",
     "clean": "rm -rf build node_modules"
@@ -26,8 +25,11 @@
   },
   "homepage": "https://github.com/cogneco/mend#readme",
   "devDependencies": {
+    "@types/jest": "^23.3.1",
     "@types/node": "^10.9.4",
+    "jest": "^23.5.0",
     "np": "^3.0.4",
+    "ts-jest": "^23.1.4",
     "tslint": "^5.9.1",
     "typescript": "^3.0.3",
     "watch": "^1.0.2"

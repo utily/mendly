@@ -20,10 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Fixture, Is } from "../Unit"
 import { Enumerator } from "./Enumerator"
-
-// tslint:disable:max-classes-per-file
 
 class StringEnumerator extends Enumerator<string> {
 	private position: number = 0
@@ -31,56 +28,52 @@ class StringEnumerator extends Enumerator<string> {
 		super(() => this.position < this.content.length ? this.content.charAt(this.position++) : undefined)
 	}
 }
-export class EnumeratorTest extends Fixture {
-	constructor() {
-		super("Utilities.Enumerator")
-		this.add("empty string", () => {
-			const enumerator = new StringEnumerator("")
-			this.expect(enumerator.fetch(), Is.undefined)
-		})
-		this.add("enumerate using next()", () => {
-			const content = "let's enumerate this string using next()"
-			const enumerator = new StringEnumerator(content)
-			let result: string = ""
-			let item: string | undefined
-			while (item = enumerator.fetch())
-				result += item
-			this.expect(result, Is.equal.to(content))
-		})
-		this.add("map", () => {
-			const content = "let's map this string using map to upper case"
-			const enumerator = new StringEnumerator(content).map(c => c.toUpperCase())
-			let result: string = ""
-			let item: string | undefined
-			while (item = enumerator.fetch())
-				result += item
-			this.expect(result, Is.equal.to(content.toUpperCase()))
-		})
-		this.add("reduce", () => {
-			const content = "let's reduce this string back to a string again using reduce"
-			const enumerator = new StringEnumerator(content)
-			const result = enumerator.reduce((r, item) => r + item, "")
-			this.expect(result, Is.equal.to(content))
-		})
-		this.add("apply", () => {
-			const content = "let's verify the characters of this string one by one using apply"
-			const enumerator = new StringEnumerator(content)
-			let i = 0
-			enumerator.apply(item => this.expect(item, Is.equal.to(content[i++])))
-			this.expect(i, Is.equal.to(content.length))
-		})
-		this.add("toArray", () => {
-			const content = "let's reduce this string back to an array of single character strings"
-			const enumerator = new StringEnumerator(content)
-			const result = enumerator.toArray()
-			this.expect(result, Is.equal.to(content.split("")))
-		})
-		this.add("last", () => {
-			const content = "let's reduce this string back to an array of single character strings"
-			const enumerator = new StringEnumerator(content)
-			const result = enumerator.last
-			this.expect(result, Is.equal.to("s"))
-		})
-	}
-}
-Fixture.add(new EnumeratorTest())
+describe("Utilities.Enumerator", () => {
+	it("empty string", () => {
+		const enumerator = new StringEnumerator("")
+		expect(enumerator.fetch()).toBeUndefined()
+	})
+	it("enumerate using next()", () => {
+		const content = "let's enumerate this string using next()"
+		const enumerator = new StringEnumerator(content)
+		let result: string = ""
+		let item: string | undefined
+		while (item = enumerator.fetch())
+			result += item
+		expect(result).toEqual(content)
+	})
+	it("map", () => {
+		const content = "let's map this string using map to upper case"
+		const enumerator = new StringEnumerator(content).map(c => c.toUpperCase())
+		let result: string = ""
+		let item: string | undefined
+		while (item = enumerator.fetch())
+			result += item
+		expect(result).toEqual(content.toUpperCase())
+	})
+	it("reduce", () => {
+		const content = "let's reduce this string back to a string again using reduce"
+		const enumerator = new StringEnumerator(content)
+		const result = enumerator.reduce((r, item) => r + item, "")
+		expect(result).toEqual(content)
+	})
+	it("apply", () => {
+		const content = "let's verify the characters of this string one by one using apply"
+		const enumerator = new StringEnumerator(content)
+		let i = 0
+		enumerator.apply(item => expect(item).toEqual(content[i++]))
+		expect(i).toEqual(content.length)
+	})
+	it("toArray", () => {
+		const content = "let's reduce this string back to an array of single character strings"
+		const enumerator = new StringEnumerator(content)
+		const result = enumerator.toArray()
+		expect(result).toEqual(content.split(""))
+	})
+	it("last", () => {
+		const content = "let's reduce this string back to an array of single character strings"
+		const enumerator = new StringEnumerator(content)
+		const result = enumerator.last
+		expect(result).toEqual("s")
+	})
+})

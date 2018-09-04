@@ -14,10 +14,9 @@
 		"noUnusedLocals": true,
 		"sourceMap": true,
 		"sourceRoot": "../source",
-		"outDir": "../build/"
+		"outDir": "./build/"
 	},
 	"files": [
-		"index.ts",
-		"index.test.ts"
+		"source/index.ts"
 	]
 }
