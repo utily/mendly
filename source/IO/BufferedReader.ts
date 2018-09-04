@@ -37,15 +37,16 @@ export class BufferedReader extends Reader {
 		const location = this.location
 		return location ? location.resource : Uri.Locator.empty
 	}
+	private locationValue: Error.Location
 	get location(): Error.Location {
-		return this.buffer && this.buffer.length > 0 ? this.buffer[0].location : this.backend.location
+		return this.locationValue
 	}
 	get region(): Error.Region {
 		return new Error.Region(this.resource, this.lastMark, this.location, this.lastContent)
 	}
 	protected constructor(private backend: Reader) {
 		super()
-		this.lastMark = this.location
+		this.lastMark = this.locationValue = this.backend.location
 	}
 	close(): Promise<boolean> {
 		return this.backend.close()
@@ -62,10 +63,9 @@ export class BufferedReader extends Reader {
 		if (!length)
 			length = 1
 		const result = this.peek(length)
-		if (result) {
-			if (this.buffer.length >= result.length && result.length > 0) {
-				this.buffer.splice(0, result.length)
-			}
+		if (result && result.length > 0) {
+			this.locationValue = this.buffer[result.length - 1].location
+			this.buffer.splice(0, result.length)
 			this.lastContent += result
 		}
 		return result
