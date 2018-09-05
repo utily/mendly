@@ -8,11 +8,11 @@
     "dev": "watch 'yarn build' .",
     "prebuild": "tslint --config .vscode/tslint.json --project ./tsconfig.json",
     "build": "tsc -p .",
-    "test": "jest -c jest.json",
-    "test:watch": "watch 'yarn test' source",
+    "test": "jest -c jest.json --coverage",
+    "test:watch": "watch jest -c jest.json --coverage",
     "prepublish": "yarn build",
     "release": "np",
-    "clean": "rm -rf build node_modules"
+    "clean": "rm -rf build node_modules coverage"
   },
   "repository": {
     "type": "git",

@@ -1,3 +1,4 @@
 source
 **/*.test.js
 **/*.test.ts
+coverage
