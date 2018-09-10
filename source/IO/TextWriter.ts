@@ -20,11 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import * as fs from "async-file"
+import * as fs from "fs"
+import * as util from "util"
 
 import * as Uri from "../Uri"
 import { Enumerator } from "../Utilities"
 import { Writer } from "./Writer"
+
+const open = util.promisify(fs.open)
+const fsync = util.promisify(fs.fsync)
+const close = util.promisify(fs.close)
+const write = util.promisify(fs.write)
 
 export class TextWriter extends Writer {
 	get opened(): boolean { return this.descriptor > 0 }
@@ -36,7 +42,7 @@ export class TextWriter extends Writer {
 	async flush(): Promise<boolean> {
 		let result = true
 		try {
-			await fs.fsync(this.descriptor)
+			await fsync(this.descriptor)
 		} catch (error) {
 			result = false
 		}
@@ -46,7 +52,7 @@ export class TextWriter extends Writer {
 		let result = this.opened
 		if (result) {
 			try {
-				await fs.close(this.descriptor)
+				await close(this.descriptor)
 			} catch (error) {
 				result = false
 			}
@@ -56,8 +62,10 @@ export class TextWriter extends Writer {
 	}
 	protected async writeImplementation(buffer: Enumerator<string>): Promise<boolean> {
 		let result = true
+		const content = new Buffer(buffer.reduce((r, item) => r + item, ""))
 		try {
-			await buffer.map(async item => await fs.write(this.descriptor, item, 0, "utf8")).reduce(async (r, item) => { await r; await item }, Promise.resolve())
+			const r = await write(this.descriptor, content, 0, "utf8")
+			result = r.bytesWritten == content.length
 		} catch (error) {
 			result = false
 		}
@@ -67,7 +75,7 @@ export class TextWriter extends Writer {
 		let backend: number | undefined
 		if (resource && (resource.scheme.length == 0 || resource.scheme.length == 1 && resource.scheme[0] == "file"))
 			try {
-				backend = await fs.open((resource.isRelative ? "" : "/") + resource.path.join("/"), "w")
+				backend = await open((resource.isRelative ? "" : "/") + resource.path.join("/"), "w")
 			} catch (error) {
 				backend = undefined
 			}

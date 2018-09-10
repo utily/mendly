@@ -44,12 +44,17 @@ export abstract class Writer extends OutDevice {
 		Writer.openers.push({ open, priority})
 		Writer.openers = Writer.openers.sort((left, right) => right.priority - left.priority)
 	}
-	static async open(resource: Uri.Locator): Promise<Writer | undefined> {
+	static async open(resource: Uri.Locator | string): Promise<Writer | undefined> {
 		let result: Writer | undefined
-		let i = 0
-		do
-			result = await Writer.openers[i++].open(resource)
-		while (!result && i < Writer.openers.length)
+		if (typeof(resource) == "string") {
+			const r = Uri.Locator.parse(resource)
+			result = r ?  await Writer.open(r) : undefined
+		} else {
+			let i = 0
+			do
+				result = await Writer.openers[i++].open(resource)
+			while (!result && i < Writer.openers.length)
+		}
 		return result
 	}
 }
