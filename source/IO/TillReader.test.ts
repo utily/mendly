@@ -33,6 +33,11 @@ describe("IO.TillReader", () => {
 		expect(reader.location).toBeTruthy()
 		expect(reader.resource).toBeTruthy()
 	})
+	it("stop directly", async () => {
+		const reader = TillReader.create(StringReader.create("\nabcdef"), "\n")
+		expect(await reader.isEmpty).toBeTruthy()
+		expect(reader.read()).toBeUndefined()
+	})
 	it("simple string", async () => {
 		const reader = TillReader.create(StringReader.create("abcdef"), "d")
 		expect(reader.read()).toEqual("a")

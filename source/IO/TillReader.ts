@@ -38,6 +38,7 @@ export class TillReader extends Reader {
 	private constructor(backend: Reader, private endMark: string | string[]) {
 		super()
 		this.backend = backend instanceof BufferedReader ? backend : BufferedReader.create(backend)
+		this.done = this.backend.peekIs(this.endMark) != undefined
 	}
 	close(): Promise<boolean> {
 		const result = !this.done
