@@ -1,6 +1,6 @@
 {
   "name": "@cogneco/mend",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "Mend is a utility library for typescript and javascript mending the standard library.",
   "main": "build/index.js",
   "typings": "build/index",
