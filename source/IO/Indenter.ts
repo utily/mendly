@@ -31,6 +31,7 @@ export class Indenter extends Writer {
 	autoFlush: boolean = true
 	indentionSymbol = "\t"
 	private indentionCount = 0
+	private indentNext = false
 	constructor(private readonly backend: Writer) {
 		super()
 	}
@@ -48,11 +49,25 @@ export class Indenter extends Writer {
 		this.indentionCount--
 		return this.indentionCount >= 0
 	}
+	private getIndention(): string {
+		return this.indentionSymbol.repeat(this.indentionCount)
+	}
 	protected writeImplementation(buffer: Enumerator<string>): Promise<boolean> {
-		let item: string | undefined
 		const result: Promise<boolean>[] = []
-		while (item = buffer.fetch())
-			result.push(this.backend.write(item.replace(this.newLineSymbol, this.newLineSymbol + this.indentionSymbol.repeat(this.indentionCount))))
+		let item: string | undefined
+		let next = buffer.fetch()
+		if (next)
+			do {
+				item = next
+				next = buffer.fetch()
+				if (this.indentNext)
+					item = this.getIndention() + item
+				this.indentNext = item.endsWith(this.newLineSymbol)
+				item = item.replace(this.newLineSymbol, this.newLineSymbol + this.getIndention())
+				if (this.indentNext)
+					item = item.substring(0, item.length - this.indentionCount * this.indentionSymbol.length)
+				result.push(this.backend.write(item))
+			} while (next)
 		return Promise.all(result).then(r => r.reduce((previous, current) => previous && current, true))
 	}
 }
