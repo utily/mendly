@@ -22,6 +22,7 @@
 
 import * as fs from "fs"
 import * as util from "util"
+import * as path from "path"
 
 import * as Uri from "../Uri"
 import { Enumerator } from "../Utilities"
@@ -75,7 +76,7 @@ export class TextWriter extends Writer {
 		let backend: number | undefined
 		if (resource && (resource.scheme.length == 0 || resource.scheme.length == 1 && resource.scheme[0] == "file"))
 			try {
-				backend = await open((resource.isRelative ? "" : "/") + resource.path.join("/"), "w")
+				backend = await open((resource.isRelative ? "" : path.sep) + resource.path.join(path.sep), "w")
 			} catch (error) {
 				backend = undefined
 			}

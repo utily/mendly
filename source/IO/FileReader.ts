@@ -21,6 +21,8 @@
 // SOFTWARE.
 
 import * as fs from "fs"
+import * as path from "path"
+
 import * as Uri from "../Uri"
 import * as Error from "../Error"
 import { Reader } from "./Reader"
@@ -47,11 +49,11 @@ export class FileReader extends Reader {
 		let backend: Reader | undefined
 		if (resource && (resource.scheme.length == 0 || resource.scheme.length == 1 && resource.scheme[0] == "file"))
 			try {
-				backend = StringReader.create(fs.readFileSync((resource.isRelative ? "" : "/") + resource.path.join("/"), "utf-8"), resource)
+				backend = StringReader.create(fs.readFileSync((resource.isRelative ? "" : path.sep) + resource.path.join(path.sep), "utf-8"), resource)
 			} catch (error) {
 				console.log(`Failed to open file: ${resource.toString()}`)
 			}
 		return backend ? new FileReader(backend) : undefined
 	}
 }
-Reader.addOpener(path => FileReader.open(path), 10)
+Reader.addOpener(p => FileReader.open(p), 10)

@@ -20,12 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import * as fs from "fs"
+import * as path from "path"
+
 import * as Uri from "../Uri"
 import * as Error from "../Error"
 import { Reader } from "./Reader"
 import { FileReader } from "./FileReader"
-
-import * as fs from "fs"
 
 export class FolderReader extends Reader {
 	get readable(): boolean { return this.current != undefined && this.current.readable || this.files.length > 0 }
@@ -64,7 +65,7 @@ export class FolderReader extends Reader {
 		let result: string[] = []
 		const files: string[] = fs.readdirSync(folder)
 		files.forEach(file => {
-			const filename = folder + "/" + file
+			const filename = folder + path.sep + file
 			if (ignoreFiles.indexOf(filename) == -1) {
 				if (fs.lstatSync(filename).isDirectory())
 					result = result.concat(FolderReader.getFiles(filename, filetype, ignoreFiles))
@@ -78,10 +79,10 @@ export class FolderReader extends Reader {
 		let files: string[] | undefined
 		try {
 			if (resource && (resource.scheme.length == 0 || resource.scheme.length == 1 && resource.scheme[0] == "file") && resource.isFolder || resource.name.match("*"))
-				files = FolderReader.getFiles((resource.isRelative ? "" : "/") + resource.folder.path.join("/"), resource.extension)
+				files = FolderReader.getFiles((resource.isRelative ? "" : path.sep) + resource.folder.path.join(path.sep), resource.extension)
 		} catch (error) {
 		}
-		return files ? new FolderReader(files.map(f => new Uri.Locator(["file"], undefined, f.split("/")))) : undefined
+		return files ? new FolderReader(files.map(f => new Uri.Locator(["file"], undefined, f.split(path.sep)))) : undefined
 	}
 }
 Reader.addOpener((resource) => FolderReader.open(resource), 0)
