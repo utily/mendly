@@ -31,10 +31,11 @@ export abstract class Writer extends OutDevice {
 			message instanceof Array ? this.writeImplementation(new ArrayEnumerator(message)) :
 			this.writeImplementation(new ArrayEnumerator([message]))
 	}
-	async writeLine(message: string | string[] | Enumerator<string>): Promise<boolean> {
+	async writeLine(message?: string | string[] | Enumerator<string>): Promise<boolean> {
 		return message instanceof Enumerator ? this.writeImplementation(message.append(this.newLineSymbol)) :
 			message instanceof Array ? this.writeImplementation(new ArrayEnumerator([...message, this.newLineSymbol])) :
-			this.writeImplementation(new ArrayEnumerator([message, this.newLineSymbol]))
+			message ? this.writeImplementation(new ArrayEnumerator([message, this.newLineSymbol])) :
+			this.writeImplementation(new ArrayEnumerator([this.newLineSymbol]))
 	}
 	protected abstract writeImplementation(buffer: Enumerator<string>): Promise<boolean>
 	private static openers: { open: ((resource: Uri.Locator) => Promise<Writer | undefined>), priority: number }[] = []
