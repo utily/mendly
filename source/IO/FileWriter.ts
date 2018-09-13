@@ -33,7 +33,7 @@ const fsync = util.promisify(fs.fsync)
 const close = util.promisify(fs.close)
 const write = util.promisify(fs.write)
 
-export class TextWriter extends Writer {
+export class FileWriter extends Writer {
 	get opened(): boolean { return this.descriptor > 0 }
 	get writable(): boolean { return this.descriptor > 0 }
 	autoFlush: boolean = false
@@ -80,7 +80,7 @@ export class TextWriter extends Writer {
 			} catch (error) {
 				backend = undefined
 			}
-		return backend ? new TextWriter(resource, backend) : undefined
+		return backend ? new FileWriter(resource, backend) : undefined
 	}
 }
-Writer.addOpener(TextWriter.open)
+Writer.addOpener(FileWriter.open)
