@@ -27,6 +27,7 @@ import { InDevice } from "./InDevice"
 export abstract class Reader extends InDevice {
 	abstract get location(): Error.Location
 	abstract get region(): Error.Region
+	abstract tabSize: number
 	abstract read(): string | undefined
 	abstract mark(): Error.Region
 	private static openers: { open: ((locator: Uri.Locator) => Reader | undefined), priority: number }[] = []

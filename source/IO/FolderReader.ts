@@ -29,6 +29,13 @@ import { Reader } from "./Reader"
 import { FileReader } from "./FileReader"
 
 export class FolderReader extends Reader {
+	private tabSizeValue = 2
+	get tabSize(): number { return this.tabSizeValue }
+	set tabSize(size: number) {
+		this.tabSizeValue = size
+		if (this.current)
+			this.current.tabSize = size
+	}
 	get readable(): boolean { return this.current != undefined && this.current.readable || this.files.length > 0 }
 	get opened(): boolean { return this.current != undefined || this.files.length > 0 }
 	private current: Reader | undefined
@@ -46,8 +53,10 @@ export class FolderReader extends Reader {
 	}
 	read(): string | undefined {
 		let result: string | undefined
-		if (!this.current && this.files.length > 0)
+		if (!this.current && this.files.length > 0) {
 			this.current = FileReader.open(this.files.shift())
+			this.current.tabSize = this.tabSize
+		}
 		if (this.current) {
 			result = this.current.read()
 			if (result == undefined || result == "\0") {

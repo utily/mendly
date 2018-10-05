@@ -26,6 +26,8 @@ import { Reader } from "./Reader"
 import { BufferedReader } from "./BufferedReader"
 
 export class PrefixReader extends Reader {
+	get tabSize(): number { return this.backend.tabSize }
+	set tabSize(size: number) { this.backend.tabSize = size }
 	private readonly backend: BufferedReader
 	private done = false
 	get readable(): boolean { return this.backend.readable }

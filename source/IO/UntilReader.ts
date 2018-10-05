@@ -26,6 +26,8 @@ import { Reader } from "./Reader"
 import { BufferedReader } from "./BufferedReader"
 
 export class UntilReader extends Reader {
+	get tabSize(): number { return this.backend.tabSize }
+	set tabSize(size: number) { this.backend.tabSize = size }
 	private done = -1
 	private backend: BufferedReader
 	get readable(): boolean { return this.backend.readable }

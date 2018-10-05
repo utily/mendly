@@ -26,6 +26,8 @@ import { Reader } from "./Reader"
 
 export { Reader } from "./Reader"
 export class BufferedReader extends Reader {
+	get tabSize(): number { return this.backend.tabSize }
+	set tabSize(size: number) { this.backend.tabSize = size }
 	get readable(): boolean { return !!this.backend }
 	get opened(): boolean { return !!this.backend }
 	private buffer: { data: string, location: Error.Location }[] = []

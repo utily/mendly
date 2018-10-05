@@ -25,6 +25,7 @@ import * as Uri from "../Uri"
 import { Reader } from "./Reader"
 
 export class StringReader extends Reader {
+	tabSize: number = 2
 	private count: number = 0
 	private line: number = 1
 	private column: number = 1
@@ -56,11 +57,18 @@ export class StringReader extends Reader {
 			result = undefined
 		this.count++
 		if (result) {
-			if (result == "\n") {
-				this.line++
-				this.column = 1
-			} else
-				this.column++
+			switch (result) {
+				case "\n":
+					this.line++
+					this.column = 1
+					break
+				case "\t":
+					this.column += this.tabSize
+					break
+				default:
+					this.column++
+					break
+			}
 			this.lastContent += result
 		}
 		return result

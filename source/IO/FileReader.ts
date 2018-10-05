@@ -29,6 +29,8 @@ import { Reader } from "./Reader"
 import { StringReader } from "./StringReader"
 
 export class FileReader extends Reader {
+	get tabSize(): number { return this.backend.tabSize }
+	set tabSize(size: number) { this.backend.tabSize = size }
 	get readable(): boolean { return this.backend.readable }
 	get opened(): boolean { return this.backend.opened }
 	get isEmpty(): Promise<boolean> { return this.backend.isEmpty }
