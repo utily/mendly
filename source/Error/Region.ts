@@ -27,7 +27,7 @@ export class Region {
 	constructor(readonly resource: Uri.Locator, readonly start?: Position, readonly end?: Position, readonly content?: string)
 	{
 	}
-	merge(other: Region) { return new Region(this.resource, this.start, other.end, this.content ? this.content : "" + other.content ? other.content : "") }
+	merge(other?: Region) { return other ? new Region(this.resource, this.start, other.end, this.content ? this.content : "" + other.content ? other.content : "") : this }
 	toString() {
 		let result = this.resource.toString()
 		if (this.start && this.end)
