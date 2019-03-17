@@ -63,7 +63,7 @@ export class FileWriter extends Writer {
 	}
 	protected async writeImplementation(buffer: Enumerator<string>): Promise<boolean> {
 		let result = true
-		const content = new Buffer(buffer.reduce((r, item) => r + item, ""))
+		const content = Buffer.from(buffer.reduce((r, item) => r + item, ""))
 		try {
 			const r = await write(this.descriptor, content, 0, "utf8")
 			result = r.bytesWritten == content.length
