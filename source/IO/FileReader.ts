@@ -33,7 +33,7 @@ export class FileReader extends Reader {
 	set tabSize(size: number) { this.backend.tabSize = size }
 	get readable(): boolean { return this.backend.readable }
 	get opened(): boolean { return this.backend.opened }
-	get isEmpty(): Promise<boolean> { return this.backend.isEmpty }
+	get isEmpty(): boolean { return this.backend.isEmpty }
 	get resource(): Uri.Locator { return this.backend ? this.backend.resource : Uri.Locator.empty }
 	get location(): Error.Location { return this.backend.location }
 	get region(): Error.Region { return this.backend.region }

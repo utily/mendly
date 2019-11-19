@@ -32,8 +32,7 @@ export class TillReader extends Reader {
 	private done = false
 	get readable(): boolean { return this.backend.readable }
 	get opened(): boolean { return !this.done && this.backend.opened }
-	private async isEmptyHelper(): Promise<boolean> { return this.done || this.backend.isEmpty }
-	get isEmpty() { return this.isEmptyHelper() }
+	get isEmpty() { return this.done || this.backend.isEmpty }
 	get resource(): Uri.Locator { return this.backend.resource }
 	get location(): Error.Location { return this.backend.location }
 	get region(): Error.Region { return this.backend.region }

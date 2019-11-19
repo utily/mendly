@@ -33,9 +33,7 @@ export class StringReader extends Reader {
 	private lastContent: string = ""
 	readonly readable = true
 	get opened(): boolean { return this.count + 1 >= this.content.length }
-	get isEmpty(): Promise<boolean> {
-		return Promise.resolve(this.opened)
-	}
+	get isEmpty(): boolean { return this.opened }
 	get location(): Error.Location { return new Error.Location(this.resource, this.line, this.column) }
 	get region(): Error.Region { return new Error.Region(this.resource, this.lastPosition, this.location, this.lastContent) }
 	private constructor(private content: string, readonly resource: Uri.Locator) {

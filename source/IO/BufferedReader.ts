@@ -33,8 +33,7 @@ export class BufferedReader extends Reader {
 	private buffer: { data: string, location: Error.Location }[] = []
 	private lastMark: Error.Location
 	private lastContent: string = ""
-	private async isEmptyHelper(): Promise<boolean> { return (this.buffer.length == 0 || this.buffer[0].data == "\0") && this.backend.isEmpty }
-	get isEmpty(): Promise<boolean> { return this.isEmptyHelper() }
+	get isEmpty(): boolean { return (this.buffer.length == 0 || this.buffer[0].data == "\0") && this.backend.isEmpty }
 	get resource(): Uri.Locator {
 		const location = this.location
 		return location ? location.resource : Uri.Locator.empty

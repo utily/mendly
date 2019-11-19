@@ -40,8 +40,7 @@ export class FolderReader extends Reader {
 	get opened(): boolean { return this.current != undefined || this.files.length > 0 }
 	private current: Reader | undefined
 	private lastLocation: Error.Location = new Error.Location(Uri.Locator.empty, 0, 0)
-	private async isEmptyHelper(): Promise<boolean> { return this.files.length == 0 && (!this.current || await this.current.isEmpty) }
-	get isEmpty(): Promise<boolean> { return this.isEmptyHelper() }
+	get isEmpty(): boolean { return this.files.length == 0 && (!this.current || this.current.isEmpty) }
 	get resource(): Uri.Locator { return this.current ? this.current.resource : this.lastLocation.resource }
 	get location(): Error.Location { return this.current ? this.current.location : this.lastLocation }
 	get region(): Error.Region { return this.current ? this.current.region : new Error.Region(this.resource) }
