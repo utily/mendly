@@ -1,6 +1,6 @@
 {
  "name": "@cogneco/mend",
- "version": "1.7.8",
+ "version": "1.7.9",
  "description": "Mend is a utility library for typescript and javascript mending the standard library.",
  "author": "Simon Mika (simon@mika.se)",
  "license": "MIT",
