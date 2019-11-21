@@ -46,9 +46,9 @@ export class Enumerator<T> implements Iterator<T> {
 			result++
 		return result
 	}
+	private nextValue: IteratorResult<T> | undefined
 	get last(): T | undefined {
-		const next = this.next()
-		return next.done ? undefined : this.last || next.value
+		return this.nextValue && !this.nextValue.done ? this.nextValue.value : undefined
 	}
 	constructor(backend: (() => T | undefined) | Iterator<T>) {
 		this.iterator = backend instanceof Function ? generate(backend) : backend
@@ -58,7 +58,7 @@ export class Enumerator<T> implements Iterator<T> {
 		return result.done ? undefined : result.value
 	}
 	next(value?: any): IteratorResult<T> {
-		return this.iterator.next(value)
+		return this.nextValue = this.iterator.next(value)
 	}
 	append(item: T | Iterator<T>): Enumerator<T> {
 		return new Enumerator(merge(this, item))

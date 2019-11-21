@@ -27,6 +27,17 @@ describe("Utilities.ArrayEnumerator", () => {
 	it("empty", () => {
 		expect(new ArrayEnumerator([]).fetch()).toBeUndefined()
 	})
+	it("single", () => {
+		const integers = [1]
+		const enumerator = new ArrayEnumerator(integers)
+		let count = 0
+		integers.forEach(value => {
+			count++
+			expect(enumerator.fetch()).toEqual(value)
+		})
+		expect(count).toEqual(1)
+		expect(enumerator.fetch()).toBeUndefined()
+	})
 	it("integers", () => {
 		const integers = [1, 2, 4, 8, 16]
 		const enumerator = new ArrayEnumerator(integers)
