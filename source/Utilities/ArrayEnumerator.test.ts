@@ -83,4 +83,14 @@ describe("Utilities.ArrayEnumerator", () => {
 		expect(count).toEqual(1)
 		expect(enumerator.fetch()).toBeUndefined()
 	})
+	it("last array", () => {
+		const content = "let's reduce this string back to an array of single character strings".split(" ")
+		const enumerator = new ArrayEnumerator(content)
+		const result: string[] = []
+		while (enumerator.fetch())
+			if (enumerator.last)
+				result.push(enumerator.last)
+		expect(result.join("_")).toEqual("let's_reduce_this_string_back_to_an_array_of_single_character_strings")
+	})
+
 })

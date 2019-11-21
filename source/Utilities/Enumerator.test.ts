@@ -73,8 +73,10 @@ describe("Utilities.Enumerator", () => {
 	it("last", () => {
 		const content = "let's reduce this string back to an array of single character strings"
 		const enumerator = new StringEnumerator(content)
-		enumerator.fetch()
-		const result = enumerator.last
-		expect(result).toEqual("l")
+		const result: string[] = []
+		while (enumerator.fetch())
+			if (enumerator.last)
+				result.push(enumerator.last)
+		expect(result.join("")).toEqual("let's reduce this string back to an array of single character strings")
 	})
 })
