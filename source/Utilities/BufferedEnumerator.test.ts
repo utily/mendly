@@ -57,6 +57,7 @@ describe("Utilities.BufferedEnumerator", () => {
 		const testString = "abcdef"
 		const bi = new BufferedEnumerator(new StringEnumerator(testString))
 		// Force the reader to buffer the entire string
+		expect(bi.peek(0)).toEqual("a")
 		expect(bi.peek(5)).toEqual("f")
 		expect(bi.fetch()).toEqual("a")
 		expect(bi.fetch()).toEqual("b")

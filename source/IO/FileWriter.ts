@@ -20,18 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import * as fs from "fs"
-import * as util from "util"
-import * as path from "path"
+import * as fs from "./fs"
+import * as path from "./path"
 
 import * as Uri from "../Uri"
 import { Enumerator } from "../Utilities"
 import { Writer } from "./Writer"
-
-const open = util.promisify(fs.open)
-const fsync = util.promisify(fs.fsync)
-const close = util.promisify(fs.close)
-const write = util.promisify(fs.write)
 
 export class FileWriter extends Writer {
 	get opened(): boolean { return this.descriptor > 0 }
@@ -43,7 +37,7 @@ export class FileWriter extends Writer {
 	async flush(): Promise<boolean> {
 		let result = true
 		try {
-			await fsync(this.descriptor)
+			await fs.fsync(this.descriptor)
 		} catch (error) {
 			result = false
 		}
@@ -53,7 +47,7 @@ export class FileWriter extends Writer {
 		let result = this.opened
 		if (result) {
 			try {
-				await close(this.descriptor)
+				await fs.close(this.descriptor)
 			} catch (error) {
 				result = false
 			}
@@ -65,7 +59,7 @@ export class FileWriter extends Writer {
 		let result = true
 		const content = Buffer.from(buffer.reduce((r, item) => r + item, ""))
 		try {
-			const r = await write(this.descriptor, content, 0, "utf8")
+			const r = await fs.write(this.descriptor, content, 0, "utf8")
 			result = r.bytesWritten == content.length
 		} catch (error) {
 			result = false
@@ -76,7 +70,7 @@ export class FileWriter extends Writer {
 		let backend: number | undefined
 		if (resource && (resource.scheme.length == 0 || resource.scheme.length == 1 && resource.scheme[0] == "file"))
 			try {
-				backend = await open((resource.isRelative ? "" : path.sep) + resource.path.join(path.sep), "w")
+				backend = await fs.open((resource.isRelative ? "" : path.sep) + resource.path.join(path.sep), "w")
 			} catch (error) {
 				backend = undefined
 			}
