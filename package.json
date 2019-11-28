@@ -16,7 +16,7 @@
  "typings": "build/index.d.ts",
  "browser": {
   "./build/IO/fs": "./build/IO/fs.browser",
-  "./build/IO/path": "./build/IO/fs.path"
+  "./build/IO/path": "./build/IO/path.browser"
  },
  "jest": {
   "globals": {
