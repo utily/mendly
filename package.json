@@ -1,17 +1,17 @@
 {
- "name": "@cogneco/mend",
+ "name": "mendly",
  "version": "1.7.15",
- "description": "Mend is a utility library for typescript and javascript mending the standard library.",
+ "description": "Mendly is a utility library for typescript and javascript mending the standard library.",
  "author": "Simon Mika (simon@mika.se)",
  "license": "MIT",
  "repository": {
   "type": "git",
-  "url": "git+https://github.com/cogneco/mend.git"
+  "url": "git+https://github.com/utily/mendly.git"
  },
  "bugs": {
-  "url": "https://github.com/cogneco/mend/issues"
+  "url": "https://github.com/utily/mendly/issues"
  },
- "homepage": "https://github.com/cogneco/mend#readme",
+ "homepage": "https://github.com/utily/mendly#readme",
  "main": "build/index.js",
  "typings": "build/index.d.ts",
  "browser": {
@@ -51,15 +51,15 @@
   "clean": "rm -rf build node_modules coverage"
  },
  "devDependencies": {
-  "@types/jest": "^24.0.23",
-  "@types/node": "^12.12.9",
+  "@types/jest": "^27.0.3",
+  "@types/node": "^17.0.5",
   "babel-core": "^6.26.3",
-  "babel-jest": "^24.9.0",
-  "jest": "^24.9.0",
-  "ts-jest": "^24.1.0",
+  "babel-jest": "^27.4.5",
+  "jest": "^27.4.5",
+  "ts-jest": "^27.1.2",
   "tslint": "^5.20.1",
-  "typescript": "^3.7.2",
-  "watch": "^1.0.2"
+  "typescript": "^4.5.4",
+  "watch": "^0.13.0"
  },
  "dependencies": {
   "async-file": "^2.0.2"

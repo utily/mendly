@@ -20,5 +20,8 @@
 	"licenser.license": "MIT",
 	"licenser.projectName": "Mend",
 	"licenser.author": "Simon Mika <simon@mika.se>",
-	"licenser.useSingleLineStyle": true
+	"licenser.useSingleLineStyle": true,
+	"cSpell.words": [
+		"mendly"
+	]
 }
