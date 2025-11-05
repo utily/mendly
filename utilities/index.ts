@@ -1,4 +1,3 @@
-import { String as _String } from "../String"
 import { ArrayEnumerator as _ArrayEnumerator } from "./ArrayEnumerator"
 import { BufferedEnumerator as _BufferedEnumerator } from "./BufferedEnumerator"
 import { Enumerable as _Enumerable } from "./Enumerable"
@@ -9,5 +8,4 @@ export namespace utilities {
 	export import Enumerable = _Enumerable
 	export import ArrayEnumerator = _ArrayEnumerator
 	export import BufferedEnumerator = _BufferedEnumerator
-	export import String = _String
 }
