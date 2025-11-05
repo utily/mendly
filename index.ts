@@ -1,6 +1,6 @@
-import * as Error from "./Error"
-import * as IO from "./IO"
-import * as Uri from "./Uri"
-import * as Utilities from "./Utilities"
+import { error } from "./error"
+import * as IO from "./io"
+import { uri } from "./uri"
+import * as Utilities from "./utilities"
 
-export { Error, IO, Uri, Utilities }
+export { error, IO, uri, Utilities }
