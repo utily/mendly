@@ -4,6 +4,7 @@
 		/* transpiling */
 		"lib": [
 			"ES2023",
+			"DOM"
 		],
 		"moduleResolution": "node10",
 		"module": "ESNext",
@@ -34,7 +35,8 @@
 		"forceConsistentCasingInFileNames": true,
 		"baseUrl": ".",
 		"types": [
-			"vitest/globals"
+			"vitest/globals",
+			"node"
 		]
 	},
 	"include": [
