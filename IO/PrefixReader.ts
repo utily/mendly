@@ -18,8 +18,8 @@ export class PrefixReader extends Reader {
 	get opened(): boolean {
 		return this.backend.opened
 	}
-	get isEmpty(): boolean {
-		return this.done || this.backend.isEmpty
+	get empty(): boolean {
+		return this.done || this.backend.empty
 	}
 	get resource(): Uri.Locator {
 		return this.backend.resource

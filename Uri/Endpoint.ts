@@ -1,5 +1,5 @@
 export class Endpoint {
-	get isEmpty() {
+	get empty() {
 		return this.host.length == 0 && !this.port
 	}
 	constructor(readonly host: string[] = [], readonly port?: number) {}

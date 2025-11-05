@@ -13,7 +13,7 @@ export class StringReader extends Reader {
 	get opened(): boolean {
 		return this.count + 1 >= this.content.length
 	}
-	get isEmpty(): boolean {
+	get empty(): boolean {
 		return this.opened
 	}
 	get location(): Error.Location {
@@ -28,7 +28,7 @@ export class StringReader extends Reader {
 		this.lastPosition = this.location
 	}
 	async close(): Promise<boolean> {
-		const result = !(await this.isEmpty)
+		const result = !(await this.empty)
 		if (result)
 			this.count = this.content.length
 		return result

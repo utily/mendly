@@ -23,8 +23,8 @@ export class FolderReader extends Reader {
 	}
 	private current: Reader | undefined
 	private lastLocation: Error.Location = new Error.Location(Uri.Locator.empty, 0, 0)
-	get isEmpty(): boolean {
-		return this.files.length == 0 && (!this.current || this.current.isEmpty)
+	get empty(): boolean {
+		return this.files.length == 0 && (!this.current || this.current.empty)
 	}
 	get resource(): Uri.Locator {
 		return this.current ? this.current.resource : this.lastLocation.resource

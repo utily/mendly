@@ -18,8 +18,8 @@ export class UntilReader extends Reader {
 	get opened(): boolean {
 		return !this.done && this.backend.opened
 	}
-	get isEmpty(): boolean {
-		return this.done == 0 || this.backend.isEmpty
+	get empty(): boolean {
+		return this.done == 0 || this.backend.empty
 	}
 	get resource(): Uri.Locator {
 		return this.backend.resource

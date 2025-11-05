@@ -64,7 +64,7 @@ export class Locator {
 			? this
 			: new Locator(
 					this.scheme.length > 0 ? this.scheme : absolute.scheme,
-					!this.authority.isEmpty ? this.authority : absolute.authority,
+					!this.authority.empty ? this.authority : absolute.authority,
 					this.isRelative ? absolute.folder.path.concat(this.path) : this.path,
 					this.query,
 					this.fragment
@@ -83,7 +83,7 @@ export class Locator {
 		let result = ""
 		if (this.scheme.length > 0)
 			result += this.scheme.join("+") + ":"
-		if (!this.authority.isEmpty)
+		if (!this.authority.empty)
 			result += "//" + this.authority.toString()
 		else if (this.scheme.length > 0)
 			result += "//"

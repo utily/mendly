@@ -2,15 +2,15 @@ import { Endpoint } from "./Endpoint"
 import { User } from "./User"
 
 export class Authority {
-	get isEmpty() {
-		return this.user.isEmpty && this.endpoint.isEmpty
+	get empty() {
+		return this.user.empty && this.endpoint.empty
 	}
 	constructor(readonly user: User = new User(), readonly endpoint: Endpoint = new Endpoint()) {}
 	toString(): string {
 		let result = ""
-		if (!this.user.isEmpty)
+		if (!this.user.empty)
 			result = this.user.toString() + "@"
-		if (!this.endpoint.isEmpty)
+		if (!this.endpoint.empty)
 			result = result + this.endpoint.toString()
 		return result
 	}

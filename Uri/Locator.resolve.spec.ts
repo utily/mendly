@@ -9,7 +9,7 @@ describe("Uri.Locator.resolve", () => {
 		if (relative) {
 			const locator = relative.resolve(absolute)
 			expect(locator.scheme).toEqual(["https"])
-			expect(locator.authority.user.isEmpty)
+			expect(locator.authority.user.empty)
 			expect(locator.authority.endpoint.host).toEqual(["server", "example", "com"])
 			expect(locator.authority.endpoint.port).toBeUndefined()
 			expect(locator.path).toEqual(["folder0", "folder1", "folder2", "file.extension"])

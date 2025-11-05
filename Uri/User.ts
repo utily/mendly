@@ -1,5 +1,5 @@
 export class User {
-	get isEmpty() {
+	get empty() {
 		return !this.name && !this.password
 	}
 	constructor(readonly name?: string, readonly password?: string) {}

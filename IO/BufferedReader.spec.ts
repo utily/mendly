@@ -4,7 +4,7 @@ import { StringReader } from "./StringReader"
 describe("IO.BufferedReader", () => {
 	it("empty", async () => {
 		const br = BufferedReader.create(StringReader.create(""))
-		expect(await br.isEmpty)
+		expect(await br.empty)
 	})
 	it("state check", () => {
 		const br = BufferedReader.create(StringReader.create(""))
@@ -64,7 +64,7 @@ describe("IO.BufferedReader", () => {
 		expect(br.location.column).toEqual(3)
 		expect(br.location.line).toEqual(2)
 		br.read()
-		expect(await br.isEmpty)
+		expect(await br.empty)
 	})
 	it("tabs and newlines location", async () => {
 		const reader = BufferedReader.create(StringReader.create("\t\t\t\n\t\t\t"))
@@ -90,7 +90,7 @@ describe("IO.BufferedReader", () => {
 		expect(reader.location.column).toEqual(9)
 		expect(reader.location.line).toEqual(2)
 		reader.read()
-		expect(await reader.isEmpty)
+		expect(await reader.empty)
 	})
 	it("mark", () => {
 		const br = BufferedReader.create(StringReader.create("abc\0"))

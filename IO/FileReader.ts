@@ -18,8 +18,8 @@ export class FileReader extends Reader {
 	get opened(): boolean {
 		return this.backend.opened
 	}
-	get isEmpty(): boolean {
-		return this.backend.isEmpty
+	get empty(): boolean {
+		return this.backend.empty
 	}
 	get resource(): Uri.Locator {
 		return this.backend ? this.backend.resource : Uri.Locator.empty

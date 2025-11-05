@@ -19,8 +19,8 @@ export class BufferedReader extends Reader {
 	private buffer: { data: string; location: Error.Location }[] = []
 	private lastMark: Error.Location
 	private lastContent: string = ""
-	get isEmpty(): boolean {
-		return (this.buffer.length == 0 || this.buffer[0]!.data == "\0") && this.backend.isEmpty
+	get empty(): boolean {
+		return (this.buffer.length == 0 || this.buffer[0]!.data == "\0") && this.backend.empty
 	}
 	get resource(): Uri.Locator {
 		const location = this.location

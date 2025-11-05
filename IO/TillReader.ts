@@ -18,8 +18,8 @@ export class TillReader extends Reader {
 	get opened(): boolean {
 		return !this.done && this.backend.opened
 	}
-	get isEmpty() {
-		return this.done || this.backend.isEmpty
+	get empty() {
+		return this.done || this.backend.empty
 	}
 	get resource(): Uri.Locator {
 		return this.backend.resource

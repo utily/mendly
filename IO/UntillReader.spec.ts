@@ -5,7 +5,7 @@ import { UntilReader } from "./UntilReader"
 describe("IO.UntilReader", () => {
 	it("empty", async () => {
 		const reader = UntilReader.create(StringReader.create(""), "\n")
-		expect(await reader.isEmpty).toBeTruthy()
+		expect(await reader.empty).toBeTruthy()
 	})
 	it("state check", () => {
 		const reader = UntilReader.create(StringReader.create(""), "\n")
@@ -14,9 +14,9 @@ describe("IO.UntilReader", () => {
 	})
 	it("stop directly", async () => {
 		const reader = UntilReader.create(StringReader.create("\nabcdef"), "\n")
-		expect(await reader.isEmpty).toBeFalsy()
+		expect(await reader.empty).toBeFalsy()
 		expect(reader.read()).toEqual("\n")
-		expect(await reader.isEmpty).toBeTruthy()
+		expect(await reader.empty).toBeTruthy()
 		expect(reader.read()).toBeUndefined()
 	})
 	it("simple string", async () => {
@@ -26,7 +26,7 @@ describe("IO.UntilReader", () => {
 		expect(reader.read()).toEqual("c")
 		expect(reader.read()).toEqual("d")
 		expect(reader.read()).toBeUndefined()
-		expect(await reader.isEmpty).toBeTruthy()
+		expect(await reader.empty).toBeTruthy()
 	})
 	it("simple string with location", async () => {
 		const reader = UntilReader.create(StringReader.create("abc\ndef"), "e")
@@ -51,6 +51,6 @@ describe("IO.UntilReader", () => {
 		expect(reader.location.column).toEqual(3)
 		expect(reader.location.line).toEqual(2)
 		expect(reader.read()).toBeUndefined()
-		expect(await reader.isEmpty).toBeTruthy()
+		expect(await reader.empty).toBeTruthy()
 	})
 })

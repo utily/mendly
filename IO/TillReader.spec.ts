@@ -5,7 +5,7 @@ import { TillReader } from "./TillReader"
 describe("IO.TillReader", () => {
 	it("empty", async () => {
 		const reader = TillReader.create(StringReader.create(""), "\n")
-		expect(await reader.isEmpty)
+		expect(await reader.empty)
 	})
 	it("state check", () => {
 		const reader = TillReader.create(StringReader.create(""), "\n")
@@ -14,7 +14,7 @@ describe("IO.TillReader", () => {
 	})
 	it("stop directly", async () => {
 		const reader = TillReader.create(StringReader.create("\nabcdef"), "\n")
-		expect(await reader.isEmpty).toBeTruthy()
+		expect(await reader.empty).toBeTruthy()
 		expect(reader.read()).toBeUndefined()
 	})
 	it("simple string", async () => {
@@ -23,7 +23,7 @@ describe("IO.TillReader", () => {
 		expect(reader.read()).toEqual("b")
 		expect(reader.read()).toEqual("c")
 		expect(reader.read()).toBeUndefined()
-		expect(await reader.isEmpty)
+		expect(await reader.empty)
 	})
 	it("simple string with location", async () => {
 		const reader = TillReader.create(StringReader.create("abc\ndef"), "e")
@@ -45,6 +45,6 @@ describe("IO.TillReader", () => {
 		expect(reader.location.column).toEqual(2)
 		expect(reader.location.line).toEqual(2)
 		expect(reader.read()).toBeUndefined()
-		expect(await reader.isEmpty)
+		expect(await reader.empty)
 	})
 })
