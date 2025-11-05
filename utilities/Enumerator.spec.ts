@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
-import { Enumerator } from "./Enumerator"
+import { mendly } from "../index"
 
-class StringEnumerator extends Enumerator<string> {
+class StringEnumerator extends mendly.utilities.Enumerator<string> {
 	private position: number = 0
 	constructor(private content: string) {
 		super(() => (this.position < this.content.length ? this.content.charAt(this.position++) : undefined))

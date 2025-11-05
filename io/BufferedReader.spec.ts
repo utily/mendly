@@ -1,19 +1,18 @@
-import { BufferedReader } from "./BufferedReader"
-import { StringReader } from "./StringReader"
+import { mendly } from "../index"
 
 describe("IO.BufferedReader", () => {
 	it("empty", async () => {
-		const br = BufferedReader.create(StringReader.create(""))
+		const br = mendly.io.BufferedReader.create(mendly.io.StringReader.create(""))
 		expect(await br.empty)
 	})
 	it("state check", () => {
-		const br = BufferedReader.create(StringReader.create(""))
+		const br = mendly.io.BufferedReader.create(mendly.io.StringReader.create(""))
 		expect(br.location).toBeTruthy()
 		expect(br.region).toBeTruthy()
 		expect(br.resource).toBeTruthy()
 	})
 	it("peek", () => {
-		const br = BufferedReader.create(StringReader.create("foobar"))
+		const br = mendly.io.BufferedReader.create(mendly.io.StringReader.create("foobar"))
 		expect(br.peek(1)).toEqual("f")
 		expect(br.peek(2)).toEqual("fo")
 		expect(br.peek(3)).toEqual("foo")
@@ -22,7 +21,7 @@ describe("IO.BufferedReader", () => {
 		expect(br.peek(6)).toEqual("foobar")
 	})
 	it("read one at a time", () => {
-		const br = BufferedReader.create(StringReader.create("abcdef"))
+		const br = mendly.io.BufferedReader.create(mendly.io.StringReader.create("abcdef"))
 		expect(br.read()).toEqual("a")
 		expect(br.read()).toEqual("b")
 		expect(br.read()).toEqual("c")
@@ -31,18 +30,18 @@ describe("IO.BufferedReader", () => {
 		expect(br.read()).toEqual("f")
 	})
 	it("read three at a time", () => {
-		const br = BufferedReader.create(StringReader.create("abcdef"))
+		const br = mendly.io.BufferedReader.create(mendly.io.StringReader.create("abcdef"))
 		expect(br.read(3)).toEqual("abc")
 		expect(br.read(3)).toEqual("def")
 	})
 	it("read three at a time with a newline", () => {
-		const br = BufferedReader.create(StringReader.create("abc\ndef"))
+		const br = mendly.io.BufferedReader.create(mendly.io.StringReader.create("abc\ndef"))
 		expect(br.read(3)).toEqual("abc")
 		expect(br.read(1)).toEqual("\n")
 		expect(br.read(3)).toEqual("def")
 	})
 	it("string location", async () => {
-		const br = BufferedReader.create(StringReader.create("abc\ndef"))
+		const br = mendly.io.BufferedReader.create(mendly.io.StringReader.create("abc\ndef"))
 		expect(br.location.column).toEqual(1)
 		expect(br.location.line).toEqual(1)
 		br.read()
@@ -67,7 +66,7 @@ describe("IO.BufferedReader", () => {
 		expect(await br.empty)
 	})
 	it("tabs and newlines location", async () => {
-		const reader = BufferedReader.create(StringReader.create("\t\t\t\n\t\t\t"))
+		const reader = mendly.io.BufferedReader.create(mendly.io.StringReader.create("\t\t\t\n\t\t\t"))
 		reader.tabSize = 4
 		expect(reader.location.column).toEqual(1)
 		expect(reader.location.line).toEqual(1)
@@ -93,7 +92,7 @@ describe("IO.BufferedReader", () => {
 		expect(await reader.empty)
 	})
 	it("mark", () => {
-		const br = BufferedReader.create(StringReader.create("abc\0"))
+		const br = mendly.io.BufferedReader.create(mendly.io.StringReader.create("abc\0"))
 		expect(br).toBeTruthy()
 		if (br) {
 			expect(br.mark()).toBeTruthy()

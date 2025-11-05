@@ -1,15 +1,15 @@
 import { describe, expect, it } from "vitest"
-import { Locator } from "./Locator"
+import { mendly } from "../index"
 
 describe("uri.Locator.parse", () => {
 	it("undefined", () => {
-		expect(Locator.parse(undefined)).toBeUndefined()
+		expect(mendly.uri.Locator.parse(undefined)).toBeUndefined()
 	})
 	it("empty", () => {
-		expect(Locator.parse("")).toBeUndefined()
+		expect(mendly.uri.Locator.parse("")).toBeUndefined()
 	})
 	it("absolute file", () => {
-		const locator = Locator.parse("file:///folder/file.extension")
+		const locator = mendly.uri.Locator.parse("file:///folder/file.extension")
 		expect(locator).toBeTruthy()
 		if (locator) {
 			expect(locator.scheme).toEqual(["file"])
@@ -20,7 +20,7 @@ describe("uri.Locator.parse", () => {
 		}
 	})
 	it("relative file", () => {
-		const locator = Locator.parse("file://./folder/file.extension")
+		const locator = mendly.uri.Locator.parse("file://./folder/file.extension")
 		expect(locator).toBeTruthy()
 		if (locator) {
 			expect(locator.scheme).toEqual(["file"])
@@ -31,7 +31,7 @@ describe("uri.Locator.parse", () => {
 		}
 	})
 	it("explicitly relative path", () => {
-		const locator = Locator.parse("./folder/file.extension")
+		const locator = mendly.uri.Locator.parse("./folder/file.extension")
 		expect(locator).toBeTruthy()
 		if (locator) {
 			expect(locator.scheme).toEqual([])
@@ -42,7 +42,7 @@ describe("uri.Locator.parse", () => {
 		}
 	})
 	it("implicitly relative path", () => {
-		const locator = Locator.parse("folder/file.extension")
+		const locator = mendly.uri.Locator.parse("folder/file.extension")
 		expect(locator).toBeTruthy()
 		if (locator) {
 			expect(locator.scheme).toEqual([])
@@ -53,7 +53,7 @@ describe("uri.Locator.parse", () => {
 		}
 	})
 	it("absolute path", () => {
-		const locator = Locator.parse("/folder/file.extension")
+		const locator = mendly.uri.Locator.parse("/folder/file.extension")
 		expect(locator).toBeTruthy()
 		if (locator) {
 			expect(locator.scheme).toEqual([])
@@ -64,7 +64,7 @@ describe("uri.Locator.parse", () => {
 		}
 	})
 	it("explicitly relative folder path", () => {
-		const locator = Locator.parse("./folder/folder.next/")
+		const locator = mendly.uri.Locator.parse("./folder/folder.next/")
 		expect(locator).toBeTruthy()
 		if (locator) {
 			expect(locator.scheme).toEqual([])
@@ -75,7 +75,7 @@ describe("uri.Locator.parse", () => {
 		}
 	})
 	it("implicitly relative folder path", () => {
-		const locator = Locator.parse("folder/folder.next/")
+		const locator = mendly.uri.Locator.parse("folder/folder.next/")
 		expect(locator).toBeTruthy()
 		if (locator) {
 			expect(locator.scheme).toEqual([])
@@ -86,7 +86,7 @@ describe("uri.Locator.parse", () => {
 		}
 	})
 	it("absolute folder path", () => {
-		const locator = Locator.parse("/folder/folder.next/")
+		const locator = mendly.uri.Locator.parse("/folder/folder.next/")
 		expect(locator).toBeTruthy()
 		if (locator) {
 			expect(locator.scheme).toEqual([])
@@ -97,7 +97,7 @@ describe("uri.Locator.parse", () => {
 		}
 	})
 	it("full https url", () => {
-		const locator = Locator.parse("https://server.example.com/folder/file.extension")
+		const locator = mendly.uri.Locator.parse("https://server.example.com/folder/file.extension")
 		expect(locator).toBeTruthy()
 		if (locator) {
 			expect(locator.scheme).toEqual(["https"])
@@ -109,7 +109,7 @@ describe("uri.Locator.parse", () => {
 		}
 	})
 	it("schemeless url", () => {
-		const locator = Locator.parse("//server.example.com/folder/file.extension")
+		const locator = mendly.uri.Locator.parse("//server.example.com/folder/file.extension")
 		expect(locator).toBeTruthy()
 		if (locator) {
 			expect(locator.scheme).toEqual([])

@@ -9,6 +9,7 @@ import { OutDevice as _OutDevice } from "./OutDevice"
 import { PrefixReader as _PrefixReader } from "./PrefixReader"
 import { Reader as _Reader } from "./Reader"
 import { StringReader as _StringReader } from "./StringReader"
+import { StringWriter as _StringWriter } from "./StringWriter"
 import { TillReader as _TillReader } from "./TillReader"
 import { UntilReader as _UntilReader } from "./UntilReader"
 import { Writer as _Writer } from "./Writer"
@@ -24,6 +25,7 @@ export namespace io {
 	export import PrefixReader = _PrefixReader
 	export import Reader = _Reader
 	export import StringReader = _StringReader
+	export import StringWriter = _StringWriter
 	export import FileWriter = _FileWriter
 	export import TillReader = _TillReader
 	export import UntilReader = _UntilReader
