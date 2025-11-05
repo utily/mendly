@@ -1,65 +1,66 @@
 {
-  "name": "mendly",
-  "version": "2.0.0",
-  "description": "Mendly is a utility library for typescript and javascript mending the standard library.",
-  "author": "Utily Contributors",
-  "license": "MIT",
-  "repository": "https://github.com/utily/mendly",
-  "bugs": {
-    "url": "https://github.com/utily/mendly/issues"
-  },
-  "homepage": "https://github.com/utily/mendly",
-  "private": false,
-  "browser": {
-    "./dist/IO/fs": "./dist/IO/fs.browser",
-    "./dist/IO/path": "./dist/IO/path.browser"
-  },
-  "type": "module",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/mjs/index.js",
-  "types": "./dist/types/index.d.ts",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/types/index.d.ts",
-        "default": "./dist/mjs/index.js"
-      },
-      "require": {
-        "types": "./dist/types/index.d.ts",
-        "default": "./dist/cjs/index.js"
-      }
-    }
-  },
-  "git": {
-    "tagName": "v${version}"
-  },
-  "github": {
-    "release": true
-  },
-  "scripts": {
-    "lint": "eslint --max-warnings=0 '**/*.{ts,tsx}'",
-    "fix": "eslint '**/*.{ts,tsx}' --fix",
-    "build": "rimraf dist/* && tsc -p tsconfig.mjs.json && tsc -p tsconfig.cjs.json",
-    "test": "vitest --run",
-    "coverage": "vitest --coverage",
-    "prepare": "npm run build",
-    "clean": "rimraf dist node_modules coverage",
-    "verify": "npm run build && npm run test && npm run lint && npm audit"
-  },
-  "devDependencies": {
-    "@types/node": "^22.19.0",
-    "@typescript-eslint/eslint-plugin": "8.18.1",
-    "@typescript-eslint/parser": "8.18.1",
-    "@vitest/coverage-v8": "^2.1.8",
-    "eslint": "^8.56.0",
-    "eslint-plugin-prettierx": "github:utily/eslint-plugin-prettierx#utily-20231004",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
-    "prettierx": "github:utily/prettierx#utily-20231004",
-    "rimraf": "^6.0.1",
-    "typescript": "5.7.2",
-    "vitest": "^2.1.8"
-  },
-  "dependencies": {
-    "async-file": "^2.0.2"
-  }
+	"name": "mendly",
+	"version": "2.0.0",
+	"description": "Mendly is a utility library for typescript and javascript mending the standard library.",
+	"author": "Utily Contributors",
+	"license": "MIT",
+	"repository": "https://github.com/utily/mendly",
+	"bugs": {
+		"url": "https://github.com/utily/mendly/issues"
+	},
+	"homepage": "https://github.com/utily/mendly",
+	"private": false,
+	"browser": {
+		"./dist/IO/fs": "./dist/IO/fs.browser",
+		"./dist/IO/path": "./dist/IO/path.browser"
+	},
+	"type": "module",
+	"main": "./dist/cjs/index.js",
+	"module": "./dist/mjs/index.js",
+	"types": "./dist/types/index.d.ts",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/types/index.d.ts",
+				"default": "./dist/mjs/index.js"
+			},
+			"require": {
+				"types": "./dist/types/index.d.ts",
+				"default": "./dist/cjs/index.js"
+			}
+		}
+	},
+	"git": {
+		"tagName": "v${version}"
+	},
+	"github": {
+		"release": true
+	},
+	"scripts": {
+		"lint": "eslint --max-warnings=0 '**/*.{ts,tsx}'",
+		"fix": "eslint '**/*.{ts,tsx}' --fix",
+		"build": "rimraf dist/* && tsc -p tsconfig.mjs.json && tsc -p tsconfig.cjs.json",
+		"test": "vitest --run",
+		"coverage": "vitest --coverage",
+		"prepare": "npm run build",
+		"clean": "rimraf dist node_modules coverage",
+		"verify": "npm run build && npm run test && npm run lint && npm audit"
+	},
+	"devDependencies": {
+		"@types/node": "^24.10.0",
+		"@typescript-eslint/eslint-plugin": "8.46.3",
+		"@typescript-eslint/parser": "8.46.3",
+		"@vitest/coverage-v8": "^4.0.7",
+		"eslint": "^8.56.0",
+		"eslint-plugin-prettierx": "github:utily/eslint-plugin-prettierx#utily-20231004",
+		"eslint-plugin-simple-import-sort": "^12.1.1",
+		"prettierx": "github:utily/prettierx#utily-20231004",
+		"rimraf": "^6.1.0",
+		"typescript": "5.9.3",
+		"vite": "^7.1.12",
+		"vitest": "^4.0.7"
+	},
+	"dependencies": {
+		"async-file": "^2.0.2"
+	}
 }
