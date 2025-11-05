@@ -1,4 +1,4 @@
-import { error } from "../error"
+import { Error } from "../Error"
 import { Uri } from "../Uri"
 import { Reader } from "./Reader"
 
@@ -7,7 +7,7 @@ export class StringReader extends Reader {
 	private count: number = 0
 	private line: number = 1
 	private column: number = 1
-	private lastPosition: error.Position
+	private lastPosition: Error.Position
 	private lastContent: string = ""
 	readonly readable = true
 	get opened(): boolean {
@@ -16,11 +16,11 @@ export class StringReader extends Reader {
 	get empty(): boolean {
 		return this.opened
 	}
-	get location(): error.Location {
-		return new error.Location(this.resource, this.line, this.column)
+	get location(): Error.Location {
+		return new Error.Location(this.resource, this.line, this.column)
 	}
-	get region(): error.Region {
-		return new error.Region(this.resource, this.lastPosition, this.location, this.lastContent)
+	get region(): Error.Region {
+		return new Error.Region(this.resource, this.lastPosition, this.location, this.lastContent)
 	}
 	private constructor(private content: string, readonly resource: Uri) {
 		super()
@@ -57,7 +57,7 @@ export class StringReader extends Reader {
 		}
 		return result
 	}
-	mark(): error.Region {
+	mark(): Error.Region {
 		const result = this.region
 		this.lastPosition = this.location
 		this.lastContent = ""

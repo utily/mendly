@@ -1,13 +1,13 @@
-import { error } from "../error"
+import { Error } from "../Error"
 import { Uri } from "../Uri"
 import { InDevice } from "./InDevice"
 
 export abstract class Reader extends InDevice {
-	abstract get location(): error.Location
-	abstract get region(): error.Region
+	abstract get location(): Error.Location
+	abstract get region(): Error.Region
 	abstract tabSize: number
 	abstract read(): string | undefined
-	abstract mark(): error.Region
+	abstract mark(): Error.Region
 	private static openers: {
 		open: (locator: Uri) => Reader | undefined
 		priority: number

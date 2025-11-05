@@ -1,4 +1,4 @@
-import { error } from "../error"
+import { Error } from "../Error"
 import { Uri } from "../Uri"
 import { Reader } from "./Reader"
 
@@ -15,8 +15,8 @@ export class BufferedReader extends Reader {
 	get opened(): boolean {
 		return !!this.backend
 	}
-	private buffer: { data: string; location: error.Location }[] = []
-	private lastMark: error.Location
+	private buffer: { data: string; location: Error.Location }[] = []
+	private lastMark: Error.Location
 	private lastContent: string = ""
 	get empty(): boolean {
 		return (this.buffer.length == 0 || this.buffer[0]!.data == "\0") && this.backend.empty
@@ -25,12 +25,12 @@ export class BufferedReader extends Reader {
 		const location = this.location
 		return location ? location.resource : Uri.empty
 	}
-	private locationValue: error.Location
-	get location(): error.Location {
+	private locationValue: Error.Location
+	get location(): Error.Location {
 		return this.locationValue
 	}
-	get region(): error.Region {
-		return new error.Region(this.resource, this.lastMark, this.location, this.lastContent)
+	get region(): Error.Region {
+		return new Error.Region(this.resource, this.lastMark, this.location, this.lastContent)
 	}
 	protected constructor(private backend: Reader) {
 		super()
@@ -90,7 +90,7 @@ export class BufferedReader extends Reader {
 			result += this.read()
 		return result != "" ? result : undefined
 	}
-	mark(): error.Region {
+	mark(): Error.Region {
 		const result = this.region
 		this.lastMark = this.location
 		this.lastContent = ""

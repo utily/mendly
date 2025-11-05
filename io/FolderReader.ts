@@ -1,4 +1,4 @@
-import { error } from "../error"
+import { Error } from "../Error"
 import { Uri } from "../Uri"
 import { FileReader } from "./FileReader"
 import * as fs from "./fs"
@@ -22,18 +22,18 @@ export class FolderReader extends Reader {
 		return this.current != undefined || this.files.length > 0
 	}
 	private current: Reader | undefined
-	private lastLocation: error.Location = new error.Location(Uri.empty, 0, 0)
+	private lastLocation: Error.Location = new Error.Location(Uri.empty, 0, 0)
 	get empty(): boolean {
 		return this.files.length == 0 && (!this.current || this.current.empty)
 	}
 	get resource(): Uri {
 		return this.current ? this.current.resource : this.lastLocation.resource
 	}
-	get location(): error.Location {
+	get location(): Error.Location {
 		return this.current ? this.current.location : this.lastLocation
 	}
-	get region(): error.Region {
-		return this.current ? this.current.region : new error.Region(this.resource)
+	get region(): Error.Region {
+		return this.current ? this.current.region : new Error.Region(this.resource)
 	}
 	constructor(private files: Uri[]) {
 		super()
@@ -58,8 +58,8 @@ export class FolderReader extends Reader {
 		this.lastLocation = this.location
 		return result
 	}
-	mark(): error.Region {
-		return this.current ? this.current.mark() : new error.Region(this.resource)
+	mark(): Error.Region {
+		return this.current ? this.current.mark() : new Error.Region(this.resource)
 	}
 
 	private static getFiles(folder: string, filetype: string, ignoreFiles: string[] = []): string[] {

@@ -1,4 +1,4 @@
-import { error } from "../error"
+import { Error } from "../Error"
 import { Uri } from "../Uri"
 import { BufferedReader } from "./BufferedReader"
 import { Reader } from "./Reader"
@@ -24,10 +24,10 @@ export class PrefixReader extends Reader {
 	get resource(): Uri {
 		return this.backend.resource
 	}
-	get location(): error.Location {
+	get location(): Error.Location {
 		return this.backend.location
 	}
-	get region(): error.Region {
+	get region(): Error.Region {
 		return this.backend.region
 	}
 	constructor(backend: Reader, private prefix: string | string[]) {
@@ -45,7 +45,7 @@ export class PrefixReader extends Reader {
 		}
 		return result
 	}
-	mark(): error.Region {
+	mark(): Error.Region {
 		return this.backend.mark()
 	}
 	static create(backend: undefined, prefix?: string | string[]): undefined
