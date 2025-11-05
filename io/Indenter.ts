@@ -1,9 +1,9 @@
-import { uri } from "../uri"
+import { Uri } from "../Uri"
 import { utilities } from "../utilities"
 import { Writer } from "./Writer"
 
 export class Indenter extends Writer {
-	get resource(): uri.Locator {
+	get resource(): Uri {
 		return this.backend.resource
 	}
 	get opened(): boolean {

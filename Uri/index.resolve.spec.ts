@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest"
-import { Locator } from "./Locator"
+import { mendly } from "../index"
 
-describe("uri.Locator.resolve", () => {
+describe("mendly.Uri.resolve", () => {
 	it("resolve relative", () => {
-		const absolute = Locator.parse("https://server.example.com/folder0/folder1/")
-		const relative = Locator.parse("./folder2/file.extension")
+		const absolute = mendly.Uri.parse("https://server.example.com/folder0/folder1/")
+		const relative = mendly.Uri.parse("./folder2/file.extension")
 		expect(relative).toBeTruthy()
 		if (relative) {
 			const locator = relative.resolve(absolute)

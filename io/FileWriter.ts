@@ -1,4 +1,4 @@
-import { uri } from "../uri"
+import { Uri } from "../Uri"
 import { utilities } from "../utilities"
 import * as fs from "./fs"
 import * as path from "./path"
@@ -12,7 +12,7 @@ export class FileWriter extends Writer {
 		return this.descriptor > 0
 	}
 	autoFlush: boolean = false
-	constructor(readonly resource: uri.Locator, private descriptor: number) {
+	constructor(readonly resource: Uri, private descriptor: number) {
 		super()
 	}
 	async flush(): Promise<boolean> {
@@ -47,7 +47,7 @@ export class FileWriter extends Writer {
 		}
 		return result && (!this.autoFlush || (await this.flush()))
 	}
-	static override async open(resource: uri.Locator): Promise<Writer | undefined> {
+	static override async open(resource: Uri): Promise<Writer | undefined> {
 		let backend: number | undefined
 		if (resource && (resource.scheme.length == 0 || (resource.scheme.length == 1 && resource.scheme[0] == "file")))
 			try {

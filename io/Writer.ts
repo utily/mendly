@@ -1,4 +1,4 @@
-import { uri } from "../uri"
+import { Uri } from "../Uri"
 import { utilities } from "../utilities"
 import { OutDevice } from "./OutDevice"
 
@@ -21,17 +21,17 @@ export abstract class Writer extends OutDevice {
 			: this.writeImplementation(new utilities.ArrayEnumerator([this.newLineSymbol]))
 	}
 	protected abstract writeImplementation(buffer: utilities.Enumerator<string>): Promise<boolean>
-	private static openers: { open: (resource: uri.Locator) => Promise<Writer | undefined>; priority: number }[] = []
-	static register(open: (resource: uri.Locator) => Promise<Writer | undefined>, priority?: number) {
+	private static openers: { open: (resource: Uri) => Promise<Writer | undefined>; priority: number }[] = []
+	static register(open: (resource: Uri) => Promise<Writer | undefined>, priority?: number) {
 		if (!priority)
 			priority = 0
 		Writer.openers.push({ open, priority })
 		Writer.openers = Writer.openers.sort((left, right) => right.priority - left.priority)
 	}
-	static async open(resource: uri.Locator | string): Promise<Writer | undefined> {
+	static async open(resource: Uri | string): Promise<Writer | undefined> {
 		let result: Writer | undefined
 		if (typeof resource == "string") {
-			const r = uri.Locator.parse(resource)
+			const r = Uri.parse(resource)
 			result = r ? await Writer.open(r) : undefined
 		} else
 			for (const opener of Writer.openers)

@@ -1,5 +1,5 @@
 import { error } from "../error"
-import { uri } from "../uri"
+import { Uri } from "../Uri"
 import { InDevice } from "./InDevice"
 
 export abstract class Reader extends InDevice {
@@ -9,16 +9,16 @@ export abstract class Reader extends InDevice {
 	abstract read(): string | undefined
 	abstract mark(): error.Region
 	private static openers: {
-		open: (locator: uri.Locator) => Reader | undefined
+		open: (locator: Uri) => Reader | undefined
 		priority: number
 	}[] = []
-	static register(open: (locator: uri.Locator) => Reader | undefined, priority?: number) {
+	static register(open: (locator: Uri) => Reader | undefined, priority?: number) {
 		if (!priority)
 			priority = 0
 		Reader.openers.push({ open, priority })
 		Reader.openers = Reader.openers.sort((left, right) => right.priority - left.priority)
 	}
-	static open(resource: uri.Locator): Reader | undefined {
+	static open(resource: Uri): Reader | undefined {
 		let result: Reader | undefined
 		for (const opener of Reader.openers)
 			if ((result = opener.open(resource)))

@@ -1,5 +1,5 @@
 import { error } from "../error"
-import { uri } from "../uri"
+import { Uri } from "../Uri"
 import { Reader } from "./Reader"
 
 export class StringReader extends Reader {
@@ -22,7 +22,7 @@ export class StringReader extends Reader {
 	get region(): error.Region {
 		return new error.Region(this.resource, this.lastPosition, this.location, this.lastContent)
 	}
-	private constructor(private content: string, readonly resource: uri.Locator) {
+	private constructor(private content: string, readonly resource: Uri) {
 		super()
 		this.content += "\0"
 		this.lastPosition = this.location
@@ -63,10 +63,10 @@ export class StringReader extends Reader {
 		this.lastContent = ""
 		return result
 	}
-	static create(content: undefined, path?: uri.Locator): undefined
-	static create(content: string, path?: uri.Locator): Reader
-	static create(content: string | undefined, resource?: uri.Locator): Reader | undefined {
-		return content != undefined ? new StringReader(content, resource || uri.Locator.empty) : undefined
+	static create(content: undefined, path?: Uri): undefined
+	static create(content: string, path?: Uri): Reader
+	static create(content: string | undefined, resource?: Uri): Reader | undefined {
+		return content != undefined ? new StringReader(content, resource || Uri.empty) : undefined
 	}
 }
 export namespace StringReader {}

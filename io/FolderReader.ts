@@ -1,5 +1,5 @@
 import { error } from "../error"
-import { uri } from "../uri"
+import { Uri } from "../Uri"
 import { FileReader } from "./FileReader"
 import * as fs from "./fs"
 import * as path from "./path"
@@ -22,11 +22,11 @@ export class FolderReader extends Reader {
 		return this.current != undefined || this.files.length > 0
 	}
 	private current: Reader | undefined
-	private lastLocation: error.Location = new error.Location(uri.Locator.empty, 0, 0)
+	private lastLocation: error.Location = new error.Location(Uri.empty, 0, 0)
 	get empty(): boolean {
 		return this.files.length == 0 && (!this.current || this.current.empty)
 	}
-	get resource(): uri.Locator {
+	get resource(): Uri {
 		return this.current ? this.current.resource : this.lastLocation.resource
 	}
 	get location(): error.Location {
@@ -35,7 +35,7 @@ export class FolderReader extends Reader {
 	get region(): error.Region {
 		return this.current ? this.current.region : new error.Region(this.resource)
 	}
-	constructor(private files: uri.Locator[]) {
+	constructor(private files: Uri[]) {
 		super()
 	}
 	async close(): Promise<boolean> {
@@ -79,7 +79,7 @@ export class FolderReader extends Reader {
 		})
 		return result
 	}
-	static override open(resource: uri.Locator): Reader | undefined {
+	static override open(resource: Uri): Reader | undefined {
 		let files: string[] | undefined
 		try {
 			if (
@@ -95,7 +95,7 @@ export class FolderReader extends Reader {
 		} catch {
 			files = undefined
 		}
-		return files ? new FolderReader(files.map(f => new uri.Locator(["file"], undefined, f.split(path.sep)))) : undefined
+		return files ? new FolderReader(files.map(f => new Uri(["file"], undefined, f.split(path.sep)))) : undefined
 	}
 }
 export namespace FolderReader {}

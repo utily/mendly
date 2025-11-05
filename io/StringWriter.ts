@@ -1,4 +1,4 @@
-import { uri } from "../uri"
+import { Uri } from "../Uri"
 import { utilities } from "../utilities"
 import { Writer } from "./Writer"
 
@@ -10,7 +10,7 @@ export class StringWriter extends Writer {
 	readonly writable = true
 	readonly autoFlush = true
 	readonly opened = true
-	private constructor(readonly resource: uri.Locator) {
+	private constructor(readonly resource: Uri) {
 		super()
 	}
 	protected async writeImplementation(buffer: utilities.Enumerator<string>): Promise<boolean> {
@@ -23,8 +23,8 @@ export class StringWriter extends Writer {
 	async close(): Promise<boolean> {
 		return true
 	}
-	static create(resource?: uri.Locator): Writer {
-		return new StringWriter(resource || uri.Locator.empty)
+	static create(resource?: Uri): Writer {
+		return new StringWriter(resource || Uri.empty)
 	}
 }
 export namespace StringWriter {}

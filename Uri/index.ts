@@ -1,9 +1,11 @@
-import { Authority } from "./Authority"
+import { Authority as _Authority } from "./Authority"
+import { Endpoint as _Endpoint } from "./Endpoint"
+import { User as _User } from "./User"
 
-export class Locator {
+export class Uri {
 	constructor(
 		readonly scheme: string[] = [],
-		readonly authority: Authority = new Authority(),
+		readonly authority: Uri.Authority = new _Authority(),
 		readonly path: string[] = [],
 		readonly query: { [key: string]: string } = {},
 		readonly fragment?: string
@@ -14,10 +16,10 @@ export class Locator {
 	get isFolder(): boolean {
 		return this.path[this.path.length - 1] == ""
 	}
-	get folder(): Locator {
+	get folder(): Uri {
 		return this.isFolder
 			? this
-			: new Locator(
+			: new Uri(
 					this.scheme,
 					this.authority,
 					this.path.filter((value, index) => index < this.path.length - 1),
@@ -38,7 +40,7 @@ export class Locator {
 			result.push(value)
 		return result
 	}
-	normalize(): Locator {
+	normalize(): Uri {
 		let skip = 0
 		const path = this.path
 			.reverse()
@@ -57,12 +59,12 @@ export class Locator {
 			})
 			.concat(this.createArray("..", skip))
 			.reverse()
-		return new Locator(this.scheme, this.authority, path, this.query, this.fragment)
+		return new Uri(this.scheme, this.authority, path, this.query, this.fragment)
 	}
-	resolve(absolute?: Locator): Locator {
+	resolve(absolute?: Uri): Uri {
 		return !absolute
 			? this
-			: new Locator(
+			: new Uri(
 					this.scheme.length > 0 ? this.scheme : absolute.scheme,
 					!this.authority.empty ? this.authority : absolute.authority,
 					this.isRelative ? absolute.folder.path.concat(this.path) : this.path,
@@ -70,8 +72,8 @@ export class Locator {
 					this.fragment
 			  ).normalize()
 	}
-	appendPath(path: string | string[]): Locator {
-		return new Locator(
+	appendPath(path: string | string[]): Uri {
+		return new Uri(
 			this.scheme,
 			this.authority,
 			path instanceof Array ? [...this.path, ...path] : [...this.path, path],
@@ -99,9 +101,9 @@ export class Locator {
 			result += "#" + this.fragment
 		return result
 	}
-	static readonly empty = new Locator(undefined, undefined, undefined, undefined, undefined)
-	static parse(data?: string): Locator | undefined {
-		let result: Locator | undefined
+	static readonly empty = new Uri(undefined, undefined, undefined, undefined, undefined)
+	static parse(data?: string): Uri | undefined {
+		let result: Uri | undefined
 		switch (data) {
 			case "":
 			case null:
@@ -139,7 +141,7 @@ export class Locator {
 						})
 					data = data.slice(0, index)
 				}
-				let authority: Authority | undefined
+				let authority: Uri.Authority | undefined
 				let path: string[] = []
 				if (data) {
 					splitted = data.split("/")
@@ -153,7 +155,7 @@ export class Locator {
 								break
 							default:
 								if (hasAuthority)
-									authority = Authority.parse(splitted.shift())
+									authority = Uri.Authority.parse(splitted.shift())
 								else
 									splitted.unshift(".")
 								break
@@ -161,10 +163,14 @@ export class Locator {
 						path = splitted
 					}
 				}
-				result = new Locator(scheme, authority, path, query, fragment)
+				result = new Uri(scheme, authority, path, query, fragment)
 				break
 		}
 		return result
 	}
 }
-export namespace Locator {}
+export namespace Uri {
+	export import Authority = _Authority
+	export import Endpoint = _Endpoint
+	export import User = _User
+}

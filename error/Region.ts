@@ -1,13 +1,8 @@
-import { uri } from "../uri"
+import { Uri } from "../Uri"
 import { Position } from "./Position"
 
 export class Region {
-	constructor(
-		readonly resource: uri.Locator,
-		readonly start?: Position,
-		readonly end?: Position,
-		readonly content?: string
-	) {}
+	constructor(readonly resource: Uri, readonly start?: Position, readonly end?: Position, readonly content?: string) {}
 	merge(other?: Region) {
 		return other
 			? new Region(

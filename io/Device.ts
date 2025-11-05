@@ -1,7 +1,7 @@
-import { uri } from "../uri"
+import { Uri } from "../Uri"
 
 export abstract class Device {
-	abstract get resource(): uri.Locator
+	abstract get resource(): Uri
 	abstract get opened(): boolean
 	abstract close(): Promise<boolean>
 }

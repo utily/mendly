@@ -1,11 +1,11 @@
 import "./FileWriter"
 import * as fs from "fs"
-import { uri } from "../uri"
+import { Uri } from "../Uri"
 import { Writer } from "./Writer"
 
 describe("IO.FileWriter", () => {
 	it("nothing", async () => {
-		const resource = uri.Locator.parse("file:///./fileWriter-nothing.txt")!
+		const resource = Uri.parse("file:///./fileWriter-nothing.txt")!
 		const writer = await Writer.open(resource)
 		expect(await writer).toBeTruthy()
 		expect(await writer!.opened).toBeTruthy()
@@ -15,7 +15,7 @@ describe("IO.FileWriter", () => {
 		fs.unlinkSync(path)
 	})
 	it("simple", async () => {
-		const resource = uri.Locator.parse("file:///./fileWriter-simple.txt")!
+		const resource = Uri.parse("file:///./fileWriter-simple.txt")!
 		const writer = await Writer.open(resource)
 		expect(await writer).toBeTruthy()
 		expect(await writer!.opened).toBeTruthy()
@@ -26,7 +26,7 @@ describe("IO.FileWriter", () => {
 		fs.unlinkSync(path)
 	})
 	it("multiline", async () => {
-		const resource = uri.Locator.parse("file:///./fileWriter-multiline.txt")!
+		const resource = Uri.parse("file:///./fileWriter-multiline.txt")!
 		const writer = await Writer.open(resource)
 		expect(await writer).toBeTruthy()
 		expect(await writer!.opened).toBeTruthy()

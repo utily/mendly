@@ -1,5 +1,5 @@
 import { error } from "../error"
-import { uri } from "../uri"
+import { Uri } from "../Uri"
 import { Reader } from "./Reader"
 
 export class BufferedReader extends Reader {
@@ -21,9 +21,9 @@ export class BufferedReader extends Reader {
 	get empty(): boolean {
 		return (this.buffer.length == 0 || this.buffer[0]!.data == "\0") && this.backend.empty
 	}
-	get resource(): uri.Locator {
+	get resource(): Uri {
 		const location = this.location
-		return location ? location.resource : uri.Locator.empty
+		return location ? location.resource : Uri.empty
 	}
 	private locationValue: error.Location
 	get location(): error.Location {

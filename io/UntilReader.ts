@@ -1,5 +1,5 @@
 import { error } from "../error"
-import { uri } from "../uri"
+import { Uri } from "../Uri"
 import { BufferedReader } from "./BufferedReader"
 import { Reader } from "./Reader"
 
@@ -21,7 +21,7 @@ export class UntilReader extends Reader {
 	get empty(): boolean {
 		return this.done == 0 || this.backend.empty
 	}
-	get resource(): uri.Locator {
+	get resource(): Uri {
 		return this.backend.resource
 	}
 	get location(): error.Location {

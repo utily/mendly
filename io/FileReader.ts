@@ -1,5 +1,5 @@
 import { error } from "../error"
-import { uri } from "../uri"
+import { Uri } from "../Uri"
 import * as fs from "./fs"
 import * as path from "./path"
 import { Reader } from "./Reader"
@@ -21,8 +21,8 @@ export class FileReader extends Reader {
 	get empty(): boolean {
 		return this.backend.empty
 	}
-	get resource(): uri.Locator {
-		return this.backend ? this.backend.resource : uri.Locator.empty
+	get resource(): Uri {
+		return this.backend ? this.backend.resource : Uri.empty
 	}
 	get location(): error.Location {
 		return this.backend.location
@@ -43,8 +43,8 @@ export class FileReader extends Reader {
 		return this.backend.mark()
 	}
 	static override open(resource?: undefined): undefined
-	static override open(resource?: uri.Locator): Reader
-	static override open(resource?: uri.Locator): Reader | undefined {
+	static override open(resource?: Uri): Reader
+	static override open(resource?: Uri): Reader | undefined {
 		let backend: Reader | undefined
 		if (resource && (resource.scheme.length == 0 || (resource.scheme.length == 1 && resource.scheme[0] == "file")))
 			try {
