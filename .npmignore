@@ -1,4 +1,5 @@
-source
-**/*.test.js
-**/*.test.ts
+.vscode
+**/*.spec.js
+**/*.spec.ts
 coverage
+.env
