@@ -1,5 +1,3 @@
 const sep = "/"
 
-export {
-	sep,
-}
+export { sep }

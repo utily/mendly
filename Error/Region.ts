@@ -1,5 +1,5 @@
-import * as Uri from "../Uri";
-import { Position } from "./Position";
+import * as Uri from "../Uri"
+import { Position } from "./Position"
 
 export class Region {
 	constructor(
@@ -16,14 +16,14 @@ export class Region {
 					other.end,
 					this.content ? this.content : "" + other.content ? other.content : ""
 			  )
-			: this;
+			: this
 	}
 	toString() {
-		let result = this.resource.toString();
+		let result = this.resource.toString()
 		if (this.start && this.end)
-			result +=
-				" (" + this.start.toString() + " - " + this.end.toString() + ") ";
-		if (this.content) result += this.content;
-		return result;
+			result += " (" + this.start.toString() + " - " + this.end.toString() + ") "
+		if (this.content)
+			result += this.content
+		return result
 	}
 }

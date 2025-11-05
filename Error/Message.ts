@@ -1,5 +1,5 @@
-import { Level } from "./Level";
-import { Region } from "./Region";
+import { Level } from "./Level"
+import { Region } from "./Region"
 
 export class Message {
 	constructor(
@@ -16,6 +16,6 @@ export class Message {
 			" error. " +
 			this.description +
 			(this.region ? " @ " + this.region.toString() : "")
-		);
+		)
 	}
 }

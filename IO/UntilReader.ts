@@ -1,69 +1,66 @@
-import * as Uri from "../Uri";
-import * as Error from "../Error";
-import { Reader } from "./Reader";
-import { BufferedReader } from "./BufferedReader";
+import * as Error from "../Error"
+import * as Uri from "../Uri"
+import { BufferedReader } from "./BufferedReader"
+import { Reader } from "./Reader"
 
 export class UntilReader extends Reader {
 	get tabSize(): number {
-		return this.backend.tabSize;
+		return this.backend.tabSize
 	}
 	set tabSize(size: number) {
-		this.backend.tabSize = size;
+		this.backend.tabSize = size
 	}
-	private done = -1;
-	private backend: BufferedReader;
+	private done = -1
+	private backend: BufferedReader
 	get readable(): boolean {
-		return this.backend.readable;
+		return this.backend.readable
 	}
 	get opened(): boolean {
-		return !this.done && this.backend.opened;
+		return !this.done && this.backend.opened
 	}
 	get isEmpty(): boolean {
-		return this.done == 0 || this.backend.isEmpty;
+		return this.done == 0 || this.backend.isEmpty
 	}
 	get resource(): Uri.Locator {
-		return this.backend.resource;
+		return this.backend.resource
 	}
 	get location(): Error.Location {
-		return this.backend.location;
+		return this.backend.location
 	}
 	get region(): Error.Region {
-		return this.backend.region;
+		return this.backend.region
 	}
 	private constructor(backend: Reader, private endMark: string | string[]) {
-		super();
-		this.backend =
-			backend instanceof BufferedReader
-				? backend
-				: BufferedReader.create(backend);
-		const peeked = this.backend.peekIs(this.endMark);
-		if (peeked) this.done = peeked.length;
+		super()
+		this.backend = backend instanceof BufferedReader ? backend : BufferedReader.create(backend)
+		const peeked = this.backend.peekIs(this.endMark)
+		if (peeked)
+			this.done = peeked.length
 	}
 	close(): Promise<boolean> {
-		const result = this.done > 0;
-		if (result) this.done = 0;
-		return Promise.resolve(result);
+		const result = this.done > 0
+		if (result)
+			this.done = 0
+		return Promise.resolve(result)
 	}
 	read(): string | undefined {
-		let result: string | undefined;
+		let result: string | undefined
 		if (this.done != 0) {
-			result = this.backend.read();
-			let peeked: string | undefined;
-			if (this.done > 0) this.done--;
+			result = this.backend.read()
+			let peeked: string | undefined
+			if (this.done > 0)
+				this.done--
 			else if ((peeked = this.backend.peekIs(this.endMark)))
-				this.done = peeked.length;
+				this.done = peeked.length
 		}
-		return result;
+		return result
 	}
 	mark(): Error.Region {
-		return this.backend.mark();
+		return this.backend.mark()
 	}
-	static create(backend: undefined, endMark?: string | string[]): undefined;
-	static create(backend: Reader, endMark?: string | string[]): Reader;
-	static create(
-		backend: Reader | undefined,
-		endMark?: string | string[]
-	): Reader | undefined {
-		return backend && endMark ? new UntilReader(backend, endMark) : backend;
+	static create(backend: undefined, endMark?: string | string[]): undefined
+	static create(backend: Reader, endMark?: string | string[]): Reader
+	static create(backend: Reader | undefined, endMark?: string | string[]): Reader | undefined {
+		return backend && endMark ? new UntilReader(backend, endMark) : backend
 	}
 }
