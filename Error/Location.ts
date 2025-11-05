@@ -5,7 +5,7 @@ export class Location extends Position {
 	constructor(readonly resource: Uri.Locator, line: number, column: number) {
 		super(line, column)
 	}
-	toString() {
+	override toString() {
 		return this.resource.toString() + " @ " + super.toString()
 	}
 }

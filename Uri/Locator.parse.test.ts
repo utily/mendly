@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest"
 import { Locator } from "./Locator"
 
 describe("Uri.Locator.parse", () => {

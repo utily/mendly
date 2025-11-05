@@ -58,4 +58,4 @@ export class FileWriter extends Writer {
 		return backend ? new FileWriter(resource, backend) : undefined
 	}
 }
-Writer.addOpener(FileWriter.open)
+Writer.register(FileWriter.open)

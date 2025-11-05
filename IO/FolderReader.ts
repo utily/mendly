@@ -79,7 +79,7 @@ export class FolderReader extends Reader {
 		})
 		return result
 	}
-	static open(resource: Uri.Locator): Reader | undefined {
+	static override open(resource: Uri.Locator): Reader | undefined {
 		let files: string[] | undefined
 		try {
 			if (
@@ -98,4 +98,4 @@ export class FolderReader extends Reader {
 		return files ? new FolderReader(files.map(f => new Uri.Locator(["file"], undefined, f.split(path.sep)))) : undefined
 	}
 }
-Reader.addOpener(resource => FolderReader.open(resource), 0)
+Reader.register(resource => FolderReader.open(resource), 0)

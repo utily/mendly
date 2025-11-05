@@ -47,7 +47,7 @@
     "verify": "npm run build && npm run test && npm run lint && npm audit"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
+    "@types/node": "^22.19.0",
     "@typescript-eslint/eslint-plugin": "8.18.1",
     "@typescript-eslint/parser": "8.18.1",
     "@vitest/coverage-v8": "^2.1.8",
@@ -59,7 +59,7 @@
     "typescript": "5.7.2",
     "vitest": "^2.1.8"
   },
-   "dependencies": {
-  "async-file": "^2.0.2"
- }
+  "dependencies": {
+    "async-file": "^2.0.2"
+  }
 }

@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest"
 import { StringWriter } from "./StringWriter"
 
 describe("IO.StringWriter", () => {

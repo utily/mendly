@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest"
 import { Enumerator } from "./Enumerator"
 
 class StringEnumerator extends Enumerator<string> {

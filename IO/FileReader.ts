@@ -58,4 +58,4 @@ export class FileReader extends Reader {
 		return backend ? new FileReader(backend) : undefined
 	}
 }
-Reader.addOpener(p => FileReader.open(p), 10)
+Reader.register(p => FileReader.open(p), 10)

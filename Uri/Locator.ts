@@ -26,11 +26,11 @@ export class Locator {
 			  )
 	}
 	get name(): string {
-		return this.path[this.path.length - 1]
+		return this.path[this.path.length - 1] ?? ""
 	}
 	get extension(): string {
 		const splitted = this.name.split(".")
-		return splitted.length > 1 ? splitted[splitted.length - 1] : ""
+		return (splitted.length > 1 && splitted[splitted.length - 1]) || ""
 	}
 	private createArray<T>(value: T, count: number): T[] {
 		const result: T[] = []

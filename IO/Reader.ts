@@ -12,18 +12,17 @@ export abstract class Reader extends InDevice {
 		open: (locator: Uri.Locator) => Reader | undefined
 		priority: number
 	}[] = []
-	static addOpener(open: (locator: Uri.Locator) => Reader | undefined, priority?: number) {
+	static register(open: (locator: Uri.Locator) => Reader | undefined, priority?: number) {
 		if (!priority)
 			priority = 0
 		Reader.openers.push({ open, priority })
 		Reader.openers = Reader.openers.sort((left, right) => right.priority - left.priority)
 	}
-	static open(locator: Uri.Locator): Reader | undefined {
+	static open(resource: Uri.Locator): Reader | undefined {
 		let result: Reader | undefined
-		let i = 0
-		do
-			result = Reader.openers[i++].open(locator)
-		while (!result && i < Reader.openers.length)
+		for (const opener of Reader.openers)
+			if ((result = opener.open(resource)))
+				break
 		return result
 	}
 }

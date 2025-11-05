@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest"
 import { BufferedEnumerator } from "./BufferedEnumerator"
 import { Enumerator } from "./Enumerator"
 

@@ -20,7 +20,7 @@ export class BufferedReader extends Reader {
 	private lastMark: Error.Location
 	private lastContent: string = ""
 	get isEmpty(): boolean {
-		return (this.buffer.length == 0 || this.buffer[0].data == "\0") && this.backend.isEmpty
+		return (this.buffer.length == 0 || this.buffer[0]!.data == "\0") && this.backend.isEmpty
 	}
 	get resource(): Uri.Locator {
 		const location = this.location
@@ -58,13 +58,13 @@ export class BufferedReader extends Reader {
 			length = 1
 		const result = this.peek(length)
 		if (result && result.length > 0) {
-			this.locationValue = this.buffer[result.length - 1].location
+			this.locationValue = this.buffer[result.length - 1]!.location
 			this.buffer.splice(0, result.length)
 			this.lastContent += result
 		}
 		return result
 	}
-	peekIs(value: string | string[], count?: number): string | undefined {
+	peekIs(value: string | string[] | undefined, count?: number): string | undefined {
 		let result: string | undefined
 		if (value)
 			if (typeof value == "string") {
@@ -76,7 +76,7 @@ export class BufferedReader extends Reader {
 				result = this.peekIs(value.slice(1))
 		return result
 	}
-	readIf(value: string | string[]): string | undefined {
+	readIf(value: string | string[] | undefined): string | undefined {
 		let result: string | undefined
 		if (value)
 			if (typeof value == "string")

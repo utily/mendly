@@ -13,7 +13,7 @@ export class Endpoint {
 		let result: Endpoint
 		if (data) {
 			const splitted = data.split(":", 2)
-			result = new Endpoint(splitted[0].split("."), splitted.length > 1 ? parseInt(splitted[1]) : undefined)
+			result = new Endpoint(splitted[0]?.split("."), splitted.length > 1 ? parseInt(splitted[1] ?? "") : undefined)
 		} else
 			result = new Endpoint()
 		return result
