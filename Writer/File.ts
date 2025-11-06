@@ -40,7 +40,7 @@ export class File extends Writer {
 		let result: boolean
 		const content = Buffer.from(buffer.reduce((r, item) => r + item, ""))
 		try {
-			const r = await fs.write(this.descriptor, content, 0, content.length)
+			const r = await fs.write(this.descriptor, content, null, "utf8")
 			result = r.bytesWritten == content.length
 		} catch {
 			result = false
