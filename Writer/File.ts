@@ -37,10 +37,10 @@ export class File extends Writer {
 		return result
 	}
 	protected override async writeImplementation(buffer: Enumerator<string>): Promise<boolean> {
-		let result = true
-		const content = buffer.reduce((r, item) => r + item, "")
+		let result: boolean
+		const content = Buffer.from(buffer.reduce((r, item) => r + item, ""))
 		try {
-			const r = await fs.write(this.descriptor, content, null, "utf8")
+			const r = await fs.write(this.descriptor, content)
 			result = r.bytesWritten == content.length
 		} catch {
 			result = false
