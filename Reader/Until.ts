@@ -1,9 +1,9 @@
 import { Error } from "../Error"
 import { Uri } from "../Uri"
-import { BufferedReader } from "./BufferedReader"
+import { Buffered } from "./Buffered"
 import { Reader } from "./Reader"
 
-export class UntilReader extends Reader {
+export class Until extends Reader {
 	get tabSize(): number {
 		return this.backend.tabSize
 	}
@@ -11,7 +11,7 @@ export class UntilReader extends Reader {
 		this.backend.tabSize = size
 	}
 	private done = -1
-	private backend: BufferedReader
+	private backend: Buffered
 	get readable(): boolean {
 		return this.backend.readable
 	}
@@ -32,7 +32,7 @@ export class UntilReader extends Reader {
 	}
 	private constructor(backend: Reader, private endMark: string | string[]) {
 		super()
-		this.backend = backend instanceof BufferedReader ? backend : BufferedReader.create(backend)
+		this.backend = backend instanceof Buffered ? backend : Buffered.create(backend)
 		const peeked = this.backend.peekIs(this.endMark)
 		if (peeked)
 			this.done = peeked.length
@@ -61,7 +61,7 @@ export class UntilReader extends Reader {
 	static create(backend: undefined, endMark?: string | string[]): undefined
 	static create(backend: Reader, endMark?: string | string[]): Reader
 	static create(backend: Reader | undefined, endMark?: string | string[]): Reader | undefined {
-		return backend && endMark ? new UntilReader(backend, endMark) : backend
+		return backend && endMark ? new Until(backend, endMark) : backend
 	}
 }
-export namespace UntilReader {}
+export namespace Until {}

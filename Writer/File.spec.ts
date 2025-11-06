@@ -1,12 +1,10 @@
-import "./FileWriter"
 import * as fs from "fs"
-import { Uri } from "../Uri"
-import { Writer } from "./Writer"
+import { mendly } from "../index"
 
-describe("IO.FileWriter", () => {
+describe("mendly.Writer.File", () => {
 	it("nothing", async () => {
-		const resource = Uri.parse("file:///./fileWriter-nothing.txt")!
-		const writer = await Writer.open(resource)
+		const resource = mendly.Uri.parse("file:///./fileWriter-nothing.txt")!
+		const writer = await mendly.Writer.open(resource)
 		expect(await writer).toBeTruthy()
 		expect(await writer!.opened).toBeTruthy()
 		expect(await writer!.close()).toBeTruthy()
@@ -15,8 +13,8 @@ describe("IO.FileWriter", () => {
 		fs.unlinkSync(path)
 	})
 	it("simple", async () => {
-		const resource = Uri.parse("file:///./fileWriter-simple.txt")!
-		const writer = await Writer.open(resource)
+		const resource = mendly.Uri.parse("file:///./fileWriter-simple.txt")!
+		const writer = await mendly.Writer.open(resource)
 		expect(await writer).toBeTruthy()
 		expect(await writer!.opened).toBeTruthy()
 		expect(await writer!.writeLine("The meaning of 42?")).toBeTruthy()
@@ -26,8 +24,8 @@ describe("IO.FileWriter", () => {
 		fs.unlinkSync(path)
 	})
 	it("multiline", async () => {
-		const resource = Uri.parse("file:///./fileWriter-multiline.txt")!
-		const writer = await Writer.open(resource)
+		const resource = mendly.Uri.parse("file:///./fileWriter-multiline.txt")!
+		const writer = await mendly.Writer.open(resource)
 		expect(await writer).toBeTruthy()
 		expect(await writer!.opened).toBeTruthy()
 		expect(

@@ -2,7 +2,7 @@ import { Enumerator } from "../Enumerator"
 import { Uri } from "../Uri"
 import { Writer } from "./Writer"
 
-export class StringWriter extends Writer {
+export class String extends Writer {
 	private content = ""
 	get result(): string {
 		return this.content
@@ -24,7 +24,7 @@ export class StringWriter extends Writer {
 		return true
 	}
 	static create(resource?: Uri): Writer {
-		return new StringWriter(resource || Uri.empty)
+		return new String(resource || Uri.empty)
 	}
 }
-export namespace StringWriter {}
+export namespace String {}

@@ -1,11 +1,11 @@
 import { Error } from "../Error"
+import * as fs from "../fs"
+import * as path from "../path"
 import { Uri } from "../Uri"
-import { FileReader } from "./FileReader"
-import * as fs from "./fs"
-import * as path from "./path"
+import { File } from "./File"
 import { Reader } from "./Reader"
 
-export class FolderReader extends Reader {
+export class Folder extends Reader {
 	private tabSizeValue = 2
 	get tabSize(): number {
 		return this.tabSizeValue
@@ -44,7 +44,7 @@ export class FolderReader extends Reader {
 	read(): string | undefined {
 		let result: string | undefined
 		if (!this.current && this.files.length > 0) {
-			this.current = FileReader.open(this.files.shift())
+			this.current = File.open(this.files.shift())
 			this.current.tabSize = this.tabSize
 		}
 		if (this.current) {
@@ -69,7 +69,7 @@ export class FolderReader extends Reader {
 			const filename = folder + path.sep + file
 			if (ignoreFiles.indexOf(filename) == -1) {
 				if (fs.lstatSync(filename).isDirectory())
-					result = result.concat(FolderReader.getFiles(filename, filetype, ignoreFiles))
+					result = result.concat(Folder.getFiles(filename, filetype, ignoreFiles))
 				else if (
 					file.length > filetype.length &&
 					file.lastIndexOf(filetype, file.length - filetype.length) === file.length - filetype.length
@@ -88,15 +88,15 @@ export class FolderReader extends Reader {
 					resource.isFolder) ||
 				resource.name.match("*")
 			)
-				files = FolderReader.getFiles(
+				files = Folder.getFiles(
 					(resource.isRelative ? "" : path.sep) + resource.folder.path.join(path.sep),
 					resource.extension
 				)
 		} catch {
 			files = undefined
 		}
-		return files ? new FolderReader(files.map(f => new Uri(["file"], undefined, f.split(path.sep)))) : undefined
+		return files ? new Folder(files.map(f => new Uri(["file"], undefined, f.split(path.sep)))) : undefined
 	}
 }
-export namespace FolderReader {}
-Reader.register(resource => FolderReader.open(resource), 0)
+export namespace Folder {}
+Reader.register(resource => Folder.open(resource), 0)

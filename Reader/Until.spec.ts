@@ -1,26 +1,25 @@
 import { describe, expect, it } from "vitest"
-import { StringReader } from "./StringReader"
-import { UntilReader } from "./UntilReader"
+import { mendly } from "../index"
 
-describe("IO.UntilReader", () => {
+describe("mendly.Reader.Until", () => {
 	it("empty", async () => {
-		const reader = UntilReader.create(StringReader.create(""), "\n")
+		const reader = mendly.Reader.Until.create(mendly.Reader.String.create(""), "\n")
 		expect(await reader.empty).toBeTruthy()
 	})
 	it("state check", () => {
-		const reader = UntilReader.create(StringReader.create(""), "\n")
+		const reader = mendly.Reader.Until.create(mendly.Reader.String.create(""), "\n")
 		expect(reader.location).toBeTruthy()
 		expect(reader.resource).toBeTruthy()
 	})
 	it("stop directly", async () => {
-		const reader = UntilReader.create(StringReader.create("\nabcdef"), "\n")
+		const reader = mendly.Reader.Until.create(mendly.Reader.String.create("\nabcdef"), "\n")
 		expect(await reader.empty).toBeFalsy()
 		expect(reader.read()).toEqual("\n")
 		expect(await reader.empty).toBeTruthy()
 		expect(reader.read()).toBeUndefined()
 	})
 	it("simple string", async () => {
-		const reader = UntilReader.create(StringReader.create("abcdef"), "d")
+		const reader = mendly.Reader.Until.create(mendly.Reader.String.create("abcdef"), "d")
 		expect(reader.read()).toEqual("a")
 		expect(reader.read()).toEqual("b")
 		expect(reader.read()).toEqual("c")
@@ -29,7 +28,7 @@ describe("IO.UntilReader", () => {
 		expect(await reader.empty).toBeTruthy()
 	})
 	it("simple string with location", async () => {
-		const reader = UntilReader.create(StringReader.create("abc\ndef"), "e")
+		const reader = mendly.Reader.Until.create(mendly.Reader.String.create("abc\ndef"), "e")
 		expect(reader.location.column).toEqual(1)
 		expect(reader.location.line).toEqual(1)
 		expect(reader.read()).toEqual("a")

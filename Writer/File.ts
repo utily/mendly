@@ -1,10 +1,10 @@
 import { Enumerator } from "../Enumerator"
+import * as fs from "../fs"
+import * as path from "../path"
 import { Uri } from "../Uri"
-import * as fs from "./fs"
-import * as path from "./path"
 import { Writer } from "./Writer"
 
-export class FileWriter extends Writer {
+export class File extends Writer {
 	get opened(): boolean {
 		return this.descriptor > 0
 	}
@@ -55,8 +55,8 @@ export class FileWriter extends Writer {
 			} catch {
 				backend = undefined
 			}
-		return backend ? new FileWriter(resource, backend) : undefined
+		return backend ? new File(resource, backend) : undefined
 	}
 }
-export namespace FileWriter {}
-Writer.register(FileWriter.open)
+export namespace File {}
+Writer.register(File.open)

@@ -1,16 +1,16 @@
 import { Error } from "../Error"
 import { Uri } from "../Uri"
-import { BufferedReader } from "./BufferedReader"
+import { Buffered } from "./Buffered"
 import { Reader } from "./Reader"
 
-export class PrefixReader extends Reader {
+export class Prefix extends Reader {
 	get tabSize(): number {
 		return this.backend.tabSize
 	}
 	set tabSize(size: number) {
 		this.backend.tabSize = size
 	}
-	private readonly backend: BufferedReader
+	private readonly backend: Buffered
 	private done = false
 	get readable(): boolean {
 		return this.backend.readable
@@ -32,7 +32,7 @@ export class PrefixReader extends Reader {
 	}
 	constructor(backend: Reader, private prefix: string | string[]) {
 		super()
-		this.backend = backend instanceof BufferedReader ? backend : (BufferedReader.create(backend) as BufferedReader)
+		this.backend = backend instanceof Buffered ? backend : (Buffered.create(backend) as Buffered)
 	}
 	close(): Promise<boolean> {
 		return this.backend.close()
@@ -51,7 +51,7 @@ export class PrefixReader extends Reader {
 	static create(backend: undefined, prefix?: string | string[]): undefined
 	static create(backend: Reader, prefix?: string | string[]): Reader
 	static create(backend: Reader | undefined, prefix?: string | string[]): Reader | undefined {
-		return backend && prefix ? new PrefixReader(backend, prefix) : backend
+		return backend && prefix ? new Prefix(backend, prefix) : backend
 	}
 }
-export namespace PrefixReader {}
+export namespace Prefix {}

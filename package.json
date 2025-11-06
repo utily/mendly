@@ -11,8 +11,8 @@
 	"homepage": "https://github.com/utily/mendly",
 	"private": false,
 	"browser": {
-		"./dist/IO/fs": "./dist/IO/fs.browser",
-		"./dist/IO/path": "./dist/IO/path.browser"
+		"./dist/fs": "./dist/fs.browser",
+		"./dist/path": "./dist/path.browser"
 	},
 	"type": "module",
 	"main": "./dist/cjs/index.js",

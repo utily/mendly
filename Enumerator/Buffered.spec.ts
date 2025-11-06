@@ -11,6 +11,7 @@ describe("Utilities.BufferedEnumerator", () => {
 	it("empty string", () => expect(new Enumerator.Buffered(new StringEnumerator("")).fetch()).toBeUndefined())
 	it("instanceof Enumerator", () =>
 		expect(new Enumerator.Buffered(new StringEnumerator("test")) instanceof Enumerator).toBe(true))
+	it("create", () => expect(Enumerator.Buffered.create(new StringEnumerator("test")) instanceof Enumerator).toBe(true))
 	it("enumerate using peek()", () => {
 		const testString = "let's enumerate this string using peek()"
 		const enumerator = new Enumerator.Buffered(new StringEnumerator(testString))

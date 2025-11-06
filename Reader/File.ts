@@ -1,11 +1,11 @@
 import { Error } from "../Error"
+import * as fs from "../fs"
+import * as path from "../path"
 import { Uri } from "../Uri"
-import * as fs from "./fs"
-import * as path from "./path"
 import { Reader } from "./Reader"
-import { StringReader } from "./StringReader"
+import { String } from "./String"
 
-export class FileReader extends Reader {
+export class File extends Reader {
 	get tabSize(): number {
 		return this.backend.tabSize
 	}
@@ -48,15 +48,15 @@ export class FileReader extends Reader {
 		let backend: Reader | undefined
 		if (resource && (resource.scheme.length == 0 || (resource.scheme.length == 1 && resource.scheme[0] == "file")))
 			try {
-				backend = StringReader.create(
+				backend = String.create(
 					fs.readFileSync((resource.isRelative ? "" : path.sep) + resource.path.join(path.sep), "utf-8"),
 					resource
 				)
 			} catch {
 				console.log(`Failed to open file: ${resource.toString()}`)
 			}
-		return backend ? new FileReader(backend) : undefined
+		return backend ? new File(backend) : undefined
 	}
 }
-export namespace FileReader {}
-Reader.register(p => FileReader.open(p), 10)
+export namespace File {}
+Reader.register(p => File.open(p), 10)

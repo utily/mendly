@@ -2,7 +2,7 @@ import { Error } from "../Error"
 import { Uri } from "../Uri"
 import { Reader } from "./Reader"
 
-export class StringReader extends Reader {
+export class String extends Reader {
 	tabSize: number = 2
 	private count: number = 0
 	private line: number = 1
@@ -66,7 +66,7 @@ export class StringReader extends Reader {
 	static create(content: undefined, path?: Uri): undefined
 	static create(content: string, path?: Uri): Reader
 	static create(content: string | undefined, resource?: Uri): Reader | undefined {
-		return content != undefined ? new StringReader(content, resource || Uri.empty) : undefined
+		return content != undefined ? new String(content, resource || Uri.empty) : undefined
 	}
 }
-export namespace StringReader {}
+export namespace String {}

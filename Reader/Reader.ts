@@ -2,12 +2,17 @@ import { Device } from "../Device"
 import { Error } from "../Error"
 import { Uri } from "../Uri"
 
-export abstract class Reader extends Device.In {
+export abstract class Reader implements Device.In {
+	abstract get readable(): boolean
+	abstract get empty(): boolean
+	abstract get resource(): Uri
+	abstract get opened(): boolean
 	abstract get location(): Error.Location
 	abstract get region(): Error.Region
 	abstract tabSize: number
 	abstract read(): string | undefined
 	abstract mark(): Error.Region
+	abstract close(): Promise<boolean>
 	private static openers: {
 		open: (locator: Uri) => Reader | undefined
 		priority: number

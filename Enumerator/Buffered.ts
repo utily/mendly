@@ -18,5 +18,8 @@ export class Buffered<T> extends Enumerator<T> {
 			this.buffer.push(next)
 		return position > this.buffer.length - 1 ? undefined : this.buffer[position]
 	}
+	static create<T>(backend: Enumerator<T>): Buffered<T> {
+		return new Buffered(backend)
+	}
 }
 export namespace Buffered {}

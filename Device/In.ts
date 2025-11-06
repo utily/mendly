@@ -1,7 +1,7 @@
-import { Device } from "./Device"
+import type { Device } from "./"
 
-export abstract class In extends Device {
-	abstract get readable(): boolean
-	abstract get empty(): boolean
+export interface In extends Device {
+	get readable(): boolean
+	get empty(): boolean
 }
 export namespace In {}

@@ -1,18 +1,18 @@
 import { describe, expect, it } from "vitest"
-import { StringReader } from "./StringReader"
+import { mendly } from "../index"
 
-describe("IO.StringReader", () => {
+describe("mendly.Reader.String", () => {
 	it("empty", async () => {
-		const reader = StringReader.create("")
+		const reader = mendly.Reader.String.create("")
 		expect(await reader.empty)
 	})
 	it("state check", () => {
-		const reader = StringReader.create("")
+		const reader = mendly.Reader.String.create("")
 		expect(reader.location).toBeTruthy()
 		expect(reader.resource).toBeTruthy()
 	})
 	it("simple string", () => {
-		const reader = StringReader.create("abcdef")
+		const reader = mendly.Reader.String.create("abcdef")
 		expect(reader.read()).toEqual("a")
 		expect(reader.read()).toEqual("b")
 		expect(reader.read()).toEqual("c")
@@ -21,7 +21,7 @@ describe("IO.StringReader", () => {
 		expect(reader.read()).toEqual("f")
 	})
 	it("simple string with location", async () => {
-		const reader = StringReader.create("abc\ndef")
+		const reader = mendly.Reader.String.create("abc\ndef")
 		expect(reader.location.column).toEqual(1)
 		expect(reader.location.line).toEqual(1)
 		reader.read()
@@ -46,7 +46,7 @@ describe("IO.StringReader", () => {
 		expect(await reader.empty)
 	})
 	it("tabs and newlines", async () => {
-		const reader = StringReader.create("\t\t\t\n\t\t\t")
+		const reader = mendly.Reader.String.create("\t\t\t\n\t\t\t")
 		reader.tabSize = 4
 		expect(reader.location.column).toEqual(1)
 		expect(reader.location.line).toEqual(1)
@@ -72,7 +72,7 @@ describe("IO.StringReader", () => {
 		expect(await reader.empty)
 	})
 	it("mark", () => {
-		const reader = StringReader.create("abc\0")
+		const reader = mendly.Reader.String.create("abc\0")
 		expect(reader.mark()).toBeTruthy()
 		reader.read()
 		reader.read()

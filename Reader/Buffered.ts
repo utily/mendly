@@ -2,7 +2,7 @@ import { Error } from "../Error"
 import { Uri } from "../Uri"
 import { Reader } from "./Reader"
 
-export class BufferedReader extends Reader {
+export class Buffered extends Reader {
 	get tabSize(): number {
 		return this.backend.tabSize
 	}
@@ -97,9 +97,9 @@ export class BufferedReader extends Reader {
 		return result
 	}
 	static create(backend: undefined): undefined
-	static create(backend: Reader): BufferedReader
-	static create(backend: Reader | undefined): BufferedReader | undefined {
-		return backend ? new BufferedReader(backend) : undefined
+	static create(backend: Reader): Buffered
+	static create(backend: Reader | undefined): Buffered | undefined {
+		return backend ? new Buffered(backend) : undefined
 	}
 }
-export namespace BufferedReader {}
+export namespace Buffered {}

@@ -2,7 +2,13 @@ import { Device } from "../Device"
 import { Enumerator } from "../Enumerator"
 import { Uri } from "../Uri"
 
-export abstract class Writer extends Device.Out {
+export abstract class Writer implements Device.Out {
+	abstract get writable(): boolean
+	abstract get autoFlush(): boolean
+	abstract get resource(): Uri
+	abstract get opened(): boolean
+	abstract flush(): Promise<boolean>
+	abstract close(): Promise<boolean>
 	newLineSymbol = "\n"
 	async write(message: string | string[] | Enumerator<string>): Promise<boolean> {
 		return message instanceof Enumerator

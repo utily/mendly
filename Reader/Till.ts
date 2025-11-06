@@ -1,16 +1,16 @@
 import { Error } from "../Error"
 import { Uri } from "../Uri"
-import { BufferedReader } from "./BufferedReader"
+import { Buffered } from "./Buffered"
 import { Reader } from "./Reader"
 
-export class TillReader extends Reader {
+export class Till extends Reader {
 	get tabSize(): number {
 		return this.backend.tabSize
 	}
 	set tabSize(size: number) {
 		this.backend.tabSize = size
 	}
-	private backend: BufferedReader
+	private backend: Buffered
 	private done = false
 	get readable(): boolean {
 		return this.backend.readable
@@ -32,7 +32,7 @@ export class TillReader extends Reader {
 	}
 	private constructor(backend: Reader, private endMark: string | string[]) {
 		super()
-		this.backend = backend instanceof BufferedReader ? backend : BufferedReader.create(backend)
+		this.backend = backend instanceof Buffered ? backend : Buffered.create(backend)
 		this.done = this.backend.peekIs(this.endMark) != undefined
 	}
 	close(): Promise<boolean> {
@@ -55,7 +55,7 @@ export class TillReader extends Reader {
 	static create(backend: undefined, endMark?: string | string[]): undefined
 	static create(backend: Reader, endMark?: string | string[]): Reader
 	static create(backend: Reader | undefined, endMark?: string | string[]): Reader | undefined {
-		return backend && endMark ? new TillReader(backend, endMark) : backend
+		return backend && endMark ? new Till(backend, endMark) : backend
 	}
 }
-export namespace TillReader {}
+export namespace Till {}
