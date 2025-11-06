@@ -1,8 +1,8 @@
+import { Device } from "../Device"
 import { Enumerator } from "../Enumerator"
 import { Uri } from "../Uri"
-import { OutDevice } from "./OutDevice"
 
-export abstract class Writer extends OutDevice {
+export abstract class Writer extends Device.Out {
 	newLineSymbol = "\n"
 	async write(message: string | string[] | Enumerator<string>): Promise<boolean> {
 		return message instanceof Enumerator

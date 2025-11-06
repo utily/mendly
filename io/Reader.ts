@@ -1,8 +1,8 @@
+import { Device } from "../Device"
 import { Error } from "../Error"
 import { Uri } from "../Uri"
-import { InDevice } from "./InDevice"
 
-export abstract class Reader extends InDevice {
+export abstract class Reader extends Device.In {
 	abstract get location(): Error.Location
 	abstract get region(): Error.Region
 	abstract tabSize: number
