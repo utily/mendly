@@ -1,4 +1,4 @@
-import { Enumerator } from "./Base"
+import { Enumerator } from "./Enumerator"
 
 export class Buffered<T> extends Enumerator<T> {
 	private buffer: T[] = []

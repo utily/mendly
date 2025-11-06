@@ -1,6 +1,6 @@
 import { Array as _Array } from "./Array"
-import { Enumerator as _Enumerator } from "./Base"
 import { Buffered as _Buffered } from "./Buffered"
+import { Enumerator as _Enumerator } from "./Enumerator"
 
 // Export both the type and the value
 export type Enumerator<T> = _Enumerator<T>
