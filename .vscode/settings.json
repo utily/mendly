@@ -1,27 +1,64 @@
 {
-	"editor.tabSize": 2,
-	"editor.renderWhitespace": "boundary",
-	"editor.insertSpaces": false,
-	"files.trimTrailingWhitespace": true,
-	"search.exclude": {
-		"node_modules": true,
-		"build": true,
-		"typings": true,
-		".vscode": true
-	},
 	"files.exclude": {
+		".*": true,
+		"*.json": true,
+		"CODEOWNERS": true,
+		"dist": true,
+		"README.md": true,
+		"LICENSE": true,
+		"tsconfig.*": true,
 		"node_modules": true,
-		"build": true,
-		"**/.git": true
+		"*.code-workspace": true,
+		"*.config.ts": true,
+		"coverage": true
 	},
-	"tslint.enable": true,
-	"tslint.run": "onType",
-	"tslint.configFile": "./.vscode/tslint.json",
-	"licenser.license": "MIT",
-	"licenser.projectName": "Mend",
-	"licenser.author": "Simon Mika <simon@mika.se>",
-	"licenser.useSingleLineStyle": true,
+	"search.exclude": {
+		".*": false,
+		"*.json": false,
+		"CODEOWNERS": false,
+		"dist": false,
+		"README.md": false,
+		"LICENSE": false,
+		"tsconfig.*": false,
+		"node_modules": false,
+		"*.code-workspace": false,
+		"*.config.ts": false,
+		"coverage": false
+	},
+	"files.insertFinalNewline": true,
+	"editor.tabSize": 2,
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": false,
+	"editor.formatOnSave": true,
+	"editor.formatOnPaste": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit",
+		"eslint.autoFixOnSave": "explicit"
+	},
+	"eslint.format.enable": true,
+	"eslint.lintTask.enable": true,
+	"javascript.format.enable": false,
+	"typescript.format.enable": false,
 	"cSpell.words": [
-		"mendly"
-	]
+		"authly",
+		"cloudly",
+		"cryptly",
+		"flagly",
+		"gracely",
+		"isly",
+		"isoly",
+		"langly",
+		"mendly",
+		"paramly",
+		"persistly",
+		"selectivly",
+		"servly",
+		"servly-azure",
+		"smoothly",
+		"tidily",
+		"transactly",
+		"typedly",
+		"uply"
+	],
+	"typescript.tsdk": "node_modules/typescript/lib"
 }

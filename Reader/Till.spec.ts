@@ -1,0 +1,49 @@
+import { describe, expect, it } from "vitest"
+import { mendly } from "../index"
+
+describe("mendly.Reader.Till", () => {
+	it("empty", async () => {
+		const reader = mendly.Reader.Till.create(mendly.Reader.String.create(""), "\n")
+		expect(await reader.empty)
+	})
+	it("state check", () => {
+		const reader = mendly.Reader.Till.create(mendly.Reader.String.create(""), "\n")
+		expect(reader.location).toBeTruthy()
+		expect(reader.resource).toBeTruthy()
+	})
+	it("stop directly", async () => {
+		const reader = mendly.Reader.Till.create(mendly.Reader.String.create("\nabcdef"), "\n")
+		expect(await reader.empty).toBeTruthy()
+		expect(reader.read()).toBeUndefined()
+	})
+	it("simple string", async () => {
+		const reader = mendly.Reader.Till.create(mendly.Reader.String.create("abcdef"), "d")
+		expect(reader.read()).toEqual("a")
+		expect(reader.read()).toEqual("b")
+		expect(reader.read()).toEqual("c")
+		expect(reader.read()).toBeUndefined()
+		expect(await reader.empty)
+	})
+	it("simple string with location", async () => {
+		const reader = mendly.Reader.Till.create(mendly.Reader.String.create("abc\ndef"), "e")
+		expect(reader.location.column).toEqual(1)
+		expect(reader.location.line).toEqual(1)
+		expect(reader.read()).toEqual("a")
+		expect(reader.location.column).toEqual(2)
+		expect(reader.location.line).toEqual(1)
+		expect(reader.read()).toEqual("b")
+		expect(reader.location.column).toEqual(3)
+		expect(reader.location.line).toEqual(1)
+		expect(reader.read()).toEqual("c")
+		expect(reader.location.column).toEqual(4)
+		expect(reader.location.line).toEqual(1)
+		expect(reader.read()).toEqual("\n")
+		expect(reader.location.column).toEqual(1)
+		expect(reader.location.line).toEqual(2)
+		expect(reader.read()).toEqual("d")
+		expect(reader.location.column).toEqual(2)
+		expect(reader.location.line).toEqual(2)
+		expect(reader.read()).toBeUndefined()
+		expect(await reader.empty)
+	})
+})

@@ -1,5 +1,0 @@
-const sep = "/"
-
-export {
-	sep,
-}
