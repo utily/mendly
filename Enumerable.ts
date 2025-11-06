@@ -1,7 +1,4 @@
 import { Enumerator } from "./Enumerator"
-function isIterable<T>(other: any): other is Iterable<T> {
-	return other == null ? false : typeof other[Symbol.iterator] === "function"
-}
 export class Enumerable<T> implements Iterable<T> {
 	get length(): number {
 		return this.get().length
@@ -48,3 +45,7 @@ export class Enumerable<T> implements Iterable<T> {
 	static readonly empty = Enumerable.from([])
 }
 export namespace Enumerable {}
+
+function isIterable<T>(other: any): other is Iterable<T> {
+	return other == null ? false : typeof other[Symbol.iterator] === "function"
+}

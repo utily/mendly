@@ -1,26 +1,26 @@
+import { Enumerator } from "../Enumerator"
 import { Uri } from "../Uri"
-import { utilities } from "../utilities"
 import { OutDevice } from "./OutDevice"
 
 export abstract class Writer extends OutDevice {
 	newLineSymbol = "\n"
-	async write(message: string | string[] | utilities.Enumerator<string>): Promise<boolean> {
-		return message instanceof utilities.Enumerator
+	async write(message: string | string[] | Enumerator<string>): Promise<boolean> {
+		return message instanceof Enumerator
 			? this.writeImplementation(message)
 			: message instanceof Array
-			? this.writeImplementation(new utilities.ArrayEnumerator(message))
-			: this.writeImplementation(new utilities.ArrayEnumerator([message]))
+			? this.writeImplementation(new Enumerator.Array(message))
+			: this.writeImplementation(new Enumerator.Array([message]))
 	}
-	async writeLine(message?: string | string[] | utilities.Enumerator<string>): Promise<boolean> {
-		return message instanceof utilities.Enumerator
+	async writeLine(message?: string | string[] | Enumerator<string>): Promise<boolean> {
+		return message instanceof Enumerator
 			? this.writeImplementation(message.append(this.newLineSymbol))
 			: message instanceof Array
-			? this.writeImplementation(new utilities.ArrayEnumerator([...message, this.newLineSymbol]))
+			? this.writeImplementation(new Enumerator.Array([...message, this.newLineSymbol]))
 			: message
-			? this.writeImplementation(new utilities.ArrayEnumerator([message, this.newLineSymbol]))
-			: this.writeImplementation(new utilities.ArrayEnumerator([this.newLineSymbol]))
+			? this.writeImplementation(new Enumerator.Array([message, this.newLineSymbol]))
+			: this.writeImplementation(new Enumerator.Array([this.newLineSymbol]))
 	}
-	protected abstract writeImplementation(buffer: utilities.Enumerator<string>): Promise<boolean>
+	protected abstract writeImplementation(buffer: Enumerator<string>): Promise<boolean>
 	private static openers: { open: (resource: Uri) => Promise<Writer | undefined>; priority: number }[] = []
 	static register(open: (resource: Uri) => Promise<Writer | undefined>, priority?: number) {
 		if (!priority)

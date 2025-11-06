@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest"
 import { mendly } from "../index"
 
-class StringEnumerator extends mendly.utilities.Enumerator<string> {
+class StringEnumerator extends mendly.Enumerator<string> {
 	private position: number = 0
 	constructor(private content: string) {
 		super(() => (this.position < this.content.length ? this.content.charAt(this.position++) : undefined))
 	}
 }
-describe("Utilities.Enumerator", () => {
+describe("mendly.Enumerator", () => {
 	it("empty string", () => {
 		const enumerator = new StringEnumerator("")
 		expect(enumerator.fetch()).toBeUndefined()

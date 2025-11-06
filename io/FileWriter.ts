@@ -1,5 +1,5 @@
+import { Enumerator } from "../Enumerator"
 import { Uri } from "../Uri"
-import { utilities } from "../utilities"
 import * as fs from "./fs"
 import * as path from "./path"
 import { Writer } from "./Writer"
@@ -36,7 +36,7 @@ export class FileWriter extends Writer {
 		}
 		return result
 	}
-	protected override async writeImplementation(buffer: utilities.Enumerator<string>): Promise<boolean> {
+	protected override async writeImplementation(buffer: Enumerator<string>): Promise<boolean> {
 		let result = true
 		const content = Buffer.from(buffer.reduce((r, item) => r + item, ""))
 		try {

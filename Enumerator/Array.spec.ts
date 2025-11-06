@@ -1,14 +1,12 @@
 import { describe, expect, it } from "vitest"
-import { ArrayEnumerator } from "./ArrayEnumerator"
-import { Enumerator } from "./Enumerator"
+import { Enumerator } from "."
 
 describe("Utilities.ArrayEnumerator", () => {
-	it("empty", () => {
-		expect(new ArrayEnumerator([]).fetch()).toBeUndefined()
-	})
+	it("empty", () => expect(new Enumerator.Array([]).fetch()).toBeUndefined())
+	it("instanceof Enumerator", () => expect(new Enumerator.Array([]) instanceof Enumerator).toBe(true))
 	it("single", () => {
 		const integers = [1]
-		const enumerator = new ArrayEnumerator(integers)
+		const enumerator = new Enumerator.Array(integers)
 		let count = 0
 		integers.forEach(value => {
 			count++
@@ -19,7 +17,7 @@ describe("Utilities.ArrayEnumerator", () => {
 	})
 	it("integers", () => {
 		const integers = [1, 2, 4, 8, 16]
-		const enumerator = new ArrayEnumerator(integers)
+		const enumerator = new Enumerator.Array(integers)
 		let count = 0
 		integers.forEach(value => {
 			count++
@@ -30,7 +28,7 @@ describe("Utilities.ArrayEnumerator", () => {
 	})
 	it("map", () => {
 		const integers = [0, 1, 2, 3, 4]
-		let enumerator: Enumerator<number> = new ArrayEnumerator(integers)
+		let enumerator: Enumerator<number> = new Enumerator.Array(integers)
 		enumerator = enumerator.map(integer => 2 ** integer)
 		let count = 0
 		integers.forEach(value => {
@@ -43,7 +41,7 @@ describe("Utilities.ArrayEnumerator", () => {
 	})
 	it("map empty", () => {
 		const integers: number[] = []
-		let enumerator: Enumerator<number> = new ArrayEnumerator(integers)
+		let enumerator: Enumerator<number> = new Enumerator.Array(integers)
 		enumerator = enumerator.map(integer => 2 ** integer)
 		let count = 0
 		integers.forEach(value => count++)
@@ -52,7 +50,7 @@ describe("Utilities.ArrayEnumerator", () => {
 	})
 	it("map single", () => {
 		const integers = [4]
-		let enumerator: Enumerator<number> = new ArrayEnumerator(integers)
+		let enumerator: Enumerator<number> = new Enumerator.Array(integers)
 		enumerator = enumerator.map(integer => 2 ** integer)
 		let count = 0
 		integers.forEach(value => {
@@ -64,7 +62,7 @@ describe("Utilities.ArrayEnumerator", () => {
 	})
 	it("last array", () => {
 		const content = "let's reduce this string back to an array of single character strings".split(" ")
-		const enumerator = new ArrayEnumerator(content)
+		const enumerator = new Enumerator.Array(content)
 		const result: string[] = []
 		while (enumerator.fetch())
 			if (enumerator.last)

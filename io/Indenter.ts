@@ -1,5 +1,5 @@
+import { Enumerator } from "../Enumerator"
 import { Uri } from "../Uri"
-import { utilities } from "../utilities"
 import { Writer } from "./Writer"
 
 export class Indenter extends Writer {
@@ -36,7 +36,7 @@ export class Indenter extends Writer {
 	private getIndention(): string {
 		return this.indentionSymbol.repeat(this.indentionCount)
 	}
-	protected writeImplementation(buffer: utilities.Enumerator<string>): Promise<boolean> {
+	protected writeImplementation(buffer: Enumerator<string>): Promise<boolean> {
 		const result: Promise<boolean>[] = []
 		let item: string | undefined
 		let next = buffer.fetch()

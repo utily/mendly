@@ -1,6 +1,6 @@
-import { Enumerator } from "./Enumerator"
+import { Enumerator } from "./Base"
 
-export class BufferedEnumerator<T> extends Enumerator<T> {
+export class Buffered<T> extends Enumerator<T> {
 	private buffer: T[] = []
 	constructor(private backend: Enumerator<T>) {
 		super(() => {
@@ -19,4 +19,4 @@ export class BufferedEnumerator<T> extends Enumerator<T> {
 		return position > this.buffer.length - 1 ? undefined : this.buffer[position]
 	}
 }
-export namespace BufferedEnumerator {}
+export namespace Buffered {}

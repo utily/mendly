@@ -1,21 +1,3 @@
-function* generate<T>(next: () => T | undefined): Iterator<T> {
-	let result: T | undefined
-	while ((result = next()) != undefined)
-		yield result
-}
-function isIterator<T>(item: any | Iterator<T>): item is Iterator<T> {
-	return (item as Iterator<T>).next instanceof Function
-}
-function* merge<T>(left: Iterator<T>, right: T | Iterator<T>): Iterator<T> {
-	let result: IteratorResult<T>
-	while (!(result = left.next()).done)
-		yield result.value
-	if (isIterator(right))
-		while (!(result = right.next()).done)
-			yield result.value
-	else
-		yield right
-}
 export class Enumerator<T> implements Iterator<T> {
 	private readonly iterator: Iterator<T>
 	get length(): number {
@@ -83,4 +65,22 @@ export class Enumerator<T> implements Iterator<T> {
 	}
 	static readonly empty = Enumerator.from(() => undefined as never)
 }
-export namespace Enumerator {}
+
+function* generate<T>(next: () => T | undefined): Iterator<T> {
+	let result: T | undefined
+	while ((result = next()) != undefined)
+		yield result
+}
+function isIterator<T>(item: any | Iterator<T>): item is Iterator<T> {
+	return (item as Iterator<T>).next instanceof Function
+}
+function* merge<T>(left: Iterator<T>, right: T | Iterator<T>): Iterator<T> {
+	let result: IteratorResult<T>
+	while (!(result = left.next()).done)
+		yield result.value
+	if (isIterator(right))
+		while (!(result = right.next()).done)
+			yield result.value
+	else
+		yield right
+}

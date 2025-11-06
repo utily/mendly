@@ -1,5 +1,5 @@
+import { Enumerator } from "../Enumerator"
 import { Uri } from "../Uri"
-import { utilities } from "../utilities"
 import { Writer } from "./Writer"
 
 export class StringWriter extends Writer {
@@ -13,7 +13,7 @@ export class StringWriter extends Writer {
 	private constructor(readonly resource: Uri) {
 		super()
 	}
-	protected async writeImplementation(buffer: utilities.Enumerator<string>): Promise<boolean> {
+	protected async writeImplementation(buffer: Enumerator<string>): Promise<boolean> {
 		this.content += buffer.reduce((r, item) => r + item, "")
 		return true
 	}
