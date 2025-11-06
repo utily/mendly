@@ -1,6 +1,6 @@
 {
 	"name": "mendly",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"description": "Mendly is a utility library for typescript and javascript mending the standard library.",
 	"author": "Utily Contributors",
 	"license": "MIT",
