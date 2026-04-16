@@ -1,4 +1,7 @@
-import * as fs from "node:fs"
+export interface WriteOptions {
+	encoding?: BufferEncoding | null
+	flag?: string | undefined
+}
 
 async function close(fd: number): Promise<void> {}
 async function fsync(fd: number): Promise<void> {}
@@ -19,7 +22,7 @@ async function write<TBuffer extends NodeJS.ArrayBufferView<ArrayBufferLike>>(
 async function write<TBuffer extends NodeJS.ArrayBufferView>(
 	fd: number,
 	buffer?: TBuffer,
-	options?: fs.WriteOptions
+	options?: WriteOptions
 ): Promise<{
 	bytesWritten: number
 	buffer: TBuffer
@@ -36,7 +39,7 @@ async function write(
 async function write(
 	fd: number,
 	buffer?: Buffer | string,
-	offset?: fs.WriteOptions | number | undefined | null,
+	offset?: WriteOptions | number | undefined | null,
 	length?: BufferEncoding | number | undefined | null,
 	position?: number | null
 ): Promise<{ bytesWritten: number; buffer: Buffer | string }> {
