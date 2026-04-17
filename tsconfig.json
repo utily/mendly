@@ -33,6 +33,7 @@
 		"removeComments": true,
 		"preserveConstEnums": true,
 		"forceConsistentCasingInFileNames": true,
+		"ignoreDeprecations": "5.0",
 		"baseUrl": ".",
 		"types": [
 			"vitest/globals",
@@ -43,7 +44,8 @@
 		"**/*.spec.ts",
 	],
 	"files": [
-		"index.ts"
+		"index.ts",
+		"index.browser.ts"
 	],
 	"typeAcquisition": {
 		"enable": true
