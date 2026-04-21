@@ -79,7 +79,7 @@ export class Folder extends Reader {
 		})
 		return result
 	}
-	static override open(resource: Uri): Reader | undefined {
+	static override open(resource: Uri): Folder | undefined {
 		let files: string[] | undefined
 		try {
 			if (

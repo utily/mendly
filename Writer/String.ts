@@ -23,7 +23,7 @@ export class String extends Writer {
 	async close(): Promise<boolean> {
 		return true
 	}
-	static create(resource?: Uri): Writer {
+	static create(resource?: Uri): String {
 		return new String(resource || Uri.empty)
 	}
 }

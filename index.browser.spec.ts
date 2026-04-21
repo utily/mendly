@@ -3,12 +3,13 @@ import { Reader as BaseReader } from "./Reader/Reader"
 import { Writer as BaseWriter } from "./Writer/Writer"
 
 type BrowserMendly = typeof import("./index.browser")["mendly"]
+type OpenersRegistry = { openers: unknown[] }
 
 async function withBrowserEntry<T>(run: (mendly: BrowserMendly) => Promise<T>): Promise<T>
 async function withBrowserEntry<T>(run: (mendly: BrowserMendly) => T): Promise<T>
 async function withBrowserEntry<T>(run: (mendly: BrowserMendly) => Promise<T> | T): Promise<T> {
-	const reader = BaseReader as typeof BaseReader & { openers: unknown[] }
-	const writer = BaseWriter as typeof BaseWriter & { openers: unknown[] }
+	const reader = BaseReader as unknown as OpenersRegistry
+	const writer = BaseWriter as unknown as OpenersRegistry
 	const previousReaderOpeners = [...reader.openers]
 	const previousWriterOpeners = [...writer.openers]
 	reader.openers = []
@@ -26,7 +27,7 @@ describe("mendly browser entry", () => {
 	it("keeps in-memory reader and writer functionality available", async () => {
 		await withBrowserEntry(async mendly => {
 			const reader = mendly.Reader.String.create("abc")
-			const writer = mendly.Writer.String.create() as mendly.Writer.String
+			const writer = mendly.Writer.String.create()
 
 			expect(reader.read()).toEqual("a")
 			expect(reader.read()).toEqual("b")
@@ -38,8 +39,8 @@ describe("mendly browser entry", () => {
 
 	it("does not register file-backed openers", async () => {
 		await withBrowserEntry(async mendly => {
-			const reader = BaseReader as typeof BaseReader & { openers: unknown[] }
-			const writer = BaseWriter as typeof BaseWriter & { openers: unknown[] }
+			const reader = BaseReader as unknown as OpenersRegistry
+			const writer = BaseWriter as unknown as OpenersRegistry
 			const fileResource = mendly.Uri.parse("file:///tmp/example.txt")
 
 			expect(fileResource).toBeTruthy()

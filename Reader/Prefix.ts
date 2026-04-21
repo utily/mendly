@@ -32,7 +32,7 @@ export class Prefix extends Reader {
 	}
 	constructor(backend: Reader, private prefix: string | string[]) {
 		super()
-		this.backend = backend instanceof Buffered ? backend : (Buffered.create(backend) as Buffered)
+		this.backend = backend instanceof Buffered ? backend : Buffered.create(backend)
 	}
 	close(): Promise<boolean> {
 		return this.backend.close()

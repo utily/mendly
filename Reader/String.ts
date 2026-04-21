@@ -64,8 +64,8 @@ export class String extends Reader {
 		return result
 	}
 	static create(content: undefined, path?: Uri): undefined
-	static create(content: string, path?: Uri): Reader
-	static create(content: string | undefined, resource?: Uri): Reader | undefined {
+	static create(content: string, path?: Uri): String
+	static create(content: string | undefined, resource?: Uri): String | undefined {
 		return content != undefined ? new String(content, resource || Uri.empty) : undefined
 	}
 }

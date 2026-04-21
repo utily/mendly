@@ -54,7 +54,7 @@ Browser consumers should use the same top-level import:
 import { mendly } from "mendly"
 
 const reader = mendly.Reader.String.create("hello")
-const writer = mendly.Writer.String.create() as mendly.Writer.String
+const writer = mendly.Writer.String.create()
 
 await writer.writeLine("hello")
 console.log(reader.read())

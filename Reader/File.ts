@@ -43,8 +43,8 @@ export class File extends Reader {
 		return this.backend.mark()
 	}
 	static override open(resource?: undefined): undefined
-	static override open(resource?: Uri): Reader
-	static override open(resource?: Uri): Reader | undefined {
+	static override open(resource?: Uri): File
+	static override open(resource?: Uri): File | undefined {
 		let backend: Reader | undefined
 		if (resource && (resource.scheme.length == 0 || (resource.scheme.length == 1 && resource.scheme[0] == "file")))
 			try {

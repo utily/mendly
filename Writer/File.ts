@@ -47,7 +47,7 @@ export class File extends Writer {
 		}
 		return result && (!this.autoFlush || (await this.flush()))
 	}
-	static override async open(resource: Uri): Promise<Writer | undefined> {
+	static override async open(resource: Uri): Promise<File | undefined> {
 		let backend: number | undefined
 		if (resource && (resource.scheme.length == 0 || (resource.scheme.length == 1 && resource.scheme[0] == "file")))
 			try {

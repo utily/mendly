@@ -3,7 +3,7 @@ import { mendly } from "../index"
 
 describe("mendly.Writer.Indenter", () => {
 	it("nothing", async () => {
-		const result = mendly.Writer.String.create() as mendly.Writer.String
+		const result = mendly.Writer.String.create()
 		const writer = new mendly.Writer.Indenter(result)
 		expect(await writer).toBeTruthy()
 		expect(await writer.opened).toBeTruthy()
@@ -11,7 +11,7 @@ describe("mendly.Writer.Indenter", () => {
 		expect(result.result).toEqual("")
 	})
 	it("simple", async () => {
-		const result = mendly.Writer.String.create() as mendly.Writer.String
+		const result = mendly.Writer.String.create()
 		const writer = new mendly.Writer.Indenter(result)
 		expect(await writer).toBeTruthy()
 		expect(await writer.opened).toBeTruthy()
@@ -20,7 +20,7 @@ describe("mendly.Writer.Indenter", () => {
 		expect(result.result).toEqual("The power of Attraction.\n")
 	})
 	it("indentation", async () => {
-		const result = mendly.Writer.String.create() as mendly.Writer.String
+		const result = mendly.Writer.String.create()
 		const writer = new mendly.Writer.Indenter(result)
 		expect(await writer).toBeTruthy()
 		expect(await writer.opened).toBeTruthy()
@@ -33,7 +33,7 @@ describe("mendly.Writer.Indenter", () => {
 		expect(result.result).toEqual("function foo(bar) {\n\treturn bar\n}\n")
 	})
 	it("complex", async () => {
-		const result = mendly.Writer.String.create() as mendly.Writer.String
+		const result = mendly.Writer.String.create()
 		const writer = new mendly.Writer.Indenter(result)
 		expect(await writer).toBeTruthy()
 		expect(await writer.opened).toBeTruthy()
