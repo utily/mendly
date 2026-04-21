@@ -1,5 +1,5 @@
 import * as fs from "fs"
-import { mendly } from "../index"
+import { mendly } from "../index.node"
 
 describe("mendly.Writer.File", () => {
 	it("nothing", async () => {

@@ -1,6 +1,6 @@
 {
 	"name": "mendly",
-	"version": "2.4.0",
+	"version": "3.0.0-alpha.0",
 	"description": "Mendly is a utility library for typescript and javascript mending the standard library.",
 	"author": "Utily Contributors",
 	"license": "MIT",
@@ -11,24 +11,22 @@
 	"homepage": "https://github.com/utily/mendly",
 	"private": false,
 	"type": "module",
-	"main": "./dist/cjs/index.js",
-	"module": "./dist/mjs/index.js",
 	"types": "./dist/types/index.d.ts",
+	"files": [
+		"dist",
+		"LICENSE",
+		"README.md"
+	],
 	"exports": {
 		".": {
-			"browser": {
-				"types": "./dist/types/index.browser.d.ts",
-				"import": "./dist/mjs/index.browser.js",
-				"require": "./dist/cjs/index.browser.js"
-			},
-			"import": {
-				"types": "./dist/types/index.d.ts",
-				"default": "./dist/mjs/index.js"
-			},
-			"require": {
-				"types": "./dist/types/index.d.ts",
-				"default": "./dist/cjs/index.js"
-			}
+			"types": "./dist/types/index.d.ts",
+			"import": "./dist/index.js",
+			"default": "./dist/index.js"
+		},
+		"./node": {
+			"types": "./dist/types/index.node.d.ts",
+			"import": "./dist/index.node.js",
+			"default": "./dist/index.node.js"
 		}
 	},
 	"git": {
@@ -40,12 +38,11 @@
 	"scripts": {
 		"lint": "eslint --max-warnings=0 '**/*.{ts,tsx}'",
 		"fix": "eslint '**/*.{ts,tsx}' --fix",
-		"build": "rimraf dist/* && tsc -p tsconfig.mjs.json && tsc -p tsconfig.cjs.json",
+		"build": "tsc -p tsconfig.build.json",
 		"test": "vitest --run",
 		"coverage": "vitest --coverage",
-		"prepare": "npm run build",
 		"clean": "rimraf dist node_modules coverage",
-		"verify": "npm run build && npm run test && npm run lint && npm audit"
+		"verify": "npm run build && npm run test && npm run lint && npm audit --omit=dev"
 	},
 	"devDependencies": {
 		"@types/node": "^24.10.0",
@@ -61,7 +58,5 @@
 		"vite": "^7.1.12",
 		"vitest": "^4.0.7"
 	},
-	"dependencies": {
-		"async-file": "^2.0.2"
-	}
+	"dependencies": {}
 }

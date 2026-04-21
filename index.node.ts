@@ -2,9 +2,9 @@ import { Device as _Device } from "./Device"
 import { Enumerable as _Enumerable } from "./Enumerable"
 import { Enumerator as _Enumerator } from "./Enumerator"
 import { Error as _Error } from "./Error"
-import { Reader as _Reader } from "./Reader/index.browser"
+import { Reader as _Reader } from "./Reader/index.node"
 import { Uri as _Uri } from "./Uri"
-import { Writer as _Writer } from "./Writer/index.browser"
+import { Writer as _Writer } from "./Writer/index.node"
 
 export namespace mendly {
 	export import Device = _Device

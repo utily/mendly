@@ -1,6 +1,6 @@
+import { lstatSync, readdirSync } from "node:fs"
+import { sep as separator } from "node:path"
 import { Error } from "../Error"
-import * as fs from "../fs"
-import * as path from "../path"
 import { Uri } from "../Uri"
 import { File } from "./File"
 import { Reader } from "./Reader"
@@ -64,11 +64,11 @@ export class Folder extends Reader {
 
 	private static getFiles(folder: string, filetype: string, ignoreFiles: string[] = []): string[] {
 		let result: string[] = []
-		const files: string[] = fs.readdirSync(folder)
+		const files: string[] = readdirSync(folder)
 		files.forEach(file => {
-			const filename = folder + path.sep + file
+			const filename = folder + separator + file
 			if (ignoreFiles.indexOf(filename) == -1) {
-				if (fs.lstatSync(filename).isDirectory())
+				if (lstatSync(filename).isDirectory())
 					result = result.concat(Folder.getFiles(filename, filetype, ignoreFiles))
 				else if (
 					file.length > filetype.length &&
@@ -89,13 +89,13 @@ export class Folder extends Reader {
 				resource.name.match("*")
 			)
 				files = Folder.getFiles(
-					(resource.isRelative ? "" : path.sep) + resource.folder.path.join(path.sep),
+					(resource.isRelative ? "" : separator) + resource.folder.path.join(separator),
 					resource.extension
 				)
 		} catch {
 			files = undefined
 		}
-		return files ? new Folder(files.map(f => new Uri(["file"], undefined, f.split(path.sep)))) : undefined
+		return files ? new Folder(files.map(f => new Uri(["file"], undefined, f.split(separator)))) : undefined
 	}
 }
 export namespace Folder {}

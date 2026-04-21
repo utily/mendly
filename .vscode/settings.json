@@ -58,7 +58,8 @@
 		"tidily",
 		"transactly",
 		"typedly",
-		"uply"
+		"uply",
+		"Utily"
 	],
 	"typescript.tsdk": "node_modules/typescript/lib"
 }

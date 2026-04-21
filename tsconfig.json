@@ -6,12 +6,8 @@
 			"ES2023",
 			"DOM"
 		],
-		"moduleResolution": "node10",
+		"moduleResolution": "bundler",
 		"module": "ESNext",
-		// where mjs is omitted. point package.json `exports` (import) / `module` field to these
-		"outDir": "dist/mjs",
-		"declaration": true,
-		"sourceMap": true,
 		/* base options */
 		"esModuleInterop": true,
 		"skipLibCheck": true,
@@ -27,25 +23,23 @@
 		"strictNullChecks": true,
 		"noImplicitThis": true,
 		/* other */
-		// where types are omitted. point package.json `exports` (import and require) / `types` field to these
-		"declarationDir": "./dist/types",
+		"noEmit": true,
 		"allowSyntheticDefaultImports": true,
 		"removeComments": true,
 		"preserveConstEnums": true,
 		"forceConsistentCasingInFileNames": true,
-		"ignoreDeprecations": "5.0",
-		"baseUrl": ".",
 		"types": [
 			"vitest/globals",
 			"node"
 		]
 	},
 	"include": [
-		"**/*.spec.ts",
+		"**/*.ts"
 	],
-	"files": [
-		"index.ts",
-		"index.browser.ts"
+	"exclude": [
+		"coverage",
+		"dist",
+		"node_modules"
 	],
 	"typeAcquisition": {
 		"enable": true

@@ -1,8 +1,14 @@
+import * as fs from "node:fs"
+import { sep } from "node:path"
+import * as util from "node:util"
 import { Enumerator } from "../Enumerator"
-import * as fs from "../fs"
-import * as path from "../path"
 import { Uri } from "../Uri"
 import { Writer } from "./Writer"
+
+const close = util.promisify(fs.close)
+const fsync = util.promisify(fs.fsync)
+const open = util.promisify(fs.open)
+const write = util.promisify(fs.write)
 
 export class File extends Writer {
 	get opened(): boolean {
@@ -18,7 +24,7 @@ export class File extends Writer {
 	async flush(): Promise<boolean> {
 		let result = true
 		try {
-			await fs.fsync(this.descriptor)
+			await fsync(this.descriptor)
 		} catch {
 			result = false
 		}
@@ -28,7 +34,7 @@ export class File extends Writer {
 		let result = this.opened
 		if (result) {
 			try {
-				await fs.close(this.descriptor)
+				await close(this.descriptor)
 			} catch {
 				result = false
 			}
@@ -40,7 +46,7 @@ export class File extends Writer {
 		let result: boolean
 		const content = Buffer.from(buffer.reduce((r, item) => r + item, ""))
 		try {
-			const r = await fs.write(this.descriptor, content)
+			const r = await write(this.descriptor, content)
 			result = r.bytesWritten == content.length
 		} catch {
 			result = false
@@ -51,7 +57,7 @@ export class File extends Writer {
 		let backend: number | undefined
 		if (resource && (resource.scheme.length == 0 || (resource.scheme.length == 1 && resource.scheme[0] == "file")))
 			try {
-				backend = await fs.open((resource.isRelative ? "" : path.sep) + resource.path.join(path.sep), "w")
+				backend = await open((resource.isRelative ? "" : sep) + resource.path.join(sep), "w")
 			} catch {
 				backend = undefined
 			}

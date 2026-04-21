@@ -1,13 +1,15 @@
-import { describe, expect, it } from "vitest"
-import { Reader as BaseReader } from "./Reader/Reader"
-import { Writer as BaseWriter } from "./Writer/Writer"
+import { describe, expect, it, vi } from "vitest"
 
-type BrowserMendly = typeof import("./index.browser")["mendly"]
+type RootMendly = typeof import("./index")["mendly"]
 type OpenersRegistry = { openers: unknown[] }
+type Openers = [OpenersRegistry, OpenersRegistry]
 
-async function withBrowserEntry<T>(run: (mendly: BrowserMendly) => Promise<T>): Promise<T>
-async function withBrowserEntry<T>(run: (mendly: BrowserMendly) => T): Promise<T>
-async function withBrowserEntry<T>(run: (mendly: BrowserMendly) => Promise<T> | T): Promise<T> {
+async function withRootEntry<T>(run: (mendly: RootMendly, openers: Openers) => Promise<T>): Promise<T>
+async function withRootEntry<T>(run: (mendly: RootMendly, openers: Openers) => T): Promise<T>
+async function withRootEntry<T>(run: (mendly: RootMendly, openers: Openers) => Promise<T> | T): Promise<T> {
+	vi.resetModules()
+	const { Reader: BaseReader } = await import("./Reader/Reader")
+	const { Writer: BaseWriter } = await import("./Writer/Writer")
 	const reader = BaseReader as unknown as OpenersRegistry
 	const writer = BaseWriter as unknown as OpenersRegistry
 	const previousReaderOpeners = [...reader.openers]
@@ -15,17 +17,17 @@ async function withBrowserEntry<T>(run: (mendly: BrowserMendly) => Promise<T> | 
 	reader.openers = []
 	writer.openers = []
 	try {
-		const module = await import("./index.browser")
-		return await run(module.mendly)
+		const module = await import("./index")
+		return await run(module.mendly, [reader, writer])
 	} finally {
 		reader.openers = previousReaderOpeners
 		writer.openers = previousWriterOpeners
 	}
 }
 
-describe("mendly browser entry", () => {
+describe("mendly portable root", () => {
 	it("keeps in-memory reader and writer functionality available", async () => {
-		await withBrowserEntry(async mendly => {
+		await withRootEntry(async mendly => {
 			const reader = mendly.Reader.String.create("abc")
 			const writer = mendly.Writer.String.create()
 
@@ -37,10 +39,8 @@ describe("mendly browser entry", () => {
 		})
 	})
 
-	it("does not register file-backed openers", async () => {
-		await withBrowserEntry(async mendly => {
-			const reader = BaseReader as unknown as OpenersRegistry
-			const writer = BaseWriter as unknown as OpenersRegistry
+	it("does not register filesystem-backed openers", async () => {
+		await withRootEntry(async (mendly, [reader, writer]) => {
 			const fileResource = mendly.Uri.parse("file:///tmp/example.txt")
 
 			expect(fileResource).toBeTruthy()

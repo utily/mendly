@@ -1,6 +1,6 @@
+import { readFileSync } from "node:fs"
+import { sep } from "node:path"
 import { Error } from "../Error"
-import * as fs from "../fs"
-import * as path from "../path"
 import { Uri } from "../Uri"
 import { Reader } from "./Reader"
 import { String } from "./String"
@@ -49,7 +49,7 @@ export class File extends Reader {
 		if (resource && (resource.scheme.length == 0 || (resource.scheme.length == 1 && resource.scheme[0] == "file")))
 			try {
 				backend = String.create(
-					fs.readFileSync((resource.isRelative ? "" : path.sep) + resource.path.join(path.sep), "utf-8"),
+					readFileSync((resource.isRelative ? "" : sep) + resource.path.join(sep), "utf-8"),
 					resource
 				)
 			} catch {
