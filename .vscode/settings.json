@@ -56,6 +56,10 @@
 	"[jsonc]": {
 		"editor.defaultFormatter": "biomejs.biome"
 	},
+	"[markdown]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"markdown.format.codeBlocks": true,
 	"cSpell.words": [
 		"authly",
 		"cloudly",

@@ -103,25 +103,18 @@ console.log(await mendly.Writer.open(resource))
 - Use `Reader.open` and `Writer.open` for file resources only from `mendly/node`.
 - Avoid deep-importing Node-only file-backed modules from browser-targeted applications.
 
-## Migration
+## Versioning
 
-If you only consume the portable API, the import stays the same:
+Stable releases are triggered by commits to the branches listed in [bump-minor.yml](.github/workflows/bump-minor.yml). The bump type is determined by the commit message prefix:
 
-```ts
-import { mendly } from "mendly"
-```
+| Prefix | Bump |
+|---|---|
+| `breaking:` | major |
+| `feature:` | minor |
+| `fix:` | patch |
+| _(none)_ | minor |
 
-What changed:
-
-- The package root is now portable by default.
-- Filesystem-backed `Reader.open(...)` and `Writer.open(...)` registration moved to `mendly/node`.
-- Native Node ESM can load both published entrypoints directly from the package exports.
-
-What to update if needed:
-
-- If browser code previously relied on `Reader.open(...)` or `Writer.open(...)` for `file:` resources, switch that code to in-memory APIs such as `Reader.String.create(...)` and `Writer.String.create(...)`.
-- If Node code previously relied on `import { mendly } from "mendly"` for filesystem-backed openers, switch that import to `import { mendly } from "mendly/node"`.
-- If a downstream package added `mendly.js`, `mendly-node.js`, or resolver aliases to split browser and Node behavior, those shims can be removed in favor of the published entrypoints.
+Prerelease versions are bumped automatically on push to the branches listed in [bump-beta.yml](.github/workflows/bump-beta.yml) (beta) and [bump-alpha.yml](.github/workflows/bump-alpha.yml) (alpha), and do not require a wording prefix.
 
 ## Bundler Requirements
 
@@ -130,51 +123,3 @@ Your runtime or bundler must respect package `exports` so `mendly` resolves to t
 ## Package Verification
 
 This package relies on the standard npm publishing flow. To inspect the exact published contents locally, run `npm pack --dry-run`.
-
-## Automated Release Policy
-
-Releases are fully CI-owned and run from release branches with a split workflow model:
-
-- Bump workflow on push to `master` and `master-{major}`.
-- Publish workflow on pushed tags matching `release-v*`.
-
-Release source and bump rules:
-
-- The merge commit message is the release intent source.
-- If the message contains `no-release` (case-insensitive), no release is created.
-- Explicit tokens: `release: major`, `release: minor`, `release: patch`, `release: alpha`, `release: beta`, `release: stable`.
-- Conventional major markers: `BREAKING CHANGE` and `type(scope)!:`.
-- Defaults: `master` defaults to minor and `master-{major}` defaults to patch.
-
-Pre-release behavior:
-
-- `release: alpha` from stable starts the next minor alpha stream.
-- `release: beta` from stable starts the next minor beta stream.
-- Repeating `release: alpha` or `release: beta` increments that stream.
-- Switching alpha to beta or beta to alpha keeps the same base version and resets the pre-release counter to `.1`.
-- `release: stable` removes the pre-release suffix.
-
-Release order:
-
-1. CI validates merged changes.
-2. Bump workflow computes next version and updates `package.json` and `package-lock.json`.
-3. Bump workflow creates and pushes release commit and tag `release-vX.Y.Z`.
-4. Publish workflow runs from the tag, builds, and publishes to npm.
-
-Dist-tags:
-
-- Current major line on `master`: `latest`.
-- Maintenance lines on `master-{major}`: `v{major}-latest`.
-- Pre-release versions: `alpha` or `beta`.
-
-Constraints:
-
-- Release branches must be `master` or numeric `master-{major}`.
-- Publish never happens without a release tag.
-- Release tag and package version must match exactly.
-- Existing tags and already-published versions are treated as idempotent and skipped.
-
-No manual versioning:
-
-- Do not edit the `version` field manually for releases.
-- Do not run release tagging manually.

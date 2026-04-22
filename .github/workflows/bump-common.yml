@@ -1,0 +1,68 @@
+name: "Bump Common"
+
+on:
+  workflow_call:
+    inputs:
+      bump_name:
+        required: true
+        type: string
+      default_bump:
+        required: false
+        type: string
+        default: ""
+      preid:
+        required: false
+        type: string
+        default: ""
+      major_wording:
+        required: false
+        type: string
+        default: ""
+      minor_wording:
+        required: false
+        type: string
+        default: ""
+      patch_wording:
+        required: false
+        type: string
+        default: ""
+      rc_wording:
+        required: false
+        type: string
+        default: ""
+      tag_prefix:
+        required: false
+        type: string
+        default: "release-"
+
+jobs:
+  bump:
+    name: ${{ inputs.bump_name }}
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: "Checkout source code"
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          token: ${{ github.token }}
+
+      - name: "Bump version"
+        uses: phips28/gh-action-bump-version@v11.0.7
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          default: ${{ inputs.default_bump }}
+          preid: ${{ inputs.preid }}
+          major-wording: ${{ inputs.major_wording }}
+          minor-wording: ${{ inputs.minor_wording }}
+          patch-wording: ${{ inputs.patch_wording }}
+          rc-wording: ${{ inputs.rc_wording }}
+          tag-prefix: ${{ inputs.tag_prefix }}
+          bump-policy: last-commit
+          check-last-commit-only: true
+          target-branch: ${{ github.ref_name }}
+          commit-message: "ci: version bump to v{{version}} [skip ci]"

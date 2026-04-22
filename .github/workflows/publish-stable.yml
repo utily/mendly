@@ -1,0 +1,17 @@
+name: "Publish Stable"
+
+on:
+  push:
+    tags:
+      - "release-*"
+
+concurrency:
+  group: publish-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    uses: ./.github/workflows/publish-common.yml
+    with:
+      tag: latest
+    secrets: inherit

@@ -40,7 +40,7 @@
 	},
 	"scripts": {
 		"lint": "biome format .",
-		"fix": "biome format --write .",
+		"format": "biome format --write .",
 		"build": "tsc -p tsconfig.build.json",
 		"test": "vitest --run",
 		"coverage": "vitest --coverage",
