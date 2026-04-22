@@ -13,13 +13,13 @@ npm install mendly
 Use the package root for the portable surface.
 
 ```ts
-import { mendly } from "mendly";
+import { mendly } from "mendly"
 ```
 
 Use the Node entrypoint when you want filesystem-backed `Reader.open(...)` and `Writer.open(...)` registration.
 
 ```ts
-import { mendly } from "mendly/node";
+import { mendly } from "mendly/node"
 ```
 
 The package exports two public entrypoints:
@@ -54,12 +54,12 @@ The portable `mendly` namespace is available in both environments and includes:
 Node consumers should use the Node entrypoint when they need filesystem-backed behavior. `Reader.open(...)` and `Writer.open(...)` can resolve `file:` resources through the registered filesystem-backed openers there.
 
 ```ts
-import { mendly } from "mendly/node";
+import { mendly } from "mendly/node"
 
-const input = mendly.Reader.open(mendly.Uri.parse("file:///tmp/input.txt")!);
+const input = mendly.Reader.open(mendly.Uri.parse("file:///tmp/input.txt")!)
 const output = await mendly.Writer.open(
-	mendly.Uri.parse("file:///tmp/output.txt")!,
-);
+	mendly.Uri.parse("file:///tmp/output.txt")!
+)
 ```
 
 ### Browser
@@ -67,14 +67,14 @@ const output = await mendly.Writer.open(
 Browser consumers should use the portable root import:
 
 ```ts
-import { mendly } from "mendly";
+import { mendly } from "mendly"
 
-const reader = mendly.Reader.String.create("hello");
-const writer = mendly.Writer.String.create();
+const reader = mendly.Reader.String.create("hello")
+const writer = mendly.Writer.String.create()
 
-await writer.writeLine("hello");
-console.log(reader.read());
-console.log(writer.result);
+await writer.writeLine("hello")
+console.log(reader.read())
+console.log(writer.result)
 ```
 
 From the portable root:
@@ -87,14 +87,12 @@ From the portable root:
 That means file resources are not opened in browser builds:
 
 ```ts
-import { mendly } from "mendly";
+import { mendly } from "mendly"
 
-const resource = mendly.Uri.parse("file:///tmp/example.txt")!;
+const resource = mendly.Uri.parse("file:///tmp/example.txt")!
 
-console.log(mendly.Reader.open(resource));
-console.log(await mendly.Writer.open(resource));
-// undefined
-// undefined
+console.log(mendly.Reader.open(resource))
+console.log(await mendly.Writer.open(resource))
 ```
 
 ## Recommended Usage
@@ -110,7 +108,7 @@ console.log(await mendly.Writer.open(resource));
 If you only consume the portable API, the import stays the same:
 
 ```ts
-import { mendly } from "mendly";
+import { mendly } from "mendly"
 ```
 
 What changed:
