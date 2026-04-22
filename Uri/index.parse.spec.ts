@@ -120,4 +120,27 @@ describe("mendly.Uri.parse", () => {
 			expect(locator.path).toEqual(["folder", "file.extension"])
 		}
 	})
+	it("query with ampersand separator", () => {
+		const locator = mendly.Uri.parse("./folder/file.extension?alpha=1&beta=2")
+		expect(locator).toBeTruthy()
+		if (locator) expect(locator.query).toEqual({ alpha: "1", beta: "2" })
+	})
+	it("query with semicolon separator", () => {
+		const locator = mendly.Uri.parse("./folder/file.extension?alpha=1;beta=2")
+		expect(locator).toBeTruthy()
+		if (locator) expect(locator.query).toEqual({ alpha: "1", beta: "2" })
+	})
+	it("query keeps empty value", () => {
+		const locator = mendly.Uri.parse("./folder/file.extension?empty=")
+		expect(locator).toBeTruthy()
+		if (locator) expect(locator.query).toEqual({ empty: "" })
+	})
+	it("query and fragment decode", () => {
+		const locator = mendly.Uri.parse("./folder/file.extension?name=hello%20world#part")
+		expect(locator).toBeTruthy()
+		if (locator) {
+			expect(locator.query).toEqual({ name: "hello world" })
+			expect(locator.fragment).toEqual("part")
+		}
+	})
 })

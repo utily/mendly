@@ -86,7 +86,11 @@ export class Uri {
 			if (path[0] != "." || result.length > 0) path = "/" + path
 			result += path
 		}
-		if (Object.keys(this.query).length > 0) result += "?" + this.query.toString()
+		const query = Object.entries(this.query)
+			.filter(([key]) => key.length > 0)
+			.map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value ?? "")}`)
+			.join("&")
+		if (query.length > 0) result += "?" + query
 		if (this.fragment) result += "#" + this.fragment
 		return result
 	}
@@ -115,16 +119,14 @@ export class Uri {
 				}
 				let query: { [key: string]: string } = {}
 				if (data && (index = data.lastIndexOf("?")) > -1) {
-					query = new Object() as { [key: string]: string }
-					data
-						.slice(index + 1)
-						.split(";")
-						.forEach(element => {
-							splitted = element.split("=")
-							const key = splitted.shift()
-							const value = splitted.shift()
-							if (key && value) query[key] = value
-						})
+					query = Object.fromEntries(
+						data
+							.slice(index + 1)
+							.split(/[&;]/)
+							.map(element => element.split("=", 2).map(decodeURIComponent))
+							.filter(([key]) => !!key)
+							.map(([key, value = ""]) => [key, value])
+					) as { [key: string]: string }
 					data = data.slice(0, index)
 				}
 				let authority: Uri.Authority | undefined

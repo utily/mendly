@@ -36,10 +36,12 @@ describe("mendly node entry", () => {
 		const folder = path.join(temporaryDirectory, "folder")
 		const alphaFile = path.join(folder, "alpha.txt")
 		const betaFile = path.join(folder, "beta.txt")
+		const gammaFile = path.join(folder, "gamma.md")
 		await mkdir(folder, { recursive: true })
 		await writeFile(sourceFile, "portable\n", "utf8")
 		await writeFile(alphaFile, "alpha\n", "utf8")
 		await writeFile(betaFile, "beta\n", "utf8")
+		await writeFile(gammaFile, "gamma\n", "utf8")
 
 		try {
 			await withNodeEntry(async (mendly, [reader, writer]) => {
@@ -75,6 +77,27 @@ describe("mendly node entry", () => {
 				expect(content.join("")).toContain("alpha")
 				expect(content.join("")).toContain("beta")
 				await folderReader?.close()
+
+				const wildcardResource = mendly.Uri.parse(pathToFileURL(`${folder}${path.sep}*.txt`).toString())
+				expect(wildcardResource).toBeTruthy()
+				if (!wildcardResource) throw new Error("expected a wildcard resource")
+
+				const wildcardReader = mendly.Reader.open(wildcardResource)
+				expect(wildcardReader).toBeTruthy()
+				const wildcardContent = []
+				for (let index = 0; index < 128; index++) {
+					const character = wildcardReader?.read()
+					if (character != undefined && character != "\0") wildcardContent.push(character)
+					const combined = wildcardContent.join("")
+					if (combined.includes("alpha") && combined.includes("beta")) break
+				}
+				expect(wildcardContent.join("")).toContain("alpha")
+				expect(wildcardContent.join("")).toContain("beta")
+				expect(wildcardContent.join("")).not.toContain("gamma")
+				await wildcardReader?.close()
+
+				const unsupportedSchemeResource = new mendly.Uri(["https"], undefined, ["tmp", "folder", "*.txt"])
+				expect(mendly.Reader.open(unsupportedSchemeResource)).toBeUndefined()
 			})
 		} finally {
 			await rm(temporaryDirectory, { force: true, recursive: true })

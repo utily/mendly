@@ -81,10 +81,9 @@ export class Folder extends Reader {
 		let files: string[] | undefined
 		try {
 			if (
-				(resource
-					&& (resource.scheme.length == 0 || (resource.scheme.length == 1 && resource.scheme[0] == "file"))
-					&& resource.isFolder)
-				|| resource.name.match("*")
+				resource
+				&& (resource.scheme.length == 0 || (resource.scheme.length == 1 && resource.scheme[0] == "file"))
+				&& (resource.isFolder || resource.name.includes("*"))
 			)
 				files = Folder.getFiles(
 					(resource.isRelative ? "" : separator) + resource.folder.path.join(separator),
