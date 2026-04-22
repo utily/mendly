@@ -17,8 +17,7 @@ describe("mendly.Enumerator", () => {
 		const enumerator = new StringEnumerator(content)
 		let result: string = ""
 		let item: string | undefined
-		while ((item = enumerator.fetch()))
-			result += item
+		while ((item = enumerator.fetch())) result += item
 		expect(result).toEqual(content)
 	})
 	it("map", () => {
@@ -26,8 +25,7 @@ describe("mendly.Enumerator", () => {
 		const enumerator = new StringEnumerator(content).map(c => c.toUpperCase())
 		let result: string = ""
 		let item: string | undefined
-		while ((item = enumerator.fetch()))
-			result += item
+		while ((item = enumerator.fetch())) result += item
 		expect(result).toEqual(content.toUpperCase())
 	})
 	it("reduce", () => {
@@ -53,9 +51,7 @@ describe("mendly.Enumerator", () => {
 		const content = "let's reduce this string back to an array of single character strings"
 		const enumerator = new StringEnumerator(content)
 		const result: string[] = []
-		while (enumerator.fetch())
-			if (enumerator.last)
-				result.push(enumerator.last)
+		while (enumerator.fetch()) if (enumerator.last) result.push(enumerator.last)
 		expect(result.join("")).toEqual("let's reduce this string back to an array of single character strings")
 	})
 })

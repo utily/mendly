@@ -40,8 +40,7 @@ export class Buffered extends Reader {
 		return this.backend.close()
 	}
 	peek(length?: number): string | undefined {
-		if (!length)
-			length = 1
+		if (!length) length = 1
 		let next: string | undefined
 		while (length > this.buffer.length && (next = this.backend.read()))
 			this.buffer.push({ data: next, location: this.backend.location })
@@ -53,8 +52,7 @@ export class Buffered extends Reader {
 					.join("")
 	}
 	read(length?: number): string | undefined {
-		if (!length)
-			length = 1
+		if (!length) length = 1
 		const result = this.peek(length)
 		if (result && result.length > 0) {
 			this.locationValue = this.buffer[result.length - 1]!.location
@@ -68,8 +66,7 @@ export class Buffered extends Reader {
 		if (value)
 			if (typeof value == "string") {
 				const v = value
-				while (count && count-- > 0)
-					value += v
+				while (count && count-- > 0) value += v
 				result = this.peek(value.length) == value ? value : undefined
 			} else if (value.length > 0 && !(result = this.peekIs(value[0])) && value.length)
 				result = this.peekIs(value.slice(1))
@@ -78,16 +75,14 @@ export class Buffered extends Reader {
 	readIf(value: string | string[] | undefined): string | undefined {
 		let result: string | undefined
 		if (value)
-			if (typeof value == "string")
-				result = (this.peek(value.length) == value && this.read(value.length)) || undefined
+			if (typeof value == "string") result = (this.peek(value.length) == value && this.read(value.length)) || undefined
 			else if (value.length > 0 && !(result = this.readIf(value[0])) && value.length)
 				result = this.readIf(value.slice(1))
 		return result
 	}
 	readAll(): string | undefined {
 		let result = ""
-		while (this.peek())
-			result += this.read()
+		while (this.peek()) result += this.read()
 		return result != "" ? result : undefined
 	}
 	mark(): Error.Region {

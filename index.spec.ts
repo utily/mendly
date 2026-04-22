@@ -44,8 +44,7 @@ describe("mendly portable root", () => {
 			const fileResource = mendly.Uri.parse("file:///tmp/example.txt")
 
 			expect(fileResource).toBeTruthy()
-			if (!fileResource)
-				throw new Error("expected a file resource")
+			if (!fileResource) throw new Error("expected a file resource")
 
 			expect(reader.openers).toEqual([])
 			expect(writer.openers).toEqual([])

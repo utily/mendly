@@ -16,8 +16,7 @@ describe("Utilities.BufferedEnumerator", () => {
 		const testString = "let's enumerate this string using peek()"
 		const enumerator = new Enumerator.Buffered(new StringEnumerator(testString))
 		let result: string = ""
-		while (enumerator.peek())
-			result += enumerator.fetch()
+		while (enumerator.peek()) result += enumerator.fetch()
 		expect(result).toEqual(testString)
 	})
 	it("enumerate using next()", () => {
@@ -25,8 +24,7 @@ describe("Utilities.BufferedEnumerator", () => {
 		const enumerator = new Enumerator.Buffered(new StringEnumerator(testString))
 		let character: string | undefined
 		let result: string = ""
-		while ((character = enumerator.fetch()))
-			result += character
+		while ((character = enumerator.fetch())) result += character
 		expect(result).toEqual(testString)
 	})
 	it("peek() and next()", () => {

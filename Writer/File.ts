@@ -18,7 +18,10 @@ export class File extends Writer {
 		return this.descriptor > 0
 	}
 	autoFlush: boolean = false
-	constructor(readonly resource: Uri, private descriptor: number) {
+	constructor(
+		readonly resource: Uri,
+		private descriptor: number
+	) {
 		super()
 	}
 	async flush(): Promise<boolean> {

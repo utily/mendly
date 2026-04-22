@@ -40,7 +40,7 @@ export class Enumerable<T> implements Iterable<T> {
 			: new Enumerable(() => {
 					const r = get()
 					return r instanceof Enumerator ? (r as Enumerator<T>) : new Enumerator(r)
-			  })
+				})
 	}
 	static readonly empty = Enumerable.from([])
 }

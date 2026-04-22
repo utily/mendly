@@ -44,12 +44,10 @@ export class Indenter extends Writer {
 			do {
 				item = next
 				next = buffer.fetch()
-				if (this.indentNext)
-					item = this.getIndention() + item
+				if (this.indentNext) item = this.getIndention() + item
 				this.indentNext = item.endsWith(this.newLineSymbol)
 				item = item.replace(this.newLineSymbol, this.newLineSymbol + this.getIndention())
-				if (this.indentNext)
-					item = item.substring(0, item.length - this.indentionCount * this.indentionSymbol.length)
+				if (this.indentNext) item = item.substring(0, item.length - this.indentionCount * this.indentionSymbol.length)
 				result.push(this.backend.write(item))
 			} while (next)
 		return Promise.all(result).then(r => r.reduce((previous, current) => previous && current, true))

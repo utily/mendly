@@ -22,23 +22,23 @@ export class String extends Reader {
 	get region(): Error.Region {
 		return new Error.Region(this.resource, this.lastPosition, this.location, this.lastContent)
 	}
-	private constructor(private content: string, readonly resource: Uri) {
+	private constructor(
+		private content: string,
+		readonly resource: Uri
+	) {
 		super()
 		this.content += "\0"
 		this.lastPosition = this.location
 	}
 	async close(): Promise<boolean> {
 		const result = !(await this.empty)
-		if (result)
-			this.count = this.content.length
+		if (result) this.count = this.content.length
 		return result
 	}
 	read(): string | undefined {
 		let result: string | undefined
-		if (this.count < this.content.length)
-			result = this.content.charAt(this.count)
-		else if (this.count == this.content.length)
-			result = undefined
+		if (this.count < this.content.length) result = this.content.charAt(this.count)
+		else if (this.count == this.content.length) result = undefined
 		this.count++
 		if (result) {
 			switch (result) {

@@ -14,23 +14,22 @@ export abstract class Writer implements Device.Out {
 		return message instanceof Enumerator
 			? this.writeImplementation(message)
 			: message instanceof Array
-			? this.writeImplementation(new Enumerator.Array(message))
-			: this.writeImplementation(new Enumerator.Array([message]))
+				? this.writeImplementation(new Enumerator.Array(message))
+				: this.writeImplementation(new Enumerator.Array([message]))
 	}
 	async writeLine(message?: string | string[] | Enumerator<string>): Promise<boolean> {
 		return message instanceof Enumerator
 			? this.writeImplementation(message.append(this.newLineSymbol))
 			: message instanceof Array
-			? this.writeImplementation(new Enumerator.Array([...message, this.newLineSymbol]))
-			: message
-			? this.writeImplementation(new Enumerator.Array([message, this.newLineSymbol]))
-			: this.writeImplementation(new Enumerator.Array([this.newLineSymbol]))
+				? this.writeImplementation(new Enumerator.Array([...message, this.newLineSymbol]))
+				: message
+					? this.writeImplementation(new Enumerator.Array([message, this.newLineSymbol]))
+					: this.writeImplementation(new Enumerator.Array([this.newLineSymbol]))
 	}
 	protected abstract writeImplementation(buffer: Enumerator<string>): Promise<boolean>
 	private static openers: { open: (resource: Uri) => Promise<Writer | undefined>; priority: number }[] = []
 	static register(open: (resource: Uri) => Promise<Writer | undefined>, priority?: number) {
-		if (!priority)
-			priority = 0
+		if (!priority) priority = 0
 		Writer.openers.push({ open, priority })
 		Writer.openers = Writer.openers.sort((left, right) => right.priority - left.priority)
 	}
@@ -39,10 +38,7 @@ export abstract class Writer implements Device.Out {
 		if (typeof resource == "string") {
 			const r = Uri.parse(resource)
 			result = r ? await Writer.open(r) : undefined
-		} else
-			for (const opener of Writer.openers)
-				if ((result = await opener.open(resource)))
-					break
+		} else for (const opener of Writer.openers) if ((result = await opener.open(resource))) break
 		return result
 	}
 }

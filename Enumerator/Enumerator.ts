@@ -2,8 +2,7 @@ export class Enumerator<T> implements Iterator<T> {
 	private readonly iterator: Iterator<T>
 	get length(): number {
 		let result = 0
-		while (!this.next().done)
-			result++
+		while (!this.next().done) result++
 		return result
 	}
 	private nextValue: IteratorResult<T> | undefined
@@ -43,8 +42,7 @@ export class Enumerator<T> implements Iterator<T> {
 	filter(filter: (item: T) => boolean): Enumerator<T> {
 		return new Enumerator<T>(() => {
 			let item: T | undefined
-			do
-				item = this.fetch()
+			do item = this.fetch()
 			while (item != undefined && !filter(item))
 			return item
 		})
@@ -52,8 +50,7 @@ export class Enumerator<T> implements Iterator<T> {
 	toArray(): T[] {
 		const item = this.fetch()
 		let result: T[]
-		if (!item)
-			result = []
+		if (!item) result = []
 		else {
 			result = this.toArray()
 			result.unshift(item)
@@ -68,19 +65,14 @@ export class Enumerator<T> implements Iterator<T> {
 
 function* generate<T>(next: () => T | undefined): Iterator<T> {
 	let result: T | undefined
-	while ((result = next()) != undefined)
-		yield result
+	while ((result = next()) != undefined) yield result
 }
 function isIterator<T>(item: any | Iterator<T>): item is Iterator<T> {
 	return (item as Iterator<T>).next instanceof Function
 }
 function* merge<T>(left: Iterator<T>, right: T | Iterator<T>): Iterator<T> {
 	let result: IteratorResult<T>
-	while (!(result = left.next()).done)
-		yield result.value
-	if (isIterator(right))
-		while (!(result = right.next()).done)
-			yield result.value
-	else
-		yield right
+	while (!(result = left.next()).done) yield result.value
+	if (isIterator(right)) while (!(result = right.next()).done) yield result.value
+	else yield right
 }

@@ -30,17 +30,18 @@ export class Until extends Reader {
 	get region(): Error.Region {
 		return this.backend.region
 	}
-	private constructor(backend: Reader, private endMark: string | string[]) {
+	private constructor(
+		backend: Reader,
+		private endMark: string | string[]
+	) {
 		super()
 		this.backend = backend instanceof Buffered ? backend : Buffered.create(backend)
 		const peeked = this.backend.peekIs(this.endMark)
-		if (peeked)
-			this.done = peeked.length
+		if (peeked) this.done = peeked.length
 	}
 	close(): Promise<boolean> {
 		const result = this.done > 0
-		if (result)
-			this.done = 0
+		if (result) this.done = 0
 		return Promise.resolve(result)
 	}
 	read(): string | undefined {
@@ -48,10 +49,8 @@ export class Until extends Reader {
 		if (this.done != 0) {
 			result = this.backend.read()
 			let peeked: string | undefined
-			if (this.done > 0)
-				this.done--
-			else if ((peeked = this.backend.peekIs(this.endMark)))
-				this.done = peeked.length
+			if (this.done > 0) this.done--
+			else if ((peeked = this.backend.peekIs(this.endMark))) this.done = peeked.length
 		}
 		return result
 	}

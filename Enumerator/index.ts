@@ -6,16 +6,10 @@ import { Enumerator as _Enumerator } from "./Enumerator"
 export type Enumerator<T> = _Enumerator<T>
 
 // Use declaration merging to add namespace to the imported class
-export const Enumerator = _Enumerator as typeof _Enumerator & {
-	Array: typeof _Array
-	Buffered: typeof _Buffered
-}
+export const Enumerator = _Enumerator as typeof _Enumerator & { Array: typeof _Array; Buffered: typeof _Buffered }
 
 // Assign the classes to the constructor function
-Object.assign(Enumerator, {
-	Array: _Array,
-	Buffered: _Buffered,
-})
+Object.assign(Enumerator, { Array: _Array, Buffered: _Buffered })
 
 export namespace Enumerator {
 	export type Array<T> = _Array<T>

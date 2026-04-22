@@ -30,7 +30,10 @@ export class Prefix extends Reader {
 	get region(): Error.Region {
 		return this.backend.region
 	}
-	constructor(backend: Reader, private prefix: string | string[]) {
+	constructor(
+		backend: Reader,
+		private prefix: string | string[]
+	) {
 		super()
 		this.backend = backend instanceof Buffered ? backend : Buffered.create(backend)
 	}

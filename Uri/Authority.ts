@@ -5,13 +5,14 @@ export class Authority {
 	get empty() {
 		return this.user.empty && this.endpoint.empty
 	}
-	constructor(readonly user: User = new User(), readonly endpoint: Endpoint = new Endpoint()) {}
+	constructor(
+		readonly user: User = new User(),
+		readonly endpoint: Endpoint = new Endpoint()
+	) {}
 	toString(): string {
 		let result = ""
-		if (!this.user.empty)
-			result = this.user.toString() + "@"
-		if (!this.endpoint.empty)
-			result = result + this.endpoint.toString()
+		if (!this.user.empty) result = this.user.toString() + "@"
+		if (!this.endpoint.empty) result = result + this.endpoint.toString()
 		return result
 	}
 	static parse(data: string | undefined): Authority | undefined {

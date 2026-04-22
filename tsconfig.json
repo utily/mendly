@@ -2,10 +2,7 @@
 	"compilerOptions": {
 		// https://www.totaltypescript.com/tsconfig-cheat-sheet
 		/* transpiling */
-		"lib": [
-			"ES2023",
-			"DOM"
-		],
+		"lib": ["ES2023", "DOM"],
 		"moduleResolution": "bundler",
 		"module": "ESNext",
 		/* base options */
@@ -28,19 +25,10 @@
 		"removeComments": true,
 		"preserveConstEnums": true,
 		"forceConsistentCasingInFileNames": true,
-		"types": [
-			"vitest/globals",
-			"node"
-		]
+		"types": ["vitest/globals", "node"]
 	},
-	"include": [
-		"**/*.ts"
-	],
-	"exclude": [
-		"coverage",
-		"dist",
-		"node_modules"
-	],
+	"include": ["**/*.ts"],
+	"exclude": ["coverage", "dist", "node_modules"],
 	"typeAcquisition": {
 		"enable": true
 	}

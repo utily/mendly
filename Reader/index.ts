@@ -11,7 +11,7 @@ export const Reader = Object.assign(_Reader, {
 	Prefix: _Prefix,
 	String: _String,
 	Till: _Till,
-	Until: _Until,
+	Until: _Until
 }) as typeof _Reader & {
 	Buffered: typeof _Buffered
 	Prefix: typeof _Prefix

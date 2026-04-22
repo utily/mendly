@@ -64,9 +64,7 @@ describe("Utilities.ArrayEnumerator", () => {
 		const content = "let's reduce this string back to an array of single character strings".split(" ")
 		const enumerator = new Enumerator.Array(content)
 		const result: string[] = []
-		while (enumerator.fetch())
-			if (enumerator.last)
-				result.push(enumerator.last)
+		while (enumerator.fetch()) if (enumerator.last) result.push(enumerator.last)
 		expect(result.join("_")).toEqual("let's_reduce_this_string_back_to_an_array_of_single_character_strings")
 	})
 })

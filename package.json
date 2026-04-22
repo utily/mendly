@@ -36,8 +36,8 @@
 		"release": true
 	},
 	"scripts": {
-		"lint": "eslint --max-warnings=0 '**/*.{ts,tsx}'",
-		"fix": "eslint '**/*.{ts,tsx}' --fix",
+		"lint": "biome format .",
+		"fix": "biome format --write .",
 		"build": "tsc -p tsconfig.build.json",
 		"test": "vitest --run",
 		"coverage": "vitest --coverage",
@@ -45,14 +45,9 @@
 		"verify": "npm run build && npm run test && npm run lint && npm audit --omit=dev"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "2.4.12",
 		"@types/node": "^24.10.0",
-		"@typescript-eslint/eslint-plugin": "8.46.3",
-		"@typescript-eslint/parser": "8.46.3",
 		"@vitest/coverage-v8": "^4.0.7",
-		"eslint": "^8.56.0",
-		"eslint-plugin-prettierx": "github:utily/eslint-plugin-prettierx#utily-20231004",
-		"eslint-plugin-simple-import-sort": "^12.1.1",
-		"prettierx": "github:utily/prettierx#utily-20231004",
 		"rimraf": "^6.1.0",
 		"typescript": "5.9.3",
 		"vite": "^7.1.12",

@@ -12,8 +12,7 @@ export class Folder extends Reader {
 	}
 	set tabSize(size: number) {
 		this.tabSizeValue = size
-		if (this.current)
-			this.current.tabSize = size
+		if (this.current) this.current.tabSize = size
 	}
 	get readable(): boolean {
 		return (this.current != undefined && this.current.readable) || this.files.length > 0
@@ -68,11 +67,10 @@ export class Folder extends Reader {
 		files.forEach(file => {
 			const filename = folder + separator + file
 			if (ignoreFiles.indexOf(filename) == -1) {
-				if (lstatSync(filename).isDirectory())
-					result = result.concat(Folder.getFiles(filename, filetype, ignoreFiles))
+				if (lstatSync(filename).isDirectory()) result = result.concat(Folder.getFiles(filename, filetype, ignoreFiles))
 				else if (
-					file.length > filetype.length &&
-					file.lastIndexOf(filetype, file.length - filetype.length) === file.length - filetype.length
+					file.length > filetype.length
+					&& file.lastIndexOf(filetype, file.length - filetype.length) === file.length - filetype.length
 				)
 					result.push(filename)
 			}
@@ -83,10 +81,10 @@ export class Folder extends Reader {
 		let files: string[] | undefined
 		try {
 			if (
-				(resource &&
-					(resource.scheme.length == 0 || (resource.scheme.length == 1 && resource.scheme[0] == "file")) &&
-					resource.isFolder) ||
-				resource.name.match("*")
+				(resource
+					&& (resource.scheme.length == 0 || (resource.scheme.length == 1 && resource.scheme[0] == "file"))
+					&& resource.isFolder)
+				|| resource.name.match("*")
 			)
 				files = Folder.getFiles(
 					(resource.isRelative ? "" : separator) + resource.folder.path.join(separator),

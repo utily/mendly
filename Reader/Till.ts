@@ -30,15 +30,17 @@ export class Till extends Reader {
 	get region(): Error.Region {
 		return this.backend.region
 	}
-	private constructor(backend: Reader, private endMark: string | string[]) {
+	private constructor(
+		backend: Reader,
+		private endMark: string | string[]
+	) {
 		super()
 		this.backend = backend instanceof Buffered ? backend : Buffered.create(backend)
 		this.done = this.backend.peekIs(this.endMark) != undefined
 	}
 	close(): Promise<boolean> {
 		const result = !this.done
-		if (result)
-			this.done = true
+		if (result) this.done = true
 		return Promise.resolve(result)
 	}
 	read(): string | undefined {

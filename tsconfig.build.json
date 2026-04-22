@@ -8,15 +8,6 @@
 		"declarationDir": "./dist/types",
 		"sourceMap": true
 	},
-	"exclude": [
-		"**/*.spec.ts",
-		"coverage",
-		"dist",
-		"node_modules",
-		"vite.config.ts"
-	],
-	"files": [
-		"index.ts",
-		"index.node.ts"
-	]
+	"exclude": ["**/*.spec.ts", "coverage", "dist", "node_modules", "vite.config.ts"],
+	"files": ["index.ts", "index.node.ts"]
 }

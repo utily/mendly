@@ -6,12 +6,8 @@ export type Writer = _Writer
 export const Writer = Object.assign(_Writer, {
 	Indenter: _Indenter,
 	String: _String,
-	Writer: _Writer,
-}) as typeof _Writer & {
-	Indenter: typeof _Indenter
-	String: typeof _String
-	Writer: typeof _Writer
-}
+	Writer: _Writer
+}) as typeof _Writer & { Indenter: typeof _Indenter; String: typeof _String; Writer: typeof _Writer }
 export namespace Writer {
 	export type Indenter = _Indenter
 	export type String = _String

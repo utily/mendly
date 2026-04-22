@@ -25,7 +25,7 @@ export class Uri {
 					this.path.filter((value, index) => index < this.path.length - 1),
 					this.query,
 					this.fragment
-			  )
+				)
 	}
 	get name(): string {
 		return this.path[this.path.length - 1] ?? ""
@@ -36,8 +36,7 @@ export class Uri {
 	}
 	private createArray<T>(value: T, count: number): T[] {
 		const result: T[] = []
-		while (count-- > 0)
-			result.push(value)
+		while (count-- > 0) result.push(value)
 		return result
 	}
 	normalize(): Uri {
@@ -47,14 +46,10 @@ export class Uri {
 			.filter((item, index) => {
 				let r = false
 				if ((item == "" || item == ".") && index < this.path.length - 1)
-					r = false
-				// do nothing
-				else if (item == "..")
-					skip++
-				else if (skip > 0)
-					skip--
-				else
-					r = true
+					r = false // do nothing
+				else if (item == "..") skip++
+				else if (skip > 0) skip--
+				else r = true
 				return r
 			})
 			.concat(this.createArray("..", skip))
@@ -70,7 +65,7 @@ export class Uri {
 					this.isRelative ? absolute.folder.path.concat(this.path) : this.path,
 					this.query,
 					this.fragment
-			  ).normalize()
+				).normalize()
 	}
 	appendPath(path: string | string[]): Uri {
 		return new Uri(
@@ -83,22 +78,16 @@ export class Uri {
 	}
 	toString(): string {
 		let result = ""
-		if (this.scheme.length > 0)
-			result += this.scheme.join("+") + ":"
-		if (!this.authority.empty)
-			result += "//" + this.authority.toString()
-		else if (this.scheme.length > 0)
-			result += "//"
+		if (this.scheme.length > 0) result += this.scheme.join("+") + ":"
+		if (!this.authority.empty) result += "//" + this.authority.toString()
+		else if (this.scheme.length > 0) result += "//"
 		if (this.path) {
 			let path = this.path.join("/")
-			if (path[0] != "." || result.length > 0)
-				path = "/" + path
+			if (path[0] != "." || result.length > 0) path = "/" + path
 			result += path
 		}
-		if (Object.keys(this.query).length > 0)
-			result += "?" + this.query.toString()
-		if (this.fragment)
-			result += "#" + this.fragment
+		if (Object.keys(this.query).length > 0) result += "?" + this.query.toString()
+		if (this.fragment) result += "#" + this.fragment
 		return result
 	}
 	static readonly empty = new Uri(undefined, undefined, undefined, undefined, undefined)
@@ -116,10 +105,8 @@ export class Uri {
 				if (splitted.length > 1) {
 					scheme = (splitted.shift() || "").split("+")
 					data = splitted.shift()
-				} else if (data.slice(0, 2) == "//")
-					data = data.slice(2)
-				else
-					hasAuthority = false
+				} else if (data.slice(0, 2) == "//") data = data.slice(2)
+				else hasAuthority = false
 				let index: number
 				let fragment: string | undefined
 				if (data && (index = data.lastIndexOf("#")) > -1) {
@@ -136,8 +123,7 @@ export class Uri {
 							splitted = element.split("=")
 							const key = splitted.shift()
 							const value = splitted.shift()
-							if (key && value)
-								query[key] = value
+							if (key && value) query[key] = value
 						})
 					data = data.slice(0, index)
 				}
@@ -154,10 +140,8 @@ export class Uri {
 								splitted.shift()
 								break
 							default:
-								if (hasAuthority)
-									authority = Uri.Authority.parse(splitted.shift())
-								else
-									splitted.unshift(".")
+								if (hasAuthority) authority = Uri.Authority.parse(splitted.shift())
+								else splitted.unshift(".")
 								break
 						}
 						path = splitted

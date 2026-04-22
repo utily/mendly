@@ -48,8 +48,7 @@ describe("mendly node entry", () => {
 
 				const fileResource = mendly.Uri.parse(pathToFileURL(sourceFile).toString())
 				expect(fileResource).toBeTruthy()
-				if (!fileResource)
-					throw new Error("expected a file resource")
+				if (!fileResource) throw new Error("expected a file resource")
 
 				const fileReader = mendly.Reader.open(fileResource)
 				expect(fileReader).toBeTruthy()
@@ -63,18 +62,15 @@ describe("mendly node entry", () => {
 
 				const folderResource = mendly.Uri.parse(pathToFileURL(`${folder}${path.sep}`).toString())
 				expect(folderResource).toBeTruthy()
-				if (!folderResource)
-					throw new Error("expected a folder resource")
+				if (!folderResource) throw new Error("expected a folder resource")
 
 				const folderReader = mendly.Reader.open(folderResource)
 				expect(folderReader).toBeTruthy()
 				const content = []
 				for (let index = 0; index < 64; index++) {
 					const character = folderReader?.read()
-					if (character != undefined && character != "\0")
-						content.push(character)
-					if (content.join("").includes("alpha") && content.join("").includes("beta"))
-						break
+					if (character != undefined && character != "\0") content.push(character)
+					if (content.join("").includes("alpha") && content.join("").includes("beta")) break
 				}
 				expect(content.join("")).toContain("alpha")
 				expect(content.join("")).toContain("beta")

@@ -2,7 +2,12 @@ import { Uri } from "../Uri"
 import { Position } from "./Position"
 
 export class Region {
-	constructor(readonly resource: Uri, readonly start?: Position, readonly end?: Position, readonly content?: string) {}
+	constructor(
+		readonly resource: Uri,
+		readonly start?: Position,
+		readonly end?: Position,
+		readonly content?: string
+	) {}
 	merge(other?: Region) {
 		return other
 			? new Region(
@@ -10,15 +15,13 @@ export class Region {
 					this.start,
 					other.end,
 					this.content ? this.content : "" + other.content ? other.content : ""
-			  )
+				)
 			: this
 	}
 	toString() {
 		let result = this.resource.toString()
-		if (this.start && this.end)
-			result += " (" + this.start.toString() + " - " + this.end.toString() + ") "
-		if (this.content)
-			result += this.content
+		if (this.start && this.end) result += " (" + this.start.toString() + " - " + this.end.toString() + ") "
+		if (this.content) result += this.content
 		return result
 	}
 }
