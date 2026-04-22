@@ -13,13 +13,13 @@ npm install mendly
 Use the package root for the portable surface.
 
 ```ts
-import { mendly } from "mendly"
+import { mendly } from "mendly";
 ```
 
 Use the Node entrypoint when you want filesystem-backed `Reader.open(...)` and `Writer.open(...)` registration.
 
 ```ts
-import { mendly } from "mendly/node"
+import { mendly } from "mendly/node";
 ```
 
 The package exports two public entrypoints:
@@ -54,10 +54,12 @@ The portable `mendly` namespace is available in both environments and includes:
 Node consumers should use the Node entrypoint when they need filesystem-backed behavior. `Reader.open(...)` and `Writer.open(...)` can resolve `file:` resources through the registered filesystem-backed openers there.
 
 ```ts
-import { mendly } from "mendly/node"
+import { mendly } from "mendly/node";
 
-const input = mendly.Reader.open(mendly.Uri.parse("file:///tmp/input.txt")!)
-const output = await mendly.Writer.open(mendly.Uri.parse("file:///tmp/output.txt")!)
+const input = mendly.Reader.open(mendly.Uri.parse("file:///tmp/input.txt")!);
+const output = await mendly.Writer.open(
+	mendly.Uri.parse("file:///tmp/output.txt")!,
+);
 ```
 
 ### Browser
@@ -65,14 +67,14 @@ const output = await mendly.Writer.open(mendly.Uri.parse("file:///tmp/output.txt
 Browser consumers should use the portable root import:
 
 ```ts
-import { mendly } from "mendly"
+import { mendly } from "mendly";
 
-const reader = mendly.Reader.String.create("hello")
-const writer = mendly.Writer.String.create()
+const reader = mendly.Reader.String.create("hello");
+const writer = mendly.Writer.String.create();
 
-await writer.writeLine("hello")
-console.log(reader.read())
-console.log(writer.result)
+await writer.writeLine("hello");
+console.log(reader.read());
+console.log(writer.result);
 ```
 
 From the portable root:
@@ -85,12 +87,12 @@ From the portable root:
 That means file resources are not opened in browser builds:
 
 ```ts
-import { mendly } from "mendly"
+import { mendly } from "mendly";
 
-const resource = mendly.Uri.parse("file:///tmp/example.txt")!
+const resource = mendly.Uri.parse("file:///tmp/example.txt")!;
 
-console.log(mendly.Reader.open(resource))
-console.log(await mendly.Writer.open(resource))
+console.log(mendly.Reader.open(resource));
+console.log(await mendly.Writer.open(resource));
 // undefined
 // undefined
 ```
@@ -108,7 +110,7 @@ console.log(await mendly.Writer.open(resource))
 If you only consume the portable API, the import stays the same:
 
 ```ts
-import { mendly } from "mendly"
+import { mendly } from "mendly";
 ```
 
 What changed:
@@ -130,3 +132,38 @@ Your runtime or bundler must respect package `exports` so `mendly` resolves to t
 ## Package Verification
 
 This package relies on the standard npm publishing flow. To inspect the exact published contents locally, run `npm pack --dry-run`.
+
+## Automated Release Policy
+
+Releases are fully CI-owned and run on every push to `master` unless skipped by commit message.
+
+Release source and bump rules:
+
+- The squash-merge commit message on `master` is the version source.
+- If the message contains `no-release` (case-insensitive), no release is created.
+- If the message contains `breaking`, the release is a major bump.
+- If the message contains `feature`, the release is a minor bump.
+- If the message contains `fix`, the release is a patch bump.
+- Any other message defaults to a minor bump.
+- Rule precedence is: `no-release` > `breaking` > `feature` > `fix` > default minor.
+
+Release order on `master`:
+
+1. Branch protection enforces integration checks before merge.
+2. Bump `package.json` version in CI.
+3. Create matching git tag `vX.Y.Z`.
+4. Publish package to npm.
+5. Push release commit and tag.
+
+Constraints:
+
+- Releases never run from non-`master` branches.
+- Publish never happens without a tag.
+- Tag creation happens only after the version bump.
+- The git tag and npm/package version must match exactly.
+
+No manual versioning:
+
+- Do not edit the `version` field manually.
+- Do not run `npm version` locally for releases.
+- Do not create manual release commits or release tags.
