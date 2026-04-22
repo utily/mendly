@@ -123,4 +123,3 @@ Your runtime or bundler must respect package `exports` so `mendly` resolves to t
 ## Package Verification
 
 This package relies on the standard npm publishing flow. To inspect the exact published contents locally, run `npm pack --dry-run`.
-
