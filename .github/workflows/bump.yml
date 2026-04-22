@@ -1,0 +1,163 @@
+name: "Bump"
+
+on:
+  push:
+    branches:
+      - "master"
+      - "master-*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bump-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  bump-version:
+    name: "Bump Version"
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'ci: version bump to v')"
+
+    steps:
+      - name: "Checkout source code"
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          token: ${{ secrets.ADMIN_TOKEN || github.token }}
+
+      - name: "Setup Node"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - name: "Determine release intent"
+        id: release-intent
+        shell: bash
+        run: |
+          message='${{ github.event.head_commit.message }}'
+          normalized=$(printf '%s' "$message" | tr '[:upper:]' '[:lower:]')
+          first_line=$(printf '%s' "$normalized" | head -n1)
+          branch='${{ github.ref_name }}'
+
+          if [[ "$normalized" == *"no-release"* ]]; then
+            bump="none"
+          elif [[ "$normalized" == *"release: major"* ]] || [[ "$normalized" == *"breaking change"* ]] || [[ "$first_line" =~ ^[a-z]+(\([^)]+\))?!: ]]; then
+            bump="major"
+          elif [[ "$normalized" == *"release: minor"* ]] || [[ "$normalized" == feat:* ]] || [[ "$normalized" == *" feature"* ]]; then
+            bump="minor"
+          elif [[ "$normalized" == *"release: patch"* ]] || [[ "$normalized" == fix:* ]] || [[ "$normalized" == *" fix"* ]]; then
+            bump="patch"
+          elif [[ "$normalized" == *"release: alpha"* ]]; then
+            bump="alpha"
+          elif [[ "$normalized" == *"release: beta"* ]]; then
+            bump="beta"
+          elif [[ "$normalized" == *"release: stable"* ]]; then
+            bump="stable"
+          elif [[ "$branch" == "master" ]]; then
+            bump="minor"
+          else
+            bump="patch"
+          fi
+
+          if [[ "$branch" != "master" ]] && [[ ! "$branch" =~ ^master-[0-9]+$ ]]; then
+            echo "Unsupported release branch: $branch"
+            exit 1
+          fi
+
+          if [[ "$bump" == "none" ]]; then
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          fi
+          echo "bump=${bump}" >> "$GITHUB_OUTPUT"
+
+      - name: "No release marker"
+        if: steps.release-intent.outputs.release == 'false'
+        run: echo "Skipping release because commit message contains no-release"
+
+      - name: "Calculate next version"
+        if: steps.release-intent.outputs.release == 'true'
+        id: next-version
+        shell: bash
+        run: |
+          current=$(node -p "require('./package.json').version")
+          bump='${{ steps.release-intent.outputs.bump }}'
+
+          next=$(node -e 'const current=process.argv[1];const bump=process.argv[2];const match=/^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.-]+))?$/.exec(current);if(!match)throw new Error(`Invalid semver version: ${current}`);const major=Number.parseInt(match[1],10);const minor=Number.parseInt(match[2],10);const patch=Number.parseInt(match[3],10);const prerelease=match[4];const parsePrerelease=()=>{if(!prerelease)return undefined;const preMatch=/^([0-9A-Za-z-]+)\.(\d+)$/.exec(prerelease);if(!preMatch)return undefined;return {preid:preMatch[1],number:Number.parseInt(preMatch[2],10)}};const incrementPrerelease=(expectedPreid)=>{const parsed=parsePrerelease();if(!parsed)return `${major}.${minor+1}.0-${expectedPreid}.1`;if(parsed.preid===expectedPreid)return `${major}.${minor}.${patch}-${expectedPreid}.${parsed.number+1}`;if(parsed.preid==="alpha"&&expectedPreid==="beta")return `${major}.${minor}.${patch}-beta.1`;if(parsed.preid==="beta"&&expectedPreid==="alpha")return `${major}.${minor}.${patch}-alpha.1`;return `${major}.${minor+1}.0-${expectedPreid}.1`};let next;switch(bump){case "major":next=`${major+1}.0.0`;break;case "minor":next=`${major}.${minor+1}.0`;break;case "patch":next=`${major}.${minor}.${patch+1}`;break;case "alpha":next=incrementPrerelease("alpha");break;case "beta":next=incrementPrerelease("beta");break;case "stable":next=prerelease?`${major}.${minor}.${patch}`:current;break;default:throw new Error(`Unsupported bump type: ${bump}`)};process.stdout.write(next);' "$current" "$bump")
+
+          if [[ "$next" == "$current" ]]; then
+            echo "release=false" >> "$GITHUB_OUTPUT"
+            echo "next=$next" >> "$GITHUB_OUTPUT"
+            echo "tag=release-v$next" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          tag="release-v${next}"
+          echo "release=true" >> "$GITHUB_OUTPUT"
+          echo "current=$current" >> "$GITHUB_OUTPUT"
+          echo "next=$next" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: "No-op stable marker"
+        if: steps.release-intent.outputs.release == 'true' && steps.next-version.outputs.release == 'false'
+        run: echo "Skipping release because stable marker did not change version"
+
+      - name: "Release idempotency guard"
+        if: steps.release-intent.outputs.release == 'true' && steps.next-version.outputs.release == 'true'
+        id: release-guard
+        shell: bash
+        run: |
+          tag='${{ steps.next-version.outputs.tag }}'
+          if git ls-remote --tags --exit-code origin "refs/tags/${tag}" >/dev/null 2>&1; then
+            echo "release=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping release because ${tag} already exists on origin"
+          else
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: "No release marker (already released)"
+        if: steps.release-intent.outputs.release == 'true' && steps.next-version.outputs.release == 'true' && steps.release-guard.outputs.release == 'false'
+        run: echo "Skipping release because tag already exists"
+
+      - name: "Bump package version"
+        if: steps.release-intent.outputs.release == 'true' && steps.next-version.outputs.release == 'true' && steps.release-guard.outputs.release == 'true'
+        run: npm version "${{ steps.next-version.outputs.next }}" --no-git-tag-version
+
+      - name: "Commit and tag"
+        if: steps.release-intent.outputs.release == 'true' && steps.next-version.outputs.release == 'true' && steps.release-guard.outputs.release == 'true'
+        id: version
+        shell: bash
+        run: |
+          version=$(node -p "require('./package.json').version")
+          tag='${{ steps.next-version.outputs.tag }}'
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add package.json package-lock.json
+          git commit -m "ci: version bump to v${version} [skip ci]"
+          git tag -a "${tag}" -m "Release ${tag}"
+
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+
+      - name: "Verify tag/version match"
+        if: steps.release-intent.outputs.release == 'true' && steps.next-version.outputs.release == 'true' && steps.release-guard.outputs.release == 'true'
+        shell: bash
+        run: |
+          version=$(node -p "require('./package.json').version")
+          tag='${{ steps.version.outputs.tag }}'
+          if [[ "$tag" != "release-v${version}" ]]; then
+            echo "Tag and package version mismatch"
+            exit 1
+          fi
+
+      - name: "Push commit and tag"
+        if: steps.release-intent.outputs.release == 'true' && steps.next-version.outputs.release == 'true' && steps.release-guard.outputs.release == 'true'
+        shell: bash
+        run: |
+          git push --atomic origin HEAD:${{ github.ref_name }} '${{ steps.version.outputs.tag }}'

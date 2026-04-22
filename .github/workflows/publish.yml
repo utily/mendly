@@ -1,0 +1,98 @@
+name: "Publish"
+
+on:
+  push:
+    tags:
+      - "release-v*"
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: publish-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: "Publish"
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout source code"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: "Setup Node"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - name: "Install"
+        run: npm ci
+
+      - name: "Build"
+        run: npm run build
+
+      - name: "Resolve publish context"
+        id: context
+        shell: bash
+        run: |
+          tag='${{ github.ref_name }}'
+          if [[ "$tag" != release-v* ]]; then
+            echo "Unexpected tag: $tag"
+            exit 1
+          fi
+
+          version="${tag#release-v}"
+          package_version=$(node -p "require('./package.json').version")
+          if [[ "$version" != "$package_version" ]]; then
+            echo "Tag version and package version mismatch"
+            exit 1
+          fi
+
+          package_name=$(node -p "require('./package.json').name")
+          major="${version%%.*}"
+
+          git fetch --depth=1 origin master
+          master_version=$(git show origin/master:package.json | node -e "const input=require('fs').readFileSync(0,'utf8');process.stdout.write(JSON.parse(input).version)")
+          master_major="${master_version%%.*}"
+
+          if [[ "$version" == *"-alpha."* ]]; then
+            publish_tag="alpha"
+          elif [[ "$version" == *"-beta."* ]]; then
+            publish_tag="beta"
+          elif [[ "$major" == "$master_major" ]]; then
+            publish_tag="latest"
+          else
+            publish_tag="v${major}-latest"
+          fi
+
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "package=$package_name" >> "$GITHUB_OUTPUT"
+          echo "publish_tag=$publish_tag" >> "$GITHUB_OUTPUT"
+
+      - name: "Publish idempotency guard"
+        id: publish-guard
+        shell: bash
+        run: |
+          package_name='${{ steps.context.outputs.package }}'
+          version='${{ steps.context.outputs.version }}'
+
+          if npm view "${package_name}@${version}" version >/dev/null 2>&1; then
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping publish because ${package_name}@${version} already exists"
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: "No publish marker"
+        if: steps.publish-guard.outputs.publish == 'false'
+        run: echo "Skipping publish because version already exists"
+
+      - name: "Publish"
+        if: steps.publish-guard.outputs.publish == 'true'
+        run: npm publish --access public --provenance --tag '${{ steps.context.outputs.publish_tag }}'

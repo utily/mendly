@@ -133,35 +133,48 @@ This package relies on the standard npm publishing flow. To inspect the exact pu
 
 ## Automated Release Policy
 
-Releases are fully CI-owned and run on every push to `master` unless skipped by commit message.
+Releases are fully CI-owned and run from release branches with a split workflow model:
+
+- Bump workflow on push to `master` and `master-{major}`.
+- Publish workflow on pushed tags matching `release-v*`.
 
 Release source and bump rules:
 
-- The squash-merge commit message on `master` is the version source.
+- The merge commit message is the release intent source.
 - If the message contains `no-release` (case-insensitive), no release is created.
-- If the message contains `breaking`, the release is a major bump.
-- If the message contains `feature`, the release is a minor bump.
-- If the message contains `fix`, the release is a patch bump.
-- Any other message defaults to a minor bump.
-- Rule precedence is: `no-release` > `breaking` > `feature` > `fix` > default minor.
+- Explicit tokens: `release: major`, `release: minor`, `release: patch`, `release: alpha`, `release: beta`, `release: stable`.
+- Conventional major markers: `BREAKING CHANGE` and `type(scope)!:`.
+- Defaults: `master` defaults to minor and `master-{major}` defaults to patch.
 
-Release order on `master`:
+Pre-release behavior:
 
-1. Branch protection enforces integration checks before merge.
-2. Bump `package.json` version in CI.
-3. Create matching git tag `vX.Y.Z`.
-4. Publish package to npm.
-5. Push release commit and tag.
+- `release: alpha` from stable starts the next minor alpha stream.
+- `release: beta` from stable starts the next minor beta stream.
+- Repeating `release: alpha` or `release: beta` increments that stream.
+- Switching alpha to beta or beta to alpha keeps the same base version and resets the pre-release counter to `.1`.
+- `release: stable` removes the pre-release suffix.
+
+Release order:
+
+1. CI validates merged changes.
+2. Bump workflow computes next version and updates `package.json` and `package-lock.json`.
+3. Bump workflow creates and pushes release commit and tag `release-vX.Y.Z`.
+4. Publish workflow runs from the tag, builds, and publishes to npm.
+
+Dist-tags:
+
+- Current major line on `master`: `latest`.
+- Maintenance lines on `master-{major}`: `v{major}-latest`.
+- Pre-release versions: `alpha` or `beta`.
 
 Constraints:
 
-- Releases never run from non-`master` branches.
-- Publish never happens without a tag.
-- Tag creation happens only after the version bump.
-- The git tag and npm/package version must match exactly.
+- Release branches must be `master` or numeric `master-{major}`.
+- Publish never happens without a release tag.
+- Release tag and package version must match exactly.
+- Existing tags and already-published versions are treated as idempotent and skipped.
 
 No manual versioning:
 
-- Do not edit the `version` field manually.
-- Do not run `npm version` locally for releases.
-- Do not create manual release commits or release tags.
+- Do not edit the `version` field manually for releases.
+- Do not run release tagging manually.
