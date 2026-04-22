@@ -1,0 +1,21 @@
+name: "Bump Minor"
+
+on:
+  push:
+    branches:
+      - "master-1"
+      - "master-2"
+
+concurrency:
+  group: bump-minor-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  bump-minor:
+    uses: ./.github/workflows/bump-common.yml
+    with:
+      bump_name: "Bump Minor"
+      major_wording: "breaking:"
+      minor_wording: "feature:"
+      patch_wording: "fix:"
+      tag_prefix: "release-"

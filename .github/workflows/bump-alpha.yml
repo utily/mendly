@@ -1,0 +1,20 @@
+name: "Bump Alpha"
+
+on:
+  push:
+    branches:
+      - "master-4"
+
+concurrency:
+  group: bump-alpha-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  bump-alpha:
+    uses: ./.github/workflows/bump-common.yml
+    with:
+      bump_name: "Bump Alpha"
+      default_bump: "prerelease"
+      preid: "alpha"
+      rc_wording: ""
+      tag_prefix: "prerelease-"
