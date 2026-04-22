@@ -12,49 +12,48 @@ const write = util.promisify(fs.write)
 
 export class File extends Writer {
 	get opened(): boolean {
-		return this.descriptor > 0
+		return this.descriptor != undefined
 	}
 	get writable(): boolean {
-		return this.descriptor > 0
+		return this.descriptor != undefined
 	}
 	autoFlush: boolean = false
 	constructor(
 		readonly resource: Uri,
-		private descriptor: number
+		private descriptor?: number
 	) {
 		super()
 	}
 	async flush(): Promise<boolean> {
-		let result = true
-		try {
-			await fsync(this.descriptor)
-		} catch {
-			result = false
-		}
+		let result = false
+		if (this.descriptor != undefined)
+			try {
+				await fsync(this.descriptor)
+				result = true
+			} catch {}
 		return result
 	}
 	async close(): Promise<boolean> {
-		let result = this.opened
-		if (result) {
+		let result = false
+		if (this.descriptor != undefined) {
 			try {
 				await close(this.descriptor)
-			} catch {
-				result = false
-			}
-			this.descriptor = 0
+				result = true
+			} catch {}
+			this.descriptor = undefined
 		}
 		return result
 	}
 	protected override async writeImplementation(buffer: Enumerator<string>): Promise<boolean> {
-		let result: boolean
+		let result = false
 		const content = Buffer.from(buffer.reduce((r, item) => r + item, ""))
-		try {
-			const r = await write(this.descriptor, content)
-			result = r.bytesWritten == content.length
-		} catch {
-			result = false
-		}
-		return result && (!this.autoFlush || (await this.flush()))
+		if (this.descriptor != undefined)
+			try {
+				const r = await write(this.descriptor, content)
+				result = r.bytesWritten == content.length
+			} catch {}
+		if (result && this.autoFlush) result = await this.flush()
+		return result
 	}
 	static override async open(resource: Uri): Promise<File | undefined> {
 		let backend: number | undefined
@@ -64,7 +63,7 @@ export class File extends Writer {
 			} catch {
 				backend = undefined
 			}
-		return backend ? new File(resource, backend) : undefined
+		return backend != undefined ? new File(resource, backend) : undefined
 	}
 }
 export namespace File {}
