@@ -15,7 +15,6 @@ describe("mendly.Reader.Folder", () => {
 		{ name: "non file scheme", resource: "https://example.com/*.txt" },
 		{ name: "plain file without folder or wildcard", resource: "file:///tmp/file.txt" }
 	])("open $name", ({ resource }) => expect(mendly.Reader.Folder.open(mendly.Uri.parse(resource)!)).toBeUndefined())
-
 	it("reads recursive wildcard files", () => {
 		const folder = mkdtempSync(join(tmpdir(), "mendly-folder-"))
 		mkdirSync(join(folder, "nested"))
@@ -27,7 +26,6 @@ describe("mendly.Reader.Folder", () => {
 		expect(content.includes("ROOT") && content.includes("CHILD") && !content.includes("IGNORE")).toBeTruthy()
 		rmSync(folder, { recursive: true, force: true })
 	})
-
 	it("state and close", async () => {
 		const folder = mkdtempSync(join(tmpdir(), "mendly-folder-"))
 		writeFileSync(join(folder, "only.txt"), "A")
@@ -41,7 +39,6 @@ describe("mendly.Reader.Folder", () => {
 		expect(await reader.close()).toBeFalsy()
 		rmSync(folder, { recursive: true, force: true })
 	})
-
 	it("reader registry", () => {
 		const folder = mkdtempSync(join(tmpdir(), "mendly-folder-"))
 		writeFileSync(join(folder, "only.txt"), "A")
