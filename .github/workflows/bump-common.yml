@@ -65,4 +65,4 @@ jobs:
           bump-policy: last-commit
           check-last-commit-only: true
           target-branch: ${{ github.ref_name }}
-          commit-message: "ci: version bump to v{{version}} [skip ci]"
+          commit-message: "ci: version bump to {{version}} [skip ci]"
