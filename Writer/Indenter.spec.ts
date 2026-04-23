@@ -49,4 +49,11 @@ describe("mendly.Writer.Indenter", () => {
 		expect(await writer.close()).toBeTruthy()
 		expect(result.result).toEqual('function foo(bar) {\n\tif (!bar)\n\t\tbar = ""\n\treturn bar\n}\n')
 	})
+	it("does not allow negative indentation", async () => {
+		const result = mendly.Writer.String.create()
+		const writer = new mendly.Writer.Indenter(result)
+		expect(writer.decrease()).toBe(false)
+		expect(await writer.writeLine("ok")).toBe(true)
+		expect(result.result).toEqual("ok\n")
+	})
 })

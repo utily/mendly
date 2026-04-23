@@ -52,9 +52,7 @@ export class File extends Reader {
 					readFileSync((resource.isRelative ? "" : sep) + resource.path.join(sep), "utf-8"),
 					resource
 				)
-			} catch {
-				console.log(`Failed to open file: ${resource.toString()}`)
-			}
+			} catch {}
 		return backend ? new File(backend) : undefined
 	}
 }

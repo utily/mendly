@@ -30,8 +30,7 @@ export class Indenter extends Writer {
 		return true
 	}
 	decrease(): boolean {
-		this.indentionCount--
-		return this.indentionCount >= 0
+		return this.indentionCount > 0 && this.indentionCount-- > 0
 	}
 	private getIndention(): string {
 		return this.indentionSymbol.repeat(this.indentionCount)
