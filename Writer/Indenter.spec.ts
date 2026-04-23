@@ -56,4 +56,15 @@ describe("mendly.Writer.Indenter", () => {
 		expect(await writer.writeLine("ok")).toBe(true)
 		expect(result.result).toEqual("ok\n")
 	})
+	it("resource and writable", () => {
+		const result = mendly.Writer.String.create()
+		const writer = new mendly.Writer.Indenter(result)
+		expect(writer.resource).toBeTruthy()
+		expect(writer.writable).toBe(true)
+	})
+	it("flush", async () => {
+		const result = mendly.Writer.String.create()
+		const writer = new mendly.Writer.Indenter(result)
+		expect(await writer.flush()).toBe(true)
+	})
 })

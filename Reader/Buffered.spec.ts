@@ -115,4 +115,37 @@ describe("mendly.Reader.Buffered", () => {
 			}
 		}
 	})
+	it("peekIs with array finds first match", () => {
+		const br = mendly.Reader.Buffered.create(mendly.Reader.String.create("hello"))
+		expect(br.peekIs(["world", "hell"])).toEqual("hell")
+		expect(br.peekIs(["world", "nope"])).toBeUndefined()
+	})
+	it("peekIs with count repeats value", () => {
+		const br = mendly.Reader.Buffered.create(mendly.Reader.String.create("aaa"))
+		expect(br.peekIs("a", 2)).toEqual("aaa")
+		expect(br.peekIs("a", 3)).toBeUndefined()
+	})
+	it("peekIs undefined returns undefined", () => {
+		const br = mendly.Reader.Buffered.create(mendly.Reader.String.create("hello"))
+		expect(br.peekIs(undefined)).toBeUndefined()
+	})
+	it("readIf with array reads first match", () => {
+		const br = mendly.Reader.Buffered.create(mendly.Reader.String.create("hello"))
+		expect(br.readIf(["world", "hell"])).toEqual("hell")
+		expect(br.readIf(["o", "nope"])).toEqual("o")
+		expect(br.readIf(["x", "y"])).toBeUndefined()
+	})
+	it("readIf undefined returns undefined", () => {
+		const br = mendly.Reader.Buffered.create(mendly.Reader.String.create("hello"))
+		expect(br.readIf(undefined)).toBeUndefined()
+	})
+	it("readAll accumulates reads", () => {
+		const br = mendly.Reader.Buffered.create(mendly.Reader.String.create("hi"))
+		const content = br.readAll()
+		expect(content).toBeTruthy()
+		expect(content?.startsWith("hi")).toBe(true)
+	})
+	it("create undefined returns undefined", () => {
+		expect(mendly.Reader.Buffered.create(undefined)).toBeUndefined()
+	})
 })

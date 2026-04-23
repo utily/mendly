@@ -54,4 +54,12 @@ describe("mendly.Enumerator", () => {
 		while (enumerator.fetch()) if (enumerator.last) result.push(enumerator.last)
 		expect(result.join("")).toEqual("let's reduce this string back to an array of single character strings")
 	})
+	it("append value", () => {
+		const enumerator = new StringEnumerator("abc").append("d")
+		expect(enumerator.toArray().join("")).toEqual("abcd")
+	})
+	it("append iterator", () => {
+		const enumerator = new StringEnumerator("ab").append(new StringEnumerator("cd"))
+		expect(enumerator.toArray().join("")).toEqual("abcd")
+	})
 })
