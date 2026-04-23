@@ -17,6 +17,7 @@ export class File extends Writer {
 	get writable(): boolean {
 		return this.descriptor != undefined
 	}
+	error: unknown | undefined
 	autoFlush: boolean = false
 	constructor(
 		readonly resource: Uri,
@@ -29,8 +30,11 @@ export class File extends Writer {
 		if (this.descriptor != undefined)
 			try {
 				await fsync(this.descriptor)
+				this.error = undefined
 				result = true
-			} catch {}
+			} catch (error) {
+				this.error = error
+			}
 		return result
 	}
 	async close(): Promise<boolean> {
@@ -38,8 +42,11 @@ export class File extends Writer {
 		if (this.descriptor != undefined) {
 			try {
 				await close(this.descriptor)
+				this.error = undefined
 				result = true
-			} catch {}
+			} catch (error) {
+				this.error = error
+			}
 			this.descriptor = undefined
 		}
 		return result
@@ -50,8 +57,11 @@ export class File extends Writer {
 		if (this.descriptor != undefined)
 			try {
 				const r = await write(this.descriptor, content)
+				this.error = undefined
 				result = r.bytesWritten == content.length
-			} catch {}
+			} catch (error) {
+				this.error = error
+			}
 		if (result && this.autoFlush) result = await this.flush()
 		return result
 	}

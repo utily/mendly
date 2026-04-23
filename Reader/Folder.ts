@@ -61,19 +61,17 @@ export class Folder extends Reader {
 		return this.current ? this.current.mark() : new Error.Region(this.resource)
 	}
 
-	private static getFiles(folder: string, filetype: string, ignoreFiles: string[] = []): string[] {
+	private static getFiles(folder: string, filetype: string): string[] {
 		let result: string[] = []
 		const files: string[] = readdirSync(folder)
 		files.forEach(file => {
 			const filename = folder + separator + file
-			if (ignoreFiles.indexOf(filename) == -1) {
-				if (lstatSync(filename).isDirectory()) result = result.concat(Folder.getFiles(filename, filetype, ignoreFiles))
-				else if (
-					file.length > filetype.length
-					&& file.lastIndexOf(filetype, file.length - filetype.length) === file.length - filetype.length
-				)
-					result.push(filename)
-			}
+			if (lstatSync(filename).isDirectory()) result = result.concat(Folder.getFiles(filename, filetype))
+			else if (
+				file.length > filetype.length
+				&& file.lastIndexOf(filetype, file.length - filetype.length) === file.length - filetype.length
+			)
+				result.push(filename)
 		})
 		return result
 	}

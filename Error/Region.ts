@@ -9,20 +9,14 @@ export class Region {
 		readonly content?: string
 	) {}
 	merge(other?: Region) {
-		return other
-			? new Region(
-					this.resource,
-					this.start,
-					other.end,
-					this.content ? this.content : "" + other.content ? other.content : ""
-				)
-			: this
+		return other ? new Region(this.resource, this.start, other.end, (this.content ?? "") + (other.content ?? "")) : this
 	}
 	toString() {
-		let result = this.resource.toString()
-		if (this.start && this.end) result += " (" + this.start.toString() + " - " + this.end.toString() + ") "
-		if (this.content) result += this.content
-		return result
+		return (
+			this.resource.toString()
+			+ (this.start && this.end ? " (" + this.start.toString() + " - " + this.end.toString() + ") " : "")
+			+ (this.content ?? "")
+		)
 	}
 }
 export namespace Region {}
