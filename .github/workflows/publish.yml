@@ -1,0 +1,38 @@
+name: "Publish"
+
+on:
+  workflow_run:
+    workflows:
+      - "Bump Alpha"
+      - "Bump Beta"
+      - "Bump Minor"
+    types:
+      - completed
+
+concurrency:
+  group: publish-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: "Publish"
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+          registry-url: "https://registry.npmjs.org"
+      - run: npm ci
+      - run: npm run build
+      - run: npm publish --tag "${{ github.event.workflow_run.name == 'Bump Minor' && 'latest' || (github.event.workflow_run.name == 'Bump Alpha' && 'alpha' || 'beta') }}" --access public --provenance
