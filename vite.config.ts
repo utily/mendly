@@ -8,7 +8,7 @@ export default defineConfig({
 			reporter: ["text", "json", "html"],
 			enabled: true,
 			cleanOnRerun: true,
-			thresholds: { statements: 60, branches: 45, functions: 50, lines: 60 }
+			thresholds: { statements: 95, branches: 90, functions: 98, lines: 98 }
 		},
 		globals: true,
 		include: ["**/*.spec.[tj]s"],
