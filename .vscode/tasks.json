@@ -16,6 +16,31 @@
 		{
 			"type": "npm",
 			"script": "lint"
+		},
+		{
+			"label": "format",
+			"type": "npm",
+			"script": "format"
+		},
+		{
+			"label": "test",
+			"type": "npm",
+			"script": "test"
+		},
+		{
+			"label": "coverage",
+			"type": "npm",
+			"script": "coverage"
+		},
+		{
+			"label": "clean",
+			"type": "npm",
+			"script": "clean"
+		},
+		{
+			"label": "verify",
+			"type": "npm",
+			"script": "verify"
 		}
 	]
 }
