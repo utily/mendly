@@ -1,12 +1,20 @@
 name: CI
-
 on:
+  push:
+    branches:
+      - master
+      - master-4
+      - master-1
+      - master-2
   pull_request:
-
+    branches:
+      - master
+      - master-4
+      - master-1
+      - master-2
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
-
 jobs:
   build:
     name: Build
@@ -15,7 +23,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: "npm"
       - run: npm ci
       - run: npm run build
@@ -26,7 +34,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: "npm"
       - run: npm ci
       - run: npm run test
@@ -37,7 +45,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: "npm"
       - run: npm ci
       - run: npm run lint
@@ -48,7 +56,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: "npm"
       - run: npm ci
       - run: npm audit --omit=dev

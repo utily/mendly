@@ -1,38 +1,36 @@
-name: "Publish"
-
-on:
-  workflow_run:
-    workflows:
-      - "Bump Alpha"
-      - "Bump Beta"
-      - "Bump Minor"
-    types:
-      - completed
-
-concurrency:
-  group: publish-${{ github.event.workflow_run.head_branch }}
-  cancel-in-progress: false
-
+name: Publish
 permissions:
   contents: read
   id-token: write
-
+on:
+  push:
+    branches:
+      - master
+      - master-4
+      - master-1
+      - master-2
 jobs:
   publish:
-    name: "Publish"
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    timeout-minutes: 60
+    name: Publish package
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: "npm"
-          registry-url: "https://registry.npmjs.org"
-      - run: npm ci
-      - run: npm run build
-      - run: npm publish --tag "${{ github.event.workflow_run.name == 'Bump Minor' && 'latest' || (github.event.workflow_run.name == 'Bump Alpha' && 'alpha' || 'beta') }}" --access public --provenance
+          node-version: 16
+          registry-url: https://registry.npmjs.org
+      - name: Install dependencies
+        run: npm ci
+      - name: Build package
+        run: npm run build
+      - name: Publish beta
+        if: github.ref_name == 'master'
+        run: npm publish --access public --tag beta
+      - name: Publish alpha
+        if: github.ref_name == 'master-4'
+        run: npm publish --access public --tag alpha
+      - name: Publish latest
+        if: github.ref_name != 'master' && github.ref_name != 'master-4'
+        run: npm publish --access public --tag latest
