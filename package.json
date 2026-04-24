@@ -17,6 +17,11 @@
 	"types": "./dist/types/index.d.ts",
 	"files": [
 		"dist",
+		"*.ts",
+		"*/**/*.ts",
+		"!*.spec.ts",
+		"!*/**/*.spec.ts",
+		"!test",
 		"LICENSE",
 		"README.md"
 	],
