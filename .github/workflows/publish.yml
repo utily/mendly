@@ -1,14 +1,12 @@
 name: Publish
 permissions:
-  contents: read
+  contents: write
   id-token: write
 on:
   push:
     branches:
       - master
-      - master-4
-      - master-1
-      - master-2
+      - master-*
 jobs:
   publish:
     name: Publish package
@@ -23,15 +21,28 @@ jobs:
           registry-url: https://registry.npmjs.org
       - name: Install dependencies
         run: npm ci
-      - name: Build package
-        run: npm run build
-      - name: Resolve publish tag
-        id: publish-tag
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Determine Version Type
+        id: version-type
         uses: actions/github-script@v7
         with:
           result-encoding: string
           script: |
             const ref = process.env.GITHUB_REF_NAME;
             return ref == "master" ? "beta" : ref == "master-4" ? "alpha" : "latest";
+      - name: Bump version
+        run: |
+          if [ "${{ steps.version-type.outputs.result }}" = "latest" ]; then
+            npm version minor;
+          else
+            npm version prerelease --preid=${{ steps.version-type.outputs.result }};
+          fi
+      - name: Push bumped version
+        run: git push --follow-tags
+      - name: Build package
+        run: npm run build
       - name: Publish package
-        run: npm publish --access public --provenance --tag ${{ steps.publish-tag.outputs.result }}
+        run: npm publish --access public --provenance --tag ${{ steps.version-type.outputs.result }}
