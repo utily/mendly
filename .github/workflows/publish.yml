@@ -25,12 +25,13 @@ jobs:
         run: npm ci
       - name: Build package
         run: npm run build
-      - name: Publish beta
-        if: github.ref_name == 'master'
-        run: npm publish --access public --provenance --tag beta
-      - name: Publish alpha
-        if: github.ref_name == 'master-4'
-        run: npm publish --access public --provenance --tag alpha
-      - name: Publish latest
-        if: github.ref_name != 'master' && github.ref_name != 'master-4'
-        run: npm publish --access public --provenance --tag latest
+      - name: Resolve publish tag
+        id: publish-tag
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |
+            const ref = process.env.GITHUB_REF_NAME;
+            return ref == "master" ? "beta" : ref == "master-4" ? "alpha" : "latest";
+      - name: Publish package
+        run: npm publish --access public --provenance --tag ${{ steps.publish-tag.outputs.result }}

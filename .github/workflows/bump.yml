@@ -1,4 +1,6 @@
 name: Bump
+permissions:
+  contents: write
 on:
   workflow_run:
     workflows:
@@ -25,15 +27,17 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-      - name: Bump alpha version
-        if: github.event.workflow_run.head_branch == 'master-4'
-        run: npm version prerelease --preid=alpha --no-git-tag-version
-      - name: Bump beta version
-        if: github.event.workflow_run.head_branch == 'master'
-        run: npm version prerelease --preid=beta --no-git-tag-version
-      - name: Bump minor version
-        if: github.event.workflow_run.head_branch != 'master' && github.event.workflow_run.head_branch != 'master-4'
-        run: npm version minor --no-git-tag-version
+      - name: Resolve bump command
+        id: bump-command
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |
+            const ref = github.context.payload.workflow_run?.head_branch || process.env.GITHUB_REF_NAME || "";
+            const type = ref == "master" ? "beta" : ref == "master-4" ? "alpha" : "minor";
+            return `npm version ${type == "minor" ? "minor" : "prerelease"} ${type != "minor" ? "--preid=" + type : ""}`;
+      - name: Bump version
+        run: ${{ steps.bump-command.outputs.result }}
       - name: Push bumped version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -41,3 +45,4 @@ jobs:
           git add package.json package-lock.json
           git commit -m "chore: bump version after publish"
           git push origin HEAD
+          git push --tags
