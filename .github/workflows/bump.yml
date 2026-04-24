@@ -1,12 +1,10 @@
 name: Bump
-
 on:
   workflow_run:
     workflows:
       - Publish
     types:
       - completed
-
 jobs:
   bump:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
