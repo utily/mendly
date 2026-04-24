@@ -1,0 +1,45 @@
+name: Bump
+
+on:
+  workflow_run:
+    workflows:
+      - Publish
+    types:
+      - completed
+
+jobs:
+  bump:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Bump version after publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install dependencies
+        run: npm ci
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Bump alpha version
+        if: github.event.workflow_run.head_branch == 'master-4'
+        run: npm version prerelease --preid=alpha --no-git-tag-version
+      - name: Bump beta version
+        if: github.event.workflow_run.head_branch == 'master'
+        run: npm version prerelease --preid=beta --no-git-tag-version
+      - name: Bump minor version
+        if: github.event.workflow_run.head_branch != 'master' && github.event.workflow_run.head_branch != 'master-4'
+        run: npm version minor --no-git-tag-version
+      - name: Push bumped version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git add package.json package-lock.json
+          git commit -m "chore: bump version after publish"
+          git push origin HEAD
