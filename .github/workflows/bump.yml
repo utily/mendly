@@ -33,7 +33,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const ref = github.context.payload.workflow_run?.head_branch || process.env.GITHUB_REF_NAME || "";
+            const ref = context.payload.workflow_run?.head_branch || process.env.GITHUB_REF_NAME || "";
             const type = ref == "master" ? "beta" : ref == "master-4" ? "alpha" : "minor";
             return `npm version ${type == "minor" ? "minor" : "prerelease"} ${type != "minor" ? "--preid=" + type : ""}`;
       - name: Bump version
