@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 24
           registry-url: https://registry.npmjs.org
       - name: Install dependencies
         run: npm ci
@@ -27,10 +27,10 @@ jobs:
         run: npm run build
       - name: Publish beta
         if: github.ref_name == 'master'
-        run: npm publish --access public --tag beta
+        run: npm publish --access public --provenance --tag beta
       - name: Publish alpha
         if: github.ref_name == 'master-4'
-        run: npm publish --access public --tag alpha
+        run: npm publish --access public --provenance --tag alpha
       - name: Publish latest
         if: github.ref_name != 'master' && github.ref_name != 'master-4'
-        run: npm publish --access public --tag latest
+        run: npm publish --access public --provenance --tag latest
