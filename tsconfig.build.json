@@ -6,7 +6,8 @@
 		"rootDir": ".",
 		"declaration": true,
 		"declarationDir": "./dist/types",
-		"sourceMap": true
+		"sourceMap": true,
+		"inlineSources": true
 	},
 	"exclude": ["**/*.spec.ts", "coverage", "dist", "node_modules", "vite.config.ts"],
 	"files": ["index.ts", "index.node.ts"]
