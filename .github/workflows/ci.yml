@@ -3,9 +3,7 @@ on:
   pull_request:
     branches:
       - master
-      - master-4
-      - master-1
-      - master-2
+      - master-*
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
