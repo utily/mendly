@@ -48,13 +48,13 @@
 		"verify": "npm run build && npm run test && npm run lint && npm audit --omit=dev"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.13",
-		"@types/node": "^25.6.0",
-		"@vitest/coverage-v8": "^4.1.5",
+		"@biomejs/biome": "2.4.15",
+		"@types/node": "^25.9.1",
+		"@vitest/coverage-v8": "^4.1.7",
 		"rimraf": "^6.1.3",
 		"typescript": "6.0.3",
-		"vite": "^8.0.10",
-		"vitest": "^4.1.5"
+		"vite": "^8.0.14",
+		"vitest": "^4.1.7"
 	},
 	"dependencies": {}
 }
