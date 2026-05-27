@@ -3,6 +3,9 @@ import { Uri } from "../Uri"
 import { Buffered } from "./Buffered"
 import { Reader } from "./Reader"
 
+/**
+ * A reader that continues while each line starts with a given prefix. The prefix is not included in the output.
+ */
 export class Prefix extends Reader {
 	get tabSize(): number {
 		return this.backend.tabSize
@@ -43,8 +46,11 @@ export class Prefix extends Reader {
 	read(): string | undefined {
 		let result: string | undefined
 		if (!this.done) {
-			result = this.backend.read()
-			this.done = result == "\n" && !this.backend.readIf(this.prefix) && !this.backend.peekIs("\n")
+			result = this.backend.readIf("\n" + this.prefix)
+				? "\n"
+				: !(this.done = !!this.backend.peekIs("\n"))
+					? this.backend.read()
+					: undefined
 		}
 		return result
 	}
@@ -53,6 +59,7 @@ export class Prefix extends Reader {
 	}
 	static create(backend: undefined, prefix?: string | string[]): undefined
 	static create(backend: Reader, prefix?: string | string[]): Reader
+	static create(backend: Reader | undefined, prefix?: string | string[]): Reader | undefined
 	static create(backend: Reader | undefined, prefix?: string | string[]): Reader | undefined {
 		return backend && prefix ? new Prefix(backend, prefix) : backend
 	}
