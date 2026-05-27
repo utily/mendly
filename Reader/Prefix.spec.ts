@@ -10,7 +10,8 @@ const collect = (reader: mendly.Reader | undefined): string => {
 describe("mendly.Reader.Prefix", () => {
 	it.each([
 		{ name: "undefined backend", backend: undefined, prefix: "x", expected: undefined },
-		{ name: "undefined prefix", backend: mendly.Reader.String.create("a"), prefix: undefined, expected: "backend" }
+		{ name: "undefined prefix", backend: mendly.Reader.String.create("a"), prefix: undefined, expected: "backend" },
+		{ name: "empty prefix", backend: mendly.Reader.String.create("a"), prefix: "", expected: "backend" }
 	] satisfies {
 		name: string
 		backend: mendly.Reader | undefined

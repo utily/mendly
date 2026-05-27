@@ -15,4 +15,16 @@ describe("mendly.Uri.resolve", () => {
 			expect(locator.path).toEqual(["folder0", "folder1", "folder2", "file.extension"])
 		}
 	})
+	it("resolve with undefined absolute returns same instance", () => {
+		const locator = mendly.Uri.parse("./folder/file.extension")!
+		expect(locator.resolve()).toBe(locator)
+	})
+	it("resolve keeps explicit scheme and authority", () => {
+		const resolved = mendly.Uri.parse("http://other.example.net/override/path")!.resolve(
+			mendly.Uri.parse("https://server.example.com/base/")!
+		)
+		expect(resolved.scheme).toEqual(["http"])
+		expect(resolved.authority.endpoint.host).toEqual(["other", "example", "net"])
+		expect(resolved.path).toEqual(["override", "path"])
+	})
 })

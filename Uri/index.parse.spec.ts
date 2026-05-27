@@ -127,6 +127,16 @@ describe("mendly.Uri.parse", () => {
 			name: "query and fragment decode",
 			input: "./folder/file.extension?name=hello%20world#part",
 			expected: { query: { name: "hello world" }, fragment: "part" }
-		}
+		},
+		{
+			name: "authority without path",
+			input: "file://",
+			expected: {
+				scheme: ["file"],
+				authority: { user: { name: undefined, password: undefined }, endpoint: { host: [] } },
+				path: []
+			}
+		},
+		{ name: "empty query and fragment are ignored", input: "./folder/file.extension?#", expected: { query: {} } }
 	])("$name", ({ input, expected }) => expect(mendly.Uri.parse(input)).toMatchObject(expected))
 })

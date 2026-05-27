@@ -39,4 +39,15 @@ describe("mendly.Uri.toString", () => {
 		const uri = new mendly.Uri([], undefined, [".", "folder2", "file.extension"], { "a b": "x/y" })
 		expect(uri.toString()).toEqual("./folder2/file.extension?a%20b=x%2Fy")
 	})
+	it("normalize keeps unresolved parent traversals", () =>
+		expect(new mendly.Uri([], undefined, [".", "..", "..", "target"]).normalize().path).toEqual(["..", "target"]))
+	it("appendPath supports both string and array", () => {
+		const base = mendly.Uri.parse("./folder")!
+		expect(base.appendPath("a").path).toEqual([".", "folder", "a"])
+		expect(base.appendPath(["a", "b"]).path).toEqual([".", "folder", "a", "b"])
+	})
+	it("toString keeps scheme with empty authority and dot path", () =>
+		expect(new mendly.Uri(["file"], undefined, [".", "x"], { key: undefined as unknown as string }).toString()).toEqual(
+			"file:///./x?key="
+		))
 })
