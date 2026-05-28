@@ -19,13 +19,12 @@ export class Uri {
 	get folder(): Uri {
 		return this.isFolder
 			? this
-			: new Uri(
-					this.scheme,
-					this.authority,
-					this.path.filter((value, index) => index < this.path.length - 1),
-					this.query,
-					this.fragment
-				)
+			: this.parent
+	}
+	get parent(): Uri {
+		return this.path.length > 0
+			? new Uri(this.scheme, this.authority, this.path.slice(0, this.path.length - 1), this.query, this.fragment)
+			: this
 	}
 	get name(): string {
 		return this.path[this.path.length - 1] ?? ""
