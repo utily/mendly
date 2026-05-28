@@ -1,4 +1,4 @@
-import { mendly } from "../index"
+import { mendly } from "../index.js"
 
 describe("mendly.Error", () => {
 	it.each([

@@ -1,9 +1,9 @@
 import { lstatSync, readdirSync } from "node:fs"
 import { sep as separator } from "node:path"
-import { Error } from "../Error"
-import { Uri } from "../Uri"
-import { File } from "./File"
-import { Reader } from "./Reader"
+import { Error } from "../Error/index.js"
+import { Uri } from "../Uri/index.js"
+import { File } from "./File.js"
+import { Reader } from "./Reader.js"
 
 export class Folder extends Reader {
 	private tabSizeValue = 2

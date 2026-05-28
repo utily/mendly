@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { mendly } from "../index"
+import { mendly } from "../index.js"
 
 describe("mendly.Uri.Authority", () => {
 	it("empty by default", () => expect(new mendly.Uri.Authority().empty).toBe(true))

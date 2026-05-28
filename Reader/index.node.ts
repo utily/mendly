@@ -1,6 +1,6 @@
-import { File as _File } from "./File"
-import { Folder as _Folder } from "./Folder"
-import { Reader as _Reader } from "./index"
+import { File as _File } from "./File.js"
+import { Folder as _Folder } from "./Folder.js"
+import { Reader as _Reader } from "./index.js"
 
 export type Reader = _Reader
 export const Reader = Object.assign(_Reader, { File: _File, Folder: _Folder }) as typeof _Reader & {

@@ -1,4 +1,4 @@
-import { Enumerator } from "./Enumerator"
+import { Enumerator } from "./Enumerator.js"
 
 export class Buffered<T> extends Enumerator<T> {
 	private buffer: T[] = []

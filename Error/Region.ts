@@ -1,5 +1,5 @@
-import { Uri } from "../Uri"
-import { Position } from "./Position"
+import { Uri } from "../Uri/index.js"
+import { Position } from "./Position.js"
 
 export class Region {
 	constructor(

@@ -1,10 +1,10 @@
-import { Device as _Device } from "./Device"
-import { Enumerable as _Enumerable } from "./Enumerable"
-import { Enumerator as _Enumerator } from "./Enumerator"
-import { Error as _Error } from "./Error"
-import { Reader as _Reader } from "./Reader"
-import { Uri as _Uri } from "./Uri"
-import { Writer as _Writer } from "./Writer"
+import { Device as _Device } from "./Device/index.js"
+import { Enumerable as _Enumerable } from "./Enumerable.js"
+import { Enumerator as _Enumerator } from "./Enumerator/index.js"
+import { Error as _Error } from "./Error/index.js"
+import { Reader as _Reader } from "./Reader/index.js"
+import { Uri as _Uri } from "./Uri/index.js"
+import { Writer as _Writer } from "./Writer/index.js"
 
 export namespace mendly {
 	export import Device = _Device

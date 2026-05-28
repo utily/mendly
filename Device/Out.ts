@@ -1,4 +1,4 @@
-import type { Device } from "./"
+import type { Device } from "./index.js"
 
 export interface Out extends Device {
 	get writable(): boolean

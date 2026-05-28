@@ -1,9 +1,9 @@
-import { Buffered as _Buffered } from "./Buffered"
-import { Prefix as _Prefix } from "./Prefix"
-import { Reader as _Reader } from "./Reader"
-import { String as _String } from "./String"
-import { Till as _Till } from "./Till"
-import { Until as _Until } from "./Until"
+import { Buffered as _Buffered } from "./Buffered.js"
+import { Prefix as _Prefix } from "./Prefix.js"
+import { Reader as _Reader } from "./Reader.js"
+import { String as _String } from "./String.js"
+import { Till as _Till } from "./Till.js"
+import { Until as _Until } from "./Until.js"
 
 export type Reader = _Reader
 export const Reader = Object.assign(_Reader, {

@@ -1,4 +1,4 @@
-import { mendly } from "../../index"
+import { mendly } from "../../index.js"
 
 describe("mendly.Error.Handler.Collector", () => {
 	const makeError = (description: string, level = "recoverable", type = "unknown") =>

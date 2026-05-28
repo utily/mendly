@@ -1,6 +1,6 @@
-import { Device } from "../Device"
-import { Error } from "../Error"
-import { Uri } from "../Uri"
+import { Device } from "../Device/index.js"
+import { Error } from "../Error/index.js"
+import { Uri } from "../Uri/index.js"
 
 export abstract class Reader implements Device.In {
 	abstract get readable(): boolean

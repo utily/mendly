@@ -1,4 +1,4 @@
-import { Enumerator } from "./Enumerator"
+import { Enumerator } from "./Enumerator/index.js"
 export class Enumerable<T> implements Iterable<T> {
 	get length(): number {
 		return this.get().length

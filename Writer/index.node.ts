@@ -1,5 +1,5 @@
-import { File as _File } from "./File"
-import { Writer as _Writer } from "./index"
+import { File as _File } from "./File.js"
+import { Writer as _Writer } from "./index.js"
 
 export type Writer = _Writer
 export const Writer = Object.assign(_Writer, { File: _File }) as typeof _Writer & { File: typeof _File }

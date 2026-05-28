@@ -1,6 +1,6 @@
-import { Authority as _Authority } from "./Authority"
-import { Endpoint as _Endpoint } from "./Endpoint"
-import { User as _User } from "./User"
+import { Authority as _Authority } from "./Authority.js"
+import { Endpoint as _Endpoint } from "./Endpoint.js"
+import { User as _User } from "./User.js"
 
 export class Uri {
 	constructor(

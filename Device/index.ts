@@ -1,6 +1,6 @@
-import { Uri } from "../Uri"
-import { In as _In } from "./In"
-import { Out as _Out } from "./Out"
+import { Uri } from "../Uri/index.js"
+import { In as _In } from "./In.js"
+import { Out as _Out } from "./Out.js"
 
 // Export both the type and the value
 export interface Device {

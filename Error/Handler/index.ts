@@ -1,6 +1,6 @@
-import type { Error } from "../"
-import { Collector as _Collector } from "./Collector"
-import { Console as _Console } from "./Console"
+import type { Error } from "../index.js"
+import { Collector as _Collector } from "./Collector.js"
+import { Console as _Console } from "./Console.js"
 
 export interface Handler {
 	raise: { (message: Error): void }

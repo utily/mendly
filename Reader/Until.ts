@@ -1,7 +1,7 @@
-import { Error } from "../Error"
-import { Uri } from "../Uri"
-import { Buffered } from "./Buffered"
-import { Reader } from "./Reader"
+import { Error } from "../Error/index.js"
+import { Uri } from "../Uri/index.js"
+import { Buffered } from "./Buffered.js"
+import { Reader } from "./Reader.js"
 
 export class Until extends Reader {
 	get tabSize(): number {

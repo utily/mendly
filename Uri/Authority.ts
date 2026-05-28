@@ -1,5 +1,5 @@
-import { Endpoint } from "./Endpoint"
-import { User } from "./User"
+import { Endpoint } from "./Endpoint.js"
+import { User } from "./User.js"
 
 export class Authority {
 	get empty() {

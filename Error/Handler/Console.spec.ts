@@ -1,4 +1,4 @@
-import { mendly } from "../../index"
+import { mendly } from "../../index.js"
 
 describe("mendly.Error.Handler.Console", () => {
 	const handler = new mendly.Error.Handler.Console()

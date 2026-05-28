@@ -1,4 +1,4 @@
-import { Enumerator } from "./Enumerator"
+import { Enumerator } from "./Enumerator.js"
 
 export class Array<T> extends Enumerator<T> {
 	private position = 0

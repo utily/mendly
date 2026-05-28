@@ -1,6 +1,6 @@
-import { Device } from "../Device"
-import { Enumerator } from "../Enumerator"
-import { Uri } from "../Uri"
+import { Device } from "../Device/index.js"
+import { Enumerator } from "../Enumerator/index.js"
+import { Uri } from "../Uri/index.js"
 
 export abstract class Writer implements Device.Out {
 	abstract get writable(): boolean

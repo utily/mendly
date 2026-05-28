@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { mendly } from "../index"
+import { mendly } from "../index.js"
 
 describe("mendly.Uri.toString", () => {
 	it("full https", () => {

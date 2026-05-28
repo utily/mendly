@@ -1,4 +1,4 @@
-import { mendly } from "../index"
+import { mendly } from "../index.js"
 
 const collect = (reader: mendly.Reader | undefined): string => {
 	let result = ""

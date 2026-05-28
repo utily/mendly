@@ -1,9 +1,9 @@
 import * as fs from "node:fs"
 import { sep } from "node:path"
 import * as util from "node:util"
-import { Enumerator } from "../Enumerator"
-import { Uri } from "../Uri"
-import { Writer } from "./Writer"
+import { Enumerator } from "../Enumerator/index.js"
+import { Uri } from "../Uri/index.js"
+import { Writer } from "./Writer.js"
 
 const close = util.promisify(fs.close)
 const fsync = util.promisify(fs.fsync)

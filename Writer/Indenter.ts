@@ -1,6 +1,6 @@
-import { Enumerator } from "../Enumerator"
-import { Uri } from "../Uri"
-import { Writer } from "./Writer"
+import { Enumerator } from "../Enumerator/index.js"
+import { Uri } from "../Uri/index.js"
+import { Writer } from "./Writer.js"
 
 export class Indenter extends Writer {
 	get resource(): Uri {

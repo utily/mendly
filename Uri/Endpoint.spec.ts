@@ -1,4 +1,4 @@
-import { mendly } from "../index"
+import { mendly } from "../index.js"
 
 describe("mendly.Uri.Endpoint", () => {
 	it.each([

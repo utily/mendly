@@ -1,9 +1,9 @@
 import { readFileSync } from "node:fs"
 import { sep } from "node:path"
-import { Error } from "../Error"
-import { Uri } from "../Uri"
-import { Reader } from "./Reader"
-import { String } from "./String"
+import { Error } from "../Error/index.js"
+import { Uri } from "../Uri/index.js"
+import { Reader } from "./Reader.js"
+import { String } from "./String.js"
 
 export class File extends Reader {
 	get tabSize(): number {

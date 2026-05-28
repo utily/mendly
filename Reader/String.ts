@@ -1,6 +1,6 @@
-import { Error } from "../Error"
-import { Uri } from "../Uri"
-import { Reader } from "./Reader"
+import { Error } from "../Error/index.js"
+import { Uri } from "../Uri/index.js"
+import { Reader } from "./Reader.js"
 
 export class String extends Reader {
 	tabSize: number = 2

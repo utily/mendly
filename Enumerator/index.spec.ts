@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { mendly } from "../index"
+import { mendly } from "../index.js"
 
 class StringEnumerator extends mendly.Enumerator<string> {
 	private position: number = 0

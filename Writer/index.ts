@@ -1,6 +1,6 @@
-import { Indenter as _Indenter } from "./Indenter"
-import { String as _String } from "./String"
-import { Writer as _Writer } from "./Writer"
+import { Indenter as _Indenter } from "./Indenter.js"
+import { String as _String } from "./String.js"
+import { Writer as _Writer } from "./Writer.js"
 
 export type Writer = _Writer
 export const Writer = Object.assign(_Writer, {

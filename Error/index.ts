@@ -1,10 +1,10 @@
-import { Handler as _Handler } from "./Handler"
-import { Level as _Level } from "./Level"
-import { Level } from "./Level"
-import { Location as _Location } from "./Location"
-import { Position as _Position } from "./Position"
-import { Region as _Region } from "./Region"
-import { Region } from "./Region"
+import { Handler as _Handler } from "./Handler/index.js"
+import { Level as _Level } from "./Level.js"
+import { Level } from "./Level.js"
+import { Location as _Location } from "./Location.js"
+import { Position as _Position } from "./Position.js"
+import { Region as _Region } from "./Region.js"
+import { Region } from "./Region.js"
 
 export class Error {
 	constructor(
