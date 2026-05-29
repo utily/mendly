@@ -17,9 +17,7 @@ export class Uri {
 		return this.path[this.path.length - 1] == ""
 	}
 	get folder(): Uri {
-		return this.isFolder
-			? this
-			: this.parent
+		return this.isFolder ? this : this.parent
 	}
 	get parent(): Uri {
 		return this.path.length > 0
@@ -96,60 +94,54 @@ export class Uri {
 	static readonly empty = new Uri(undefined, undefined, undefined, undefined, undefined)
 	static parse(data?: string): Uri | undefined {
 		let result: Uri | undefined
-		switch (data) {
-			case "":
-			case null:
-			case undefined:
-				break
-			default:
-				let hasAuthority = true
-				let scheme: string[] = []
-				let splitted = data.split("://", 2)
-				if (splitted.length > 1) {
-					scheme = (splitted.shift() || "").split("+")
-					data = splitted.shift()
-				} else if (data.slice(0, 2) == "//") data = data.slice(2)
-				else hasAuthority = false
-				let index: number
-				let fragment: string | undefined
-				if (data && (index = data.lastIndexOf("#")) > -1) {
-					fragment = data.slice(index + 1)
-					data = data.slice(0, index)
-				}
-				let query: { [key: string]: string } = {}
-				if (data && (index = data.lastIndexOf("?")) > -1) {
-					query = Object.fromEntries(
-						data
-							.slice(index + 1)
-							.split(/[&;]/)
-							.map(element => element.split("=", 2).map(decodeURIComponent))
-							.filter(([key]) => !!key)
-							.map(([key, value = ""]) => [key, value])
-					) as { [key: string]: string }
-					data = data.slice(0, index)
-				}
-				let authority: Uri.Authority | undefined
-				let path: string[] = []
-				if (data) {
-					splitted = data.split("/")
-					if (splitted.length > 0) {
-						switch (splitted[0]) {
-							case ".":
-							case "..":
-								break
-							case "":
-								splitted.shift()
-								break
-							default:
-								if (hasAuthority) authority = Uri.Authority.parse(splitted.shift())
-								else splitted.unshift(".")
-								break
-						}
-						path = splitted
+		if (typeof data == "string" && data.length > 0) {
+			let hasAuthority = true
+			let scheme: string[] = []
+			let splitted = data.split("://", 2)
+			if (splitted.length > 1) {
+				scheme = (splitted.shift() || "").split("+")
+				data = splitted.shift()
+			} else if (data.slice(0, 2) == "//") data = data.slice(2)
+			else hasAuthority = false
+			let index: number
+			let fragment: string | undefined
+			if (data && (index = data.lastIndexOf("#")) > -1) {
+				fragment = data.slice(index + 1)
+				data = data.slice(0, index)
+			}
+			let query: { [key: string]: string } = {}
+			if (data && (index = data.lastIndexOf("?")) > -1) {
+				query = Object.fromEntries(
+					data
+						.slice(index + 1)
+						.split(/[&;]/)
+						.map(element => element.split("=", 2).map(decodeURIComponent))
+						.filter(([key]) => !!key)
+						.map(([key, value = ""]) => [key, value])
+				) as { [key: string]: string }
+				data = data.slice(0, index)
+			}
+			let authority: Uri.Authority | undefined
+			let path: string[] = []
+			if (data) {
+				splitted = data.split("/")
+				if (splitted.length > 0) {
+					switch (splitted[0]) {
+						case ".":
+						case "..":
+							break
+						case "":
+							splitted.shift()
+							break
+						default:
+							if (hasAuthority) authority = Uri.Authority.parse(splitted.shift())
+							else splitted.unshift(".")
+							break
 					}
+					path = splitted
 				}
-				result = new Uri(scheme, authority, path, query, fragment)
-				break
+			}
+			result = new Uri(scheme, authority, path, query, fragment)
 		}
 		return result
 	}
