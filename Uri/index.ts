@@ -92,7 +92,7 @@ export class Uri {
 		return result
 	}
 	static readonly empty = new Uri(undefined, undefined, undefined, undefined, undefined)
-	static parse(data?: string): Uri | undefined {
+	static parse(data: string | undefined): Uri | undefined {
 		let result: Uri | undefined
 		if (typeof data == "string" && data.length > 0) {
 			let hasAuthority = true
