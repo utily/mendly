@@ -73,6 +73,9 @@ export class Uri {
 			this.fragment
 		)
 	}
+	toJSON(): string {
+		return this.toString()
+	}
 	toString(): string {
 		let result = ""
 		if (this.scheme.length > 0) result += this.scheme.join("+") + ":"
