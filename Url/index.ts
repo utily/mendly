@@ -3,6 +3,13 @@ import { Endpoint as _Endpoint } from "./Endpoint.js"
 import { User as _User } from "./User.js"
 
 export class Url {
+	/**
+	 * @param scheme Protocol segments before `:` (for example: `https`, `git+ssh`).
+	 * @param authority Network authority component (`//user@host:port`).
+	 * @param path Dot and slash separated URL path segments.
+	 * @param query Decoded query parameters represented as key/value pairs.
+	 * @param fragment Fragment identifier after `#`, without the `#` prefix.
+	 */
 	constructor(
 		readonly scheme: string[] = [],
 		readonly authority: Url.Authority = new _Authority(),
@@ -10,38 +17,47 @@ export class Url {
 		readonly query: { [key: string]: string } = {},
 		readonly fragment?: string
 	) {}
+	/** True when the path starts with `.` or `..`. */
 	get isRelative(): boolean {
 		return this.path[0] == "." || this.path[0] == ".."
 	}
+	/** True when the URL path points to a folder-shaped location. */
 	get isFolder(): boolean {
 		return this.path[this.path.length - 1] == ""
 	}
+	/** Folder form of this URL (`this` when already folder-shaped, otherwise parent). */
 	get folder(): Url {
 		return this.isFolder ? this : this.parent
 	}
+	/** Parent URL created by removing the final path segment. */
 	get parent(): Url {
 		return this.path.length > 0
 			? new Url(this.scheme, this.authority, this.path.slice(0, this.path.length - 1), this.query, this.fragment)
 			: this
 	}
+	/** Final path segment, preserved exactly as stored in `path`. */
 	get filename(): string {
 		return this.path[this.path.length - 1] ?? ""
 	}
+	/** Portion of `filename` before the first `.` (or full name when no dot exists). */
 	get stem(): string {
 		const name = this.filename
 		const firstDot = name.indexOf(".")
 		return firstDot < 0 ? name : name.slice(0, firstDot)
 	}
+	/** Portion of `filename` before the last `.` (empty when no dot exists). */
 	get base(): string {
 		const name = this.filename
 		const lastDot = name.lastIndexOf(".")
 		return lastDot < 0 ? "" : name.slice(0, lastDot)
 	}
+	/** Portion of `filename` after the last `.` (empty when no dot exists). */
 	get extension(): string {
 		const name = this.filename
 		const lastDot = name.lastIndexOf(".")
 		return lastDot < 0 ? "" : name.slice(lastDot + 1)
 	}
+	/** All dot-separated segments after the first `.` in `filename`. */
 	get suffix(): string {
 		const name = this.filename
 		const firstDot = name.indexOf(".")
