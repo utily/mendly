@@ -1,7 +1,7 @@
 import { lstatSync, readdirSync } from "node:fs"
 import { sep as separator } from "node:path"
 import { Error } from "../Error/index.js"
-import { Uri } from "../Uri/index.js"
+import { Url } from "../Url/index.js"
 import { File } from "./File.js"
 import { Reader } from "./Reader.js"
 
@@ -21,11 +21,11 @@ export class Folder extends Reader {
 		return this.current != undefined || this.files.length > 0
 	}
 	private current: Reader | undefined
-	private lastLocation: Error.Location = new Error.Location(Uri.empty, 0, 0)
+	private lastLocation: Error.Location = new Error.Location(Url.empty, 0, 0)
 	get empty(): boolean {
 		return this.files.length == 0 && (!this.current || this.current.empty)
 	}
-	get resource(): Uri {
+	get resource(): Url {
 		return this.current ? this.current.resource : this.lastLocation.resource
 	}
 	get location(): Error.Location {
@@ -34,7 +34,7 @@ export class Folder extends Reader {
 	get region(): Error.Region {
 		return this.current ? this.current.region : new Error.Region(this.resource)
 	}
-	constructor(private files: Uri[]) {
+	constructor(private files: Url[]) {
 		super()
 	}
 	async close(): Promise<boolean> {
@@ -75,7 +75,7 @@ export class Folder extends Reader {
 		})
 		return result
 	}
-	static override open(resource: Uri): Folder | undefined {
+	static override open(resource: Url): Folder | undefined {
 		let files: string[] | undefined
 		try {
 			if (
@@ -90,7 +90,7 @@ export class Folder extends Reader {
 		} catch {
 			files = undefined
 		}
-		return files ? new Folder(files.map(f => new Uri(["file"], undefined, f.split(separator)))) : undefined
+		return files ? new Folder(files.map(f => new Url(["file"], undefined, f.split(separator)))) : undefined
 	}
 }
 export namespace Folder {}

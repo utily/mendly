@@ -1,9 +1,9 @@
-import { Uri } from "../Uri/index.js"
+import { Url } from "../Url/index.js"
 import { Position } from "./Position.js"
 
 export class Region {
 	constructor(
-		readonly resource: Uri,
+		readonly resource: Url,
 		readonly start?: Position,
 		readonly end?: Position,
 		readonly content?: string

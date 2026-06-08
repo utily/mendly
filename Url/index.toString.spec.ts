@@ -1,33 +1,33 @@
 import { describe, expect, it } from "vitest"
 import { mendly } from "../index.js"
 
-describe("mendly.Uri.toString", () => {
+describe("mendly.Url.toString", () => {
 	it("full https", () => {
-		const absolute = mendly.Uri.parse("https://server.example.com/folder0/folder1/")
+		const absolute = mendly.Url.parse("https://server.example.com/folder0/folder1/")
 		expect(absolute).toBeTruthy()
 		if (absolute) expect(absolute.toString()).toEqual("https://server.example.com/folder0/folder1/")
 	})
 	it("full file", () => {
-		const absolute = mendly.Uri.parse("file:///folder0/folder1/")
+		const absolute = mendly.Url.parse("file:///folder0/folder1/")
 		expect(absolute).toBeTruthy()
 		if (absolute) expect(absolute.toString()).toEqual("file:///folder0/folder1/")
 	})
 	it("absolute file", () => {
-		const relative = mendly.Uri.parse("/folder2/file.extension")
+		const relative = mendly.Url.parse("/folder2/file.extension")
 		expect(relative).toBeTruthy()
 		if (relative) expect(relative.toString()).toEqual("/folder2/file.extension")
 	})
 	it("relative", () => {
-		const relative = mendly.Uri.parse("./folder2/file.extension")
+		const relative = mendly.Url.parse("./folder2/file.extension")
 		expect(relative).toBeTruthy()
 		if (relative) expect(relative.toString()).toEqual("./folder2/file.extension")
 	})
 	it("query canonical output and round trip", () => {
-		const relative = mendly.Uri.parse("./folder2/file.extension?alpha=1;beta=two%20words#frag")
+		const relative = mendly.Url.parse("./folder2/file.extension?alpha=1;beta=two%20words#frag")
 		expect(relative).toBeTruthy()
 		if (relative) {
 			expect(relative.toString()).toEqual("./folder2/file.extension?alpha=1&beta=two%20words#frag")
-			const reparsed = mendly.Uri.parse(relative.toString())
+			const reparsed = mendly.Url.parse(relative.toString())
 			expect(reparsed).toBeTruthy()
 			if (reparsed) {
 				expect(reparsed.query).toEqual({ alpha: "1", beta: "two words" })
@@ -36,18 +36,18 @@ describe("mendly.Uri.toString", () => {
 		}
 	})
 	it("query encodes special characters", () => {
-		const uri = new mendly.Uri([], undefined, [".", "folder2", "file.extension"], { "a b": "x/y" })
-		expect(uri.toString()).toEqual("./folder2/file.extension?a%20b=x%2Fy")
+		const Url = new mendly.Url([], undefined, [".", "folder2", "file.extension"], { "a b": "x/y" })
+		expect(Url.toString()).toEqual("./folder2/file.extension?a%20b=x%2Fy")
 	})
 	it("normalize keeps unresolved parent traversals", () =>
-		expect(new mendly.Uri([], undefined, [".", "..", "..", "target"]).normalize().path).toEqual(["..", "target"]))
+		expect(new mendly.Url([], undefined, [".", "..", "..", "target"]).normalize().path).toEqual(["..", "target"]))
 	it("appendPath supports both string and array", () => {
-		const base = mendly.Uri.parse("./folder")!
+		const base = mendly.Url.parse("./folder")!
 		expect(base.appendPath("a").path).toEqual([".", "folder", "a"])
 		expect(base.appendPath(["a", "b"]).path).toEqual([".", "folder", "a", "b"])
 	})
 	it("toString keeps scheme with empty authority and dot path", () =>
-		expect(new mendly.Uri(["file"], undefined, [".", "x"], { key: undefined as unknown as string }).toString()).toEqual(
+		expect(new mendly.Url(["file"], undefined, [".", "x"], { key: undefined as unknown as string }).toString()).toEqual(
 			"file:///./x?key="
 		))
 })

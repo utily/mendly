@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { mendly } from "../index.js"
 
-describe("mendly.Uri.parent", () => {
+describe("mendly.Url.parent", () => {
 	it.each([
 		{ name: "file path", input: "./folder/file.extension" },
 		{ name: "no path", input: "file://" },
@@ -13,5 +13,5 @@ describe("mendly.Uri.parent", () => {
 			name: "keeps scheme authority query fragment",
 			input: "https://server.example.com/folder/file.extension?alpha=1#frag"
 		}
-	])("$name", ({ input }) => expect(mendly.Uri.parse(input)!.parent).toMatchSnapshot())
+	])("$name", ({ input }) => expect(mendly.Url.parse(input)!.parent).toMatchSnapshot())
 })

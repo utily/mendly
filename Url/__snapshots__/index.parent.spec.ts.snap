@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`mendly.Url.parent > 'file path' 1`] = `"./folder"`;
+
+exports[`mendly.Url.parent > 'folder path' 1`] = `"./folder/sub"`;
+
+exports[`mendly.Url.parent > 'keeps scheme authority query fragment' 1`] = `"https://server.example.com/folder?alpha=1#frag"`;
+
+exports[`mendly.Url.parent > 'no path' 1`] = `"file:///"`;
+
+exports[`mendly.Url.parent > 'rootless absolute file' 1`] = `"/folder"`;
+
+exports[`mendly.Url.parent > 'single segment path' 1`] = `"."`;
+
+exports[`mendly.Url.parent > 'top level file' 1`] = `"."`;

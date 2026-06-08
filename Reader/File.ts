@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs"
 import { sep } from "node:path"
 import { Error } from "../Error/index.js"
-import { Uri } from "../Uri/index.js"
+import { Url } from "../Url/index.js"
 import { Reader } from "./Reader.js"
 import { String } from "./String.js"
 
@@ -21,8 +21,8 @@ export class File extends Reader {
 	get empty(): boolean {
 		return this.backend.empty
 	}
-	get resource(): Uri {
-		return this.backend ? this.backend.resource : Uri.empty
+	get resource(): Url {
+		return this.backend ? this.backend.resource : Url.empty
 	}
 	get location(): Error.Location {
 		return this.backend.location
@@ -43,8 +43,8 @@ export class File extends Reader {
 		return this.backend.mark()
 	}
 	static override open(resource?: undefined): undefined
-	static override open(resource?: Uri): File
-	static override open(resource?: Uri): File | undefined {
+	static override open(resource?: Url): File
+	static override open(resource?: Url): File | undefined {
 		let backend: Reader | undefined
 		if (resource && (resource.scheme.length == 0 || (resource.scheme.length == 1 && resource.scheme[0] == "file")))
 			try {

@@ -5,7 +5,7 @@ class RecorderWriter extends mendly.Writer.Writer {
 	autoFlush = false
 	opened = true
 	writable = true
-	resource = mendly.Uri.empty
+	resource = mendly.Url.empty
 	chunks: string[] = []
 	async close(): Promise<boolean> {
 		return true
@@ -41,17 +41,17 @@ describe("mendly.Writer.Writer", () => {
 		expect(writer.chunks.join("")).toEqual(expected)
 	})
 
-	it("open rejects invalid string uri", async () => expect(await mendly.Writer.open("://invalid")).toBeUndefined())
+	it("open rejects invalid string Url", async () => expect(await mendly.Writer.open("://invalid")).toBeUndefined())
 
-	it("open valid string uri miss", async () => expect(await mendly.Writer.open("miss://store")).toBeUndefined())
+	it("open valid string Url miss", async () => expect(await mendly.Writer.open("miss://store")).toBeUndefined())
 
-	it("register and open uri", async () => {
-		const first = async (_: mendly.Uri) => undefined as mendly.Writer | undefined
-		const second = async (resource: mendly.Uri) =>
+	it("register and open Url", async () => {
+		const first = async (_: mendly.Url) => undefined as mendly.Writer | undefined
+		const second = async (resource: mendly.Url) =>
 			(resource.scheme[0] == "mem" ? new RecorderWriter() : undefined) as mendly.Writer | undefined
 		mendly.Writer.register(first, 1)
 		mendly.Writer.register(second, 2)
-		expect(await mendly.Writer.open(mendly.Uri.parse("mem://store")!)).toBeTruthy()
-		expect(await mendly.Writer.open(mendly.Uri.parse("miss://store")!)).toBeUndefined()
+		expect(await mendly.Writer.open(mendly.Url.parse("mem://store")!)).toBeTruthy()
+		expect(await mendly.Writer.open(mendly.Url.parse("miss://store")!)).toBeUndefined()
 	})
 })

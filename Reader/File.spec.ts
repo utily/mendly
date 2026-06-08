@@ -6,15 +6,15 @@ describe("mendly.Reader.File", () => {
 	it("open undefined", () => expect(mendly.Reader.File.open(undefined)).toBeUndefined())
 
 	it("open rejects non-file scheme", () =>
-		expect(mendly.Reader.File.open(mendly.Uri.parse("https://example.com/a.txt")!)).toBeUndefined())
+		expect(mendly.Reader.File.open(mendly.Url.parse("https://example.com/a.txt")!)).toBeUndefined())
 
 	it("open rejects missing path", () =>
-		expect(mendly.Reader.File.open(mendly.Uri.parse("file:///./missing-reader-file.txt")!)).toBeUndefined())
+		expect(mendly.Reader.File.open(mendly.Url.parse("file:///./missing-reader-file.txt")!)).toBeUndefined())
 
 	it("read and state", async () => {
 		const path = "./reader-file-basic.txt"
 		fs.writeFileSync(path, "abc")
-		const reader = mendly.Reader.File.open(mendly.Uri.parse(path)!)!
+		const reader = mendly.Reader.File.open(mendly.Url.parse(path)!)!
 		expect(typeof reader.opened).toEqual("boolean")
 		expect(typeof reader.readable).toEqual("boolean")
 		expect(typeof reader.empty).toEqual("boolean")
@@ -33,7 +33,7 @@ describe("mendly.Reader.File", () => {
 	it("reader registry open", () => {
 		const path = "./reader-file-registry.txt"
 		fs.writeFileSync(path, "abc")
-		expect(mendly.Reader.open(mendly.Uri.parse(path)!)).toBeTruthy()
+		expect(mendly.Reader.open(mendly.Url.parse(path)!)).toBeTruthy()
 		fs.unlinkSync(path)
 	})
 })

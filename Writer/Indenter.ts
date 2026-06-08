@@ -1,9 +1,9 @@
 import { Enumerator } from "../Enumerator/index.js"
-import { Uri } from "../Uri/index.js"
+import { Url } from "../Url/index.js"
 import { Writer } from "./Writer.js"
 
 export class Indenter extends Writer {
-	get resource(): Uri {
+	get resource(): Url {
 		return this.backend.resource
 	}
 	get opened(): boolean {

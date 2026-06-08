@@ -1,5 +1,5 @@
 import { Error } from "../Error/index.js"
-import { Uri } from "../Uri/index.js"
+import { Url } from "../Url/index.js"
 import { Reader } from "./Reader.js"
 
 export class String extends Reader {
@@ -24,7 +24,7 @@ export class String extends Reader {
 	}
 	private constructor(
 		private content: string,
-		readonly resource: Uri
+		readonly resource: Url
 	) {
 		super()
 		this.content += "\0"
@@ -63,10 +63,10 @@ export class String extends Reader {
 		this.lastContent = ""
 		return result
 	}
-	static create(content: undefined, path?: Uri): undefined
-	static create(content: string, path?: Uri): String
-	static create(content: string | undefined, resource?: Uri): String | undefined {
-		return content != undefined ? new String(content, resource || Uri.empty) : undefined
+	static create(content: undefined, path?: Url): undefined
+	static create(content: string, path?: Url): String
+	static create(content: string | undefined, resource?: Url): String | undefined {
+		return content != undefined ? new String(content, resource || Url.empty) : undefined
 	}
 }
 export namespace String {}

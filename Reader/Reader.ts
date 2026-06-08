@@ -1,11 +1,11 @@
 import { Device } from "../Device/index.js"
 import { Error } from "../Error/index.js"
-import { Uri } from "../Uri/index.js"
+import { Url } from "../Url/index.js"
 
 export abstract class Reader implements Device.In {
 	abstract get readable(): boolean
 	abstract get empty(): boolean
-	abstract get resource(): Uri
+	abstract get resource(): Url
 	abstract get opened(): boolean
 	abstract get location(): Error.Location
 	abstract get region(): Error.Region
@@ -13,13 +13,13 @@ export abstract class Reader implements Device.In {
 	abstract read(): string | undefined
 	abstract mark(): Error.Region
 	abstract close(): Promise<boolean>
-	private static openers: { open: (locator: Uri) => Reader | undefined; priority: number }[] = []
-	static register(open: (locator: Uri) => Reader | undefined, priority?: number) {
+	private static openers: { open: (locator: Url) => Reader | undefined; priority: number }[] = []
+	static register(open: (locator: Url) => Reader | undefined, priority?: number) {
 		if (!priority) priority = 0
 		Reader.openers.push({ open, priority })
 		Reader.openers = Reader.openers.sort((left, right) => right.priority - left.priority)
 	}
-	static open(resource: Uri): Reader | undefined {
+	static open(resource: Url): Reader | undefined {
 		let result: Reader | undefined
 		for (const opener of Reader.openers) if ((result = opener.open(resource))) break
 		return result

@@ -1,6 +1,6 @@
 # Mendly
 
-Mendly is a utility library for TypeScript and JavaScript that extends the standard library with reader, writer, URI, enumerator, error, and device utilities.
+Mendly is a utility library for TypeScript and JavaScript that extends the standard library with `Reader`, `Writer`, `Url`, `Enumerator`, `Error`, and `Device? utilities.
 
 ## Installation
 
@@ -41,7 +41,7 @@ The portable `mendly` namespace is available in both environments and includes:
 
 - `mendly.Reader`
 - `mendly.Writer`
-- `mendly.Uri`
+- `mendly.Url`
 - `mendly.Error`
 - `mendly.Enumerator`
 - `mendly.Enumerable`
@@ -56,9 +56,9 @@ Node consumers should use the Node entrypoint when they need filesystem-backed b
 ```ts
 import { mendly } from "mendly/node"
 
-const input = mendly.Reader.open(mendly.Uri.parse("file:///tmp/input.txt")!)
+const input = mendly.Reader.open(mendly.Url.parse("file:///tmp/input.txt")!)
 const output = await mendly.Writer.open(
-	mendly.Uri.parse("file:///tmp/output.txt")!
+	mendly.Url.parse("file:///tmp/output.txt")!
 )
 ```
 
@@ -89,7 +89,7 @@ That means file resources are not opened in browser builds:
 ```ts
 import { mendly } from "mendly"
 
-const resource = mendly.Uri.parse("file:///tmp/example.txt")!
+const resource = mendly.Url.parse("file:///tmp/example.txt")!
 
 console.log(mendly.Reader.open(resource))
 console.log(await mendly.Writer.open(resource))

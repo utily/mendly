@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest"
 import { mendly } from "../index.js"
 
-describe("mendly.Uri.resolve", () => {
+describe("mendly.Url.resolve", () => {
 	it("resolve relative", () => {
-		const absolute = mendly.Uri.parse("https://server.example.com/folder0/folder1/")
-		const relative = mendly.Uri.parse("./folder2/file.extension")
+		const absolute = mendly.Url.parse("https://server.example.com/folder0/folder1/")
+		const relative = mendly.Url.parse("./folder2/file.extension")
 		expect(relative).toBeTruthy()
 		if (relative) {
 			const locator = relative.resolve(absolute)
@@ -16,12 +16,12 @@ describe("mendly.Uri.resolve", () => {
 		}
 	})
 	it("resolve with undefined absolute returns same instance", () => {
-		const locator = mendly.Uri.parse("./folder/file.extension")!
+		const locator = mendly.Url.parse("./folder/file.extension")!
 		expect(locator.resolve()).toBe(locator)
 	})
 	it("resolve keeps explicit scheme and authority", () => {
-		const resolved = mendly.Uri.parse("http://other.example.net/override/path")!.resolve(
-			mendly.Uri.parse("https://server.example.com/base/")!
+		const resolved = mendly.Url.parse("http://other.example.net/override/path")!.resolve(
+			mendly.Url.parse("https://server.example.com/base/")!
 		)
 		expect(resolved.scheme).toEqual(["http"])
 		expect(resolved.authority.endpoint.host).toEqual(["other", "example", "net"])

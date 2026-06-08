@@ -2,10 +2,10 @@ import { Authority as _Authority } from "./Authority.js"
 import { Endpoint as _Endpoint } from "./Endpoint.js"
 import { User as _User } from "./User.js"
 
-export class Uri {
+export class Url {
 	constructor(
 		readonly scheme: string[] = [],
-		readonly authority: Uri.Authority = new _Authority(),
+		readonly authority: Url.Authority = new _Authority(),
 		readonly path: string[] = [],
 		readonly query: { [key: string]: string } = {},
 		readonly fragment?: string
@@ -16,12 +16,12 @@ export class Uri {
 	get isFolder(): boolean {
 		return this.path[this.path.length - 1] == ""
 	}
-	get folder(): Uri {
+	get folder(): Url {
 		return this.isFolder ? this : this.parent
 	}
-	get parent(): Uri {
+	get parent(): Url {
 		return this.path.length > 0
-			? new Uri(this.scheme, this.authority, this.path.slice(0, this.path.length - 1), this.query, this.fragment)
+			? new Url(this.scheme, this.authority, this.path.slice(0, this.path.length - 1), this.query, this.fragment)
 			: this
 	}
 	get filename(): string {
@@ -52,7 +52,7 @@ export class Uri {
 		while (count-- > 0) result.push(value)
 		return result
 	}
-	normalize(): Uri {
+	normalize(): Url {
 		let skip = 0
 		const path = this.path
 			.reverse()
@@ -67,12 +67,12 @@ export class Uri {
 			})
 			.concat(this.createArray("..", skip))
 			.reverse()
-		return new Uri(this.scheme, this.authority, path, this.query, this.fragment)
+		return new Url(this.scheme, this.authority, path, this.query, this.fragment)
 	}
-	resolve(absolute?: Uri): Uri {
+	resolve(absolute?: Url): Url {
 		return !absolute
 			? this
-			: new Uri(
+			: new Url(
 					this.scheme.length > 0 ? this.scheme : absolute.scheme,
 					!this.authority.empty ? this.authority : absolute.authority,
 					this.isRelative ? absolute.folder.path.concat(this.path) : this.path,
@@ -80,8 +80,8 @@ export class Uri {
 					this.fragment
 				).normalize()
 	}
-	appendPath(path: string | string[]): Uri {
-		return new Uri(
+	appendPath(path: string | string[]): Url {
+		return new Url(
 			this.scheme,
 			this.authority,
 			path instanceof Array ? [...this.path, ...path] : [...this.path, path],
@@ -110,10 +110,10 @@ export class Uri {
 		if (this.fragment) result += "#" + this.fragment
 		return result
 	}
-	static readonly empty = new Uri(undefined, undefined, undefined, undefined, undefined)
-	static parse(data: string | Uri | undefined): Uri | undefined {
-		let result: Uri | undefined
-		if (data instanceof Uri) result = data
+	static readonly empty = new Url(undefined, undefined, undefined, undefined, undefined)
+	static parse(data: string | Url | undefined): Url | undefined {
+		let result: Url | undefined
+		if (data instanceof Url) result = data
 		else if (typeof data == "string" && data.length > 0) {
 			let hasAuthority = true
 			let scheme: string[] = []
@@ -141,7 +141,7 @@ export class Uri {
 				) as { [key: string]: string }
 				data = data.slice(0, index)
 			}
-			let authority: Uri.Authority | undefined
+			let authority: Url.Authority | undefined
 			let path: string[] = []
 			if (data) {
 				splitted = data.split("/")
@@ -154,19 +154,19 @@ export class Uri {
 							splitted.shift()
 							break
 						default:
-							if (hasAuthority) authority = Uri.Authority.parse(splitted.shift())
+							if (hasAuthority) authority = Url.Authority.parse(splitted.shift())
 							else splitted.unshift(".")
 							break
 					}
 					path = splitted
 				}
 			}
-			result = new Uri(scheme, authority, path, query, fragment)
+			result = new Url(scheme, authority, path, query, fragment)
 		}
 		return result
 	}
 }
-export namespace Uri {
+export namespace Url {
 	export import Authority = _Authority
 	export import Endpoint = _Endpoint
 	export import User = _User

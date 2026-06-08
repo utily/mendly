@@ -1,5 +1,5 @@
 import { Enumerator } from "../Enumerator/index.js"
-import { Uri } from "../Uri/index.js"
+import { Url } from "../Url/index.js"
 import { Writer } from "./Writer.js"
 
 export class String extends Writer {
@@ -10,7 +10,7 @@ export class String extends Writer {
 	readonly writable = true
 	readonly autoFlush = true
 	readonly opened = true
-	private constructor(readonly resource: Uri) {
+	private constructor(readonly resource: Url) {
 		super()
 	}
 	protected async writeImplementation(buffer: Enumerator<string>): Promise<boolean> {
@@ -23,8 +23,8 @@ export class String extends Writer {
 	async close(): Promise<boolean> {
 		return true
 	}
-	static create(resource?: Uri): String {
-		return new String(resource || Uri.empty)
+	static create(resource?: Url): String {
+		return new String(resource || Url.empty)
 	}
 }
 export namespace String {}

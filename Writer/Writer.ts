@@ -1,11 +1,11 @@
 import { Device } from "../Device/index.js"
 import { Enumerator } from "../Enumerator/index.js"
-import { Uri } from "../Uri/index.js"
+import { Url } from "../Url/index.js"
 
 export abstract class Writer implements Device.Out {
 	abstract get writable(): boolean
 	abstract get autoFlush(): boolean
-	abstract get resource(): Uri
+	abstract get resource(): Url
 	abstract get opened(): boolean
 	abstract flush(): Promise<boolean>
 	abstract close(): Promise<boolean>
@@ -27,16 +27,16 @@ export abstract class Writer implements Device.Out {
 					: this.writeImplementation(new Enumerator.Array([this.newLineSymbol]))
 	}
 	protected abstract writeImplementation(buffer: Enumerator<string>): Promise<boolean>
-	private static openers: { open: (resource: Uri) => Promise<Writer | undefined>; priority: number }[] = []
-	static register(open: (resource: Uri) => Promise<Writer | undefined>, priority?: number) {
+	private static openers: { open: (resource: Url) => Promise<Writer | undefined>; priority: number }[] = []
+	static register(open: (resource: Url) => Promise<Writer | undefined>, priority?: number) {
 		if (!priority) priority = 0
 		Writer.openers.push({ open, priority })
 		Writer.openers = Writer.openers.sort((left, right) => right.priority - left.priority)
 	}
-	static async open(resource: Uri | string): Promise<Writer | undefined> {
+	static async open(resource: Url | string): Promise<Writer | undefined> {
 		let result: Writer | undefined
 		if (typeof resource == "string") {
-			const r = Uri.parse(resource)
+			const r = Url.parse(resource)
 			result = r ? await Writer.open(r) : undefined
 		} else for (const opener of Writer.openers) if ((result = await opener.open(resource))) break
 		return result

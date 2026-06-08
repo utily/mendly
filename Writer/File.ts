@@ -2,7 +2,7 @@ import * as fs from "node:fs"
 import { sep } from "node:path"
 import * as util from "node:util"
 import { Enumerator } from "../Enumerator/index.js"
-import { Uri } from "../Uri/index.js"
+import { Url } from "../Url/index.js"
 import { Writer } from "./Writer.js"
 
 const close = util.promisify(fs.close)
@@ -20,7 +20,7 @@ export class File extends Writer {
 	error: unknown | undefined
 	autoFlush: boolean = false
 	constructor(
-		readonly resource: Uri,
+		readonly resource: Url,
 		private descriptor?: number
 	) {
 		super()
@@ -65,7 +65,7 @@ export class File extends Writer {
 		if (result && this.autoFlush) result = await this.flush()
 		return result
 	}
-	static override async open(resource: Uri): Promise<File | undefined> {
+	static override async open(resource: Url): Promise<File | undefined> {
 		let backend: number | undefined
 		if (resource && (resource.scheme.length == 0 || (resource.scheme.length == 1 && resource.scheme[0] == "file")))
 			try {

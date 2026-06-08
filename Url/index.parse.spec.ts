@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest"
 import { mendly } from "../index.js"
 
-describe("mendly.Uri.parse", () => {
+describe("mendly.Url.parse", () => {
 	it.each([
 		{
-			name: "uri instance",
-			input: new mendly.Uri(["file"], undefined, ["tmp", "document.tup"]),
-			expected: new mendly.Uri(["file"], undefined, ["tmp", "document.tup"])
+			name: "Url instance",
+			input: new mendly.Url(["file"], undefined, ["tmp", "document.tup"]),
+			expected: new mendly.Url(["file"], undefined, ["tmp", "document.tup"])
 		},
 		{ name: "undefined", input: undefined, expected: undefined },
 		{ name: "empty", input: "", expected: undefined },
@@ -137,5 +137,5 @@ describe("mendly.Uri.parse", () => {
 			}
 		},
 		{ name: "empty query and fragment are ignored", input: "./folder/file.extension?#", expected: { query: {} } }
-	])("$name", ({ input, expected }) => expect(mendly.Uri.parse(input)).toMatchObject(expected))
+	])("$name", ({ input, expected }) => expect(mendly.Url.parse(input)).toMatchObject(expected))
 })

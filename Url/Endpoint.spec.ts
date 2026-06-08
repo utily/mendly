@@ -1,6 +1,6 @@
 import { mendly } from "../index.js"
 
-describe("mendly.Uri.Endpoint", () => {
+describe("mendly.Url.Endpoint", () => {
 	it.each([
 		{ name: "empty", input: undefined, output: "", empty: true, host: [], port: undefined },
 		{
@@ -28,7 +28,7 @@ describe("mendly.Uri.Endpoint", () => {
 			port: undefined
 		}
 	])("parse $name", ({ input, output, empty, host, port }) => {
-		const endpoint = mendly.Uri.Endpoint.parse(input)
+		const endpoint = mendly.Url.Endpoint.parse(input)
 		expect(endpoint.toString()).toEqual(output)
 		expect(endpoint.empty).toEqual(empty)
 		expect(endpoint.host).toEqual(host)

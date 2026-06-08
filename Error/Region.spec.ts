@@ -1,9 +1,9 @@
-import { Uri } from "../Uri/index.js"
+import { Url } from "../Url/index.js"
 import { Position } from "./Position.js"
 import { Region } from "./Region.js"
 
 describe("mendly.Error.Region", () => {
-	const resource = new Uri([], undefined, ["file.txt"])
+	const resource = new Url([], undefined, ["file.txt"])
 
 	it.each([
 		{

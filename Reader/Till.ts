@@ -1,5 +1,5 @@
 import { Error } from "../Error/index.js"
-import { Uri } from "../Uri/index.js"
+import { Url } from "../Url/index.js"
 import { Buffered } from "./Buffered.js"
 import { Reader } from "./Reader.js"
 
@@ -21,7 +21,7 @@ export class Till extends Reader {
 	get empty() {
 		return this.done || this.backend.empty
 	}
-	get resource(): Uri {
+	get resource(): Url {
 		return this.backend.resource
 	}
 	get location(): Error.Location {
