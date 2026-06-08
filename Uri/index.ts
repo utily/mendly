@@ -95,9 +95,10 @@ export class Uri {
 		return result
 	}
 	static readonly empty = new Uri(undefined, undefined, undefined, undefined, undefined)
-	static parse(data: string | undefined): Uri | undefined {
+	static parse(data: string | Uri | undefined): Uri | undefined {
 		let result: Uri | undefined
-		if (typeof data == "string" && data.length > 0) {
+		if (data instanceof Uri) result = data
+		else if (typeof data == "string" && data.length > 0) {
 			let hasAuthority = true
 			let scheme: string[] = []
 			let splitted = data.split("://", 2)

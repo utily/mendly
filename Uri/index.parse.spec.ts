@@ -3,11 +3,13 @@ import { mendly } from "../index.js"
 
 describe("mendly.Uri.parse", () => {
 	it.each([
-		{ name: "undefined", input: undefined },
-		{ name: "empty", input: "" }
-	])("$name", ({ input }) => expect(mendly.Uri.parse(input)).toBeUndefined())
-
-	it.each([
+		{
+			name: "uri instance",
+			input: new mendly.Uri(["file"], undefined, ["tmp", "document.tup"]),
+			expected: new mendly.Uri(["file"], undefined, ["tmp", "document.tup"])
+		},
+		{ name: "undefined", input: undefined, expected: undefined },
+		{ name: "empty", input: "", expected: undefined },
 		{
 			name: "absolute file",
 			input: "file:///folder/file.extension",
@@ -108,10 +110,7 @@ describe("mendly.Uri.parse", () => {
 				},
 				path: ["folder", "file.extension"]
 			}
-		}
-	])("$name", ({ input, expected }) => expect(mendly.Uri.parse(input)).toMatchObject(expected))
-
-	it.each([
+		},
 		{
 			name: "query with ampersand separator",
 			input: "./folder/file.extension?alpha=1&beta=2",
