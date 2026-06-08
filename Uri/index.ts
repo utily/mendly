@@ -24,12 +24,28 @@ export class Uri {
 			? new Uri(this.scheme, this.authority, this.path.slice(0, this.path.length - 1), this.query, this.fragment)
 			: this
 	}
-	get name(): string {
+	get filename(): string {
 		return this.path[this.path.length - 1] ?? ""
 	}
+	get stem(): string {
+		const name = this.filename
+		const firstDot = name.indexOf(".")
+		return firstDot < 0 ? name : name.slice(0, firstDot)
+	}
+	get base(): string {
+		const name = this.filename
+		const lastDot = name.lastIndexOf(".")
+		return lastDot < 0 ? "" : name.slice(0, lastDot)
+	}
 	get extension(): string {
-		const splitted = this.name.split(".")
-		return (splitted.length > 1 && splitted[splitted.length - 1]) || ""
+		const name = this.filename
+		const lastDot = name.lastIndexOf(".")
+		return lastDot < 0 ? "" : name.slice(lastDot + 1)
+	}
+	get suffix(): string {
+		const name = this.filename
+		const firstDot = name.indexOf(".")
+		return firstDot < 0 ? "" : name.slice(firstDot + 1)
 	}
 	private createArray<T>(value: T, count: number): T[] {
 		const result: T[] = []

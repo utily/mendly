@@ -81,7 +81,7 @@ export class Folder extends Reader {
 			if (
 				resource
 				&& (resource.scheme.length == 0 || (resource.scheme.length == 1 && resource.scheme[0] == "file"))
-				&& (resource.isFolder || resource.name.includes("*"))
+				&& (resource.isFolder || resource.filename.includes("*"))
 			)
 				files = Folder.getFiles(
 					(resource.isRelative ? "" : separator) + resource.folder.path.join(separator),
